@@ -10,32 +10,22 @@ Wczytywanie planszy z różnymi poziomami trudności, wpisywanie liczb, opcjonal
 
 ### Rejestracja i Logowanie:
 Formularz rejestracyjny z walidacją, logowanie z hashowaniem i soleniem haseł, logowanie administratora, możliwość wylogowania.
-
 ### Baza Danych:
 Przechowywanie kont użytkowników, zapisywanie wyników gier, wyświetlanie historii gier i bazy użytkowników dla administratora.
-
 ### Panel Admina:
 Lista użytkowników, możliwość usuwania kont.
 
 ## Wymagania Niefunkcjonalne
-### Interfejs Użytkownika:
-Intuicyjny i responsywny.
-
-### Wydajność:
-Szybkie ładowanie strony (< 1.5 sekundy).
+Interfejs Użytkownika: Intuicyjny i responsywny.
+Wydajność: Szybkie ładowanie strony (< 1.5 sekundy).
 
 ## Wymagania Bezpieczeństwa
-### Ochrona przed SQL Injection
-
-### Hasła:
-Solone hasła przechowywane jako hashe, wymóg silnych haseł, walidacja formularzy wejściowych.
+Ochrona przed SQL Injection
+Hasła: Solone hasła przechowywane jako hashe, wymóg silnych haseł, walidacja formularzy wejściowych.
 
 ## Technologie
-### Backend:
-Python, Flask
-
-### Frontend:
-HTML, CSS, JavaScript, Bootstrap
+Backend: Python, Flask
+Frontend: HTML, CSS, JavaScript, Bootstrap
 
 ### Baza Danych:
 SQLAlchemy
@@ -60,18 +50,14 @@ text
 /app.py
 /database.db
 Requirements.txt
+
 ## Harmonogram
 Dostępny na stronie: https://github.com/users/KrzysztofEmerling/projects/2
 
 ## Zespół Projektowy:
 Agnieszka Głowacka
-
 Martyna Trębacz
-
 Oliwia Skucha
-
-Jakub Rogoża
-
+Jakub Rogoż
 Krzysztof Emerling
-
 Szymon Duda
