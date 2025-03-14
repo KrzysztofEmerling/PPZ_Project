@@ -31,6 +31,7 @@ Frontend: HTML, CSS, JavaScript, Bootstrap
 SQLAlchemy
 
 ## Struktura Aplikacji
+~~~
 text
 /app
 /static
@@ -50,6 +51,7 @@ text
 /app.py
 /database.db
 Requirements.txt
+~~~
 
 ## Harmonogram
 Dostępny na stronie: https://github.com/users/KrzysztofEmerling/projects/2
