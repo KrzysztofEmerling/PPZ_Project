@@ -3,26 +3,27 @@ Aplikacja webowa do gry w Sudoku, zbudowana w technologii Flask i SQLAlchemy.
 
 ## Instalacja
 Skolonowanie repozytorium:
-'''
+~~~
 git clone https://github.com/KrzysztofEmerling/PPZ_Project.git
-'''
+~~~
 
 utworzenie flaskEnv z pliku requirements.txt:
-'''
+~~~
 python3 -m venv flaskEnv
-/flaskEnv/bin/activate
+/flaskEnv/bin/activate        (Unix)
+/flaskEnv/Scripts/activate    (Windows)
 pip install -r requirements.txt
-'''
+~~~
 
 Pobranie bazy zagadek sudoku do folderu vendor:
-'''
+~~~
 git clone https://github.com/grantm/sudoku-exchange-puzzle-bank.git
-'''
+~~~
 
 Uruchomienie aplikacji:
-'''
+~~~
 python3 ./app/app.py
-'''
+~~~
 
 ## Opis Projektu
 Projekt Sudocu-sweaper umożliwia użytkownikom grę w Sudoku jako gość lub po zalogowaniu się. Zalogowani użytkownicy mogą śledzić swoje wyniki i historię gier. Aplikacja oferuje różne poziomy trudności, funkcje cofania i resetowania planszy oraz pomiar czasu gry.
