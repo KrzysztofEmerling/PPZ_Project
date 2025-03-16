@@ -27,7 +27,7 @@ python3 ./app/app.py
 ~~~
 
 ## Opis Projektu
-Projekt Sudocu-sweaper umożliwia użytkownikom grę w Sudoku jako gość lub po zalogowaniu się. Zalogowani użytkownicy mogą śledzić swoje wyniki i historię gier. Aplikacja oferuje różne poziomy trudności, funkcje cofania i resetowania planszy oraz pomiar czasu gry.
+Projekt Sudoku-sweeper umożliwia użytkownikom grę w Sudoku jako gość lub po zalogowaniu się. Zalogowani użytkownicy mogą śledzić swoje wyniki i historię gier. Aplikacja oferuje różne poziomy trudności, funkcje cofania i resetowania planszy oraz pomiar czasu gry.
 
 ### Funkcjonalności
 #### Gra w Sudoku:
