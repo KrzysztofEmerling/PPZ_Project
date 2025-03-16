@@ -1,8 +1,8 @@
-# Sudocu-sweaper
+# Sudoku-sweeper
 Aplikacja webowa do gry w Sudoku, zbudowana w technologii Flask i SQLAlchemy.
 
 ## Instalacja
-Skolonowanie repozytorium:
+Sklonowanie repozytorium:
 ~~~
 git clone https://github.com/KrzysztofEmerling/PPZ_Project.git
 ~~~
@@ -10,8 +10,9 @@ git clone https://github.com/KrzysztofEmerling/PPZ_Project.git
 utworzenie flaskEnv z pliku requirements.txt:
 ~~~
 python3 -m venv flaskEnv
-/flaskEnv/bin/activate        (Unix)
-/flaskEnv/Scripts/activate    (Windows)
+./flaskEnv/bin/activate           (Unix)
+/flaskEnv/Scripts/activate        (Windows)
+source /flaskEnv/bin/activate     (MacOS)
 pip install -r requirements.txt
 ~~~
 
@@ -54,25 +55,25 @@ Baza Danych: SQLAlchemy
 
 ### Struktura Aplikacji
 ~~~
-text
-/app
-/static
-  - style.css
-  - script.js
-/templates
-  - index.html
-  - login.html
-  - register.html
-  - game.html
-  - history.html
-  - admin.html
-/vendor
-  - /sudoku-exchange-puzzle-bank
-/models.py
-/routes.py
-/app.py
-/database.db
-Requirements.txt
+/project 
+    /app
+        /static
+            - style.css
+            - script.js
+        /templates
+            - index.html
+            - login.html
+            - register.html
+            - game.html
+            - history.html
+            - admin.html
+        /vendor
+            /sudoku-exchange-puzzle-bank
+        - models.py
+        - routes.py
+        - app.py
+        - database.db
+    - requirements.txt
 ~~~
 
 ### Harmonogram
@@ -82,6 +83,6 @@ Dostępny na stronie: https://github.com/users/KrzysztofEmerling/projects/2
 Agnieszka Głowacka
 Martyna Trębacz
 Oliwia Skucha
-Jakub Rogoż
+Jakub Rogoża
 Krzysztof Emerling
 Szymon Duda
