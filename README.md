@@ -1,36 +1,49 @@
 # Sudocu-sweaper
 Aplikacja webowa do gry w Sudoku, zbudowana w technologii Flask i SQLAlchemy.
 
+## Instalacja
+Skolonowanie repozytorium
+'''
+git clone https://github.com/KrzysztofEmerling/PPZ_Project.git
+'''
+utworzenie flaskEnv z pliku requirements.txt
+'''
+python3 -m venv flaskEnv
+/flaskEnv/bin/activate
+pip install -r requirements.txt
+'''
+Pobranie bazy zagadek sudoku do folderu vendor
+'''
+gitt clone https://github.com/grantm/sudoku-exchange-puzzle-bank.git
+'''
 ## Opis Projektu
 Projekt Sudocu-sweaper umożliwia użytkownikom grę w Sudoku jako gość lub po zalogowaniu się. Zalogowani użytkownicy mogą śledzić swoje wyniki i historię gier. Aplikacja oferuje różne poziomy trudności, funkcje cofania i resetowania planszy oraz pomiar czasu gry.
 
-## Funkcjonalności
-### Gra w Sudoku:
+### Funkcjonalności
+#### Gra w Sudoku:
 Wczytywanie planszy z różnymi poziomami trudności, wpisywanie liczb, opcjonalna nawigacja klawiaturą, sprawdzanie poprawności rozwiązania, funkcje cofania i resetowania, pomiar czasu gry.
 
-### Rejestracja i Logowanie:
+#### Rejestracja i Logowanie:
 Formularz rejestracyjny z walidacją, logowanie z hashowaniem i soleniem haseł, logowanie administratora, możliwość wylogowania.
-### Baza Danych:
+#### Baza Danych:
 Przechowywanie kont użytkowników, zapisywanie wyników gier, wyświetlanie historii gier i bazy użytkowników dla administratora.
-### Panel Admina:
+#### Panel Admina:
 Lista użytkowników, możliwość usuwania kont.
 
-## Wymagania Niefunkcjonalne
+### Wymagania Niefunkcjonalne
 Interfejs Użytkownika: Intuicyjny i responsywny.
 Wydajność: Szybkie ładowanie strony (< 1.5 sekundy).
 
-## Wymagania Bezpieczeństwa
+### Wymagania Bezpieczeństwa
 Ochrona przed SQL Injection
 Hasła: Solone hasła przechowywane jako hashe, wymóg silnych haseł, walidacja formularzy wejściowych.
 
-## Technologie
+### Technologie
 Backend: Python, Flask
 Frontend: HTML, CSS, JavaScript, Bootstrap
+Baza Danych: SQLAlchemy
 
-### Baza Danych:
-SQLAlchemy
-
-## Struktura Aplikacji
+### Struktura Aplikacji
 ~~~
 text
 /app
@@ -53,10 +66,10 @@ text
 Requirements.txt
 ~~~
 
-## Harmonogram
+### Harmonogram
 Dostępny na stronie: https://github.com/users/KrzysztofEmerling/projects/2
 
-## Zespół Projektowy:
+### Zespół Projektowy:
 Agnieszka Głowacka
 Martyna Trębacz
 Oliwia Skucha
