@@ -56,24 +56,24 @@ Baza Danych: SQLAlchemy
 ### Struktura Aplikacji
 ~~~
 /project 
-    /app
-        /static
-            - style.css
-            - script.js
-        /templates
-            - index.html
-            - login.html
-            - register.html
-            - game.html
-            - history.html
-            - admin.html
-        /vendor
-            /sudoku-exchange-puzzle-bank
-        - models.py
-        - routes.py
-        - app.py
-        - database.db
-    - requirements.txt
+├── /app
+│   ├── /static
+│   │   ├── style.css
+│   │   └── script.js
+│   ├── /templates
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   ├── register.html
+│   │   ├── game.html
+│   │   ├── history.html
+│   │   └── admin.html
+│   ├── /vendor
+│   │   └── /sudoku-exchange-puzzle-bank
+│   ├── models.py
+│   ├── routes.py
+│   ├── app.py
+│   └── database.db
+└── requirements.txt
 ~~~
 
 ### Harmonogram
