@@ -1,0 +1,11 @@
+.btn-easy {
+    background-color: rgba(35, 83, 53, 0.7); /* Zielony, subtelny */
+}
+
+.btn-medium {
+    background-color: rgba(139, 116, 47, 0.9); /* Żółty, subtelny */
+}
+
+.btn-hard {
+    background-color: rgba(85, 40, 45, 0.9); /* Czerwony, subtelny */
+}

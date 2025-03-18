@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sudoku-Sweeper</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<link rel="stylesheet" href="../static/style.css">
+</head>
+<body class="bg-dark">
+
+<!-- Pasek nawigacji -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 border-bottom border-secondary">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+			<i class="bi bi-square-fill"></i>
+			<i class="bi bi-square"></i>
+			<i class="bi bi-square-fill"></i>
+			<span>Sudoku-Sweeper</span>
+		</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="login.html" role="button">
+                        Log in
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-success me-2 d-inline-flex align-items-center" href="register.html" role="button">
+                        Sign up
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">English</a></li>
+                        <li><a class="dropdown-item" href="#">Polski</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+	</div>
+</nav>
+
+<!-- Pasek nawigacji -->
+<div class="container pb-3 text-white">
+    <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
+        <div class="bg-dark border border-secondary rounded-3">
+            <div class="d-grid gap-3 mt-3 mb-3 ms-3 me-3" style="grid-template-columns: 1fr 2fr;">
+                <div class="bg-dark border-end border-secondary p-3">
+                    <!-- Left column content -->
+                </div>
+                
+                <div class="bg-dark">
+                    <h2 class="border-bottom border-secondary p-2 text-center">Start new game</h2>
+					<div class="d-flex gap-2 m-3 mt-4">
+						<button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button">
+								<i class="bi bi-emoji-smile-fill"></i>  Easy
+						</button>
+						<button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button">
+								<i class="bi bi-emoji-neutral-fill"></i>  Medium
+						</button>
+						<button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button">
+								<i class="bi bi-emoji-angry-fill"></i>  Hard
+						</button>
+						<button class="btn btn-lg btn-outline-secondary flex-fill" type="button">
+								<i class="bi bi-emoji-dizzy-fill"></i>  Expert
+						</button>
+					</div>
+					
+					<h2 class="border-bottom border-secondary p-2 mt-5 text-center">How to play?</h2>
+					<div class="m-5 mt-4">
+						Sudoku is a logic-based puzzle game where the goal is to fill a 9x9 grid with numbers from 1 to 9. <br>The grid is divided into 9 smaller 3x3 subgrids (regions). <br><br>The basic rules are:
+						<ul>
+							<li>Each row must contain every number from 1 to 9, with no repetition.</li>
+							<li>Each column must contain every number from 1 to 9, with no repetition.</li>
+							<li>Each 3x3 subgrid must contain every number from 1 to 9, with no repetition.</li>
+						</ul>
+						Some cells are pre-filled with numbers, and the player must use logic to fill in the remaining cells according to these rules
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="py-3 my-4 bg-dark border-top border-secondary">
+    <p class="text-center text-white">© 2025 Sudoku-Sweeper</p>
+</footer>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
