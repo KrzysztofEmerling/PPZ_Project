@@ -48,29 +48,42 @@
 	</div>
 </nav>
 
-<!-- Pasek nawigacji -->
+<!-- Kontener glowny -->
 <div class="container pb-3 text-white">
     <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
         <div class="bg-dark border border-secondary rounded-3">
-            <div class="d-grid gap-3 mt-3 mb-3 ms-3 me-3" style="grid-template-columns: 1fr 2fr;">
+            <div class="d-grid gap-3 mt-3 mb-3 ms-3 me-3" style="grid-template-columns: 0.5fr 2.5fr;">
                 <div class="bg-dark border-end border-secondary p-3">
-                    <!-- Left column content -->
+                    <ul class="nav flex-column text-center">
+						<li class="nav-item">
+							<a class="nav-link active custom-link" href="#"><i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link custom-link" href="#"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link custom-link" href="#"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;Ranking</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link custom-link" href="#"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Statistics</a>
+						</li>
+					</ul>
                 </div>
                 
                 <div class="bg-dark">
                     <h2 class="border-bottom border-secondary p-2 text-center">Start new game</h2>
 					<div class="d-flex gap-2 m-3 mt-4">
 						<button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button">
-								<i class="bi bi-emoji-smile-fill"></i>  Easy
+								<i class="bi bi-emoji-smile-fill"></i> Easy
 						</button>
 						<button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button">
-								<i class="bi bi-emoji-neutral-fill"></i>  Medium
+								<i class="bi bi-emoji-neutral-fill"></i> Intermediate
 						</button>
 						<button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button">
-								<i class="bi bi-emoji-angry-fill"></i>  Hard
+								<i class="bi bi-emoji-angry-fill"></i> Hard
 						</button>
 						<button class="btn btn-lg btn-outline-secondary flex-fill" type="button">
-								<i class="bi bi-emoji-dizzy-fill"></i>  Expert
+								<i class="bi bi-emoji-dizzy-fill"></i> Expert
 						</button>
 					</div>
 					
@@ -82,8 +95,8 @@
 							<li>Each column must contain every number from 1 to 9, with no repetition.</li>
 							<li>Each 3x3 subgrid must contain every number from 1 to 9, with no repetition.</li>
 						</ul>
-						Some cells are pre-filled with numbers, and the player must use logic to fill in the remaining cells according to these rules
-					</div>
+						Some cells are pre-filled with numbers, and the player must use logic to fill in the remaining cells according to these rules.
+					</div>					
                 </div>
             </div>
         </div>

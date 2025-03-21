@@ -9,3 +9,11 @@
 .btn-hard {
     background-color: rgba(85, 40, 45, 0.9); /* Czerwony, subtelny */
 }
+
+.custom-link{
+	color: white;
+}
+
+.custom-link:hover{
+	color: #c2c2c2;
+}
