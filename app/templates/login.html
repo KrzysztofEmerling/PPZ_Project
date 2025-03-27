@@ -13,7 +13,7 @@
 <!-- Pasek nawigacji -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 border-bottom border-secondary">
     <div class="container">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
 			<i class="bi bi-square-fill"></i>
 			<i class="bi bi-square"></i>
 			<i class="bi bi-square-fill"></i>
@@ -42,15 +42,15 @@
 <div class="container pb-3 text-white">
     <div class="d-grid justify-content-center align-items-center" style="grid-template-columns:  0.25fr;">
         <div class="form-signin w-100 m-auto mt-3">
-            <form>
+            <form action="{{ url_for('handle_login') }}" method="POST">
               <h1 class="h3 mb-3 fw-normal">Please log in</h1>
           
               <div class="form-floating">
-                <input type="email" class="form-control bg-dark text-white border-secondary" id="floatingInput" placeholder="name@example.com">
+                <input type="email" class="form-control bg-dark text-white border-secondary" id="floatingInput" name="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>
               </div>
               <div class="form-floating">
-                <input type="password" class="form-control bg-dark text-white border-secondary mt-1" id="floatingPassword" placeholder="Password">
+                <input type="password" class="form-control bg-dark text-white border-secondary mt-1" id="floatingPassword" name="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
               </div>
           
@@ -62,7 +62,7 @@
               </div>
               <button class="btn btn-primary w-100 py-2" type="submit">Log in</button>
               <p class="mt-5 mb-3 text-white text-center border-bottom border-secondary pb-2">Don't have an account?</p>
-              <a class="btn btn-success w-100 py-2" type="submit" href="register.html">Sign up</a>
+              <a class="btn btn-success w-100 py-2" type="submit" href="{{ url_for('register') }} ">Sign up</a>
             </form>
         </div>    
     </div>
