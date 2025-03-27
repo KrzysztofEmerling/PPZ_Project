@@ -13,7 +13,7 @@
 <!-- Pasek nawigacji -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 border-bottom border-secondary">
     <div class="container">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="{{ url_for('home') }} ">
 			<i class="bi bi-square-fill"></i>
 			<i class="bi bi-square"></i>
 			<i class="bi bi-square-fill"></i>
@@ -72,7 +72,7 @@
 
                 <button class="btn btn-primary w-100 py-2" type="submit">Sign up</button>
                 <p class="mt-5 mb-3 text-white text-center border-bottom border-secondary pb-2">Already have an account?</p>
-                <a class="btn btn-success w-100 py-2" type="submit" href="login.html">Log in</a>
+                <a class="btn btn-success w-100 py-2" type="submit" href="{{ url_for('login') }} ">Log in</a>
             </form>
         </div>    
     </div>
