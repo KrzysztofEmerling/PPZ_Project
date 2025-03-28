@@ -1,31 +1,33 @@
-from sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime 
 
-# Inicjalizacja bazy danych
 db = SQLAlchemy()
 
-def init_db(app):
-    # Tworzenie tabel w bazie danych
-    with app.app_context():
-        db.create_all()
-
-# Definicja modelu
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+    __tablename__ = "users"
+    user_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    username = db.Column(db.String(50), unique = True, nullable = False)
+    password = db.Column(db.String(30), nullable = False)
+    email = db.Column(db.String(100), unique = True)
+    registration_date = db.Column(db.Date, default=datetime.utcnow)
 
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
+class Admin(db.Model):
+    __tablename__ = "admins"
+    admin_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), unique=True, nullable=False)
+    user = db.relationship("User", backref=db.backref("admin", uselist=False, cascade="all, delete"))
+
+class GameResult(db.Model):
+    __tablename__ = "game_results"
+    result_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"))
+    completion_time = db.Column(db.Integer, nullable = False)
+    difficulty = db.Column(db.String(10), nullable = False )
+    user = db.relationship("User", backref=db.backref("games", lazy=True))
 
 
-
-# app = f.Flask(__name__)
-
-
-# BASE_DIR = os.path.abspath(os.path.dirname(__file__)) 
-# DB_PATH = os.path.join(BASE_DIR, "../database.db") 
-# app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
-# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-# db.init_app(app)
-# init_db(app)
+def init_db(app):
+    with app.app_context():
+       db.create_all()
+       print("Baza danych jest utworzona")
+ 
