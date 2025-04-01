@@ -1,5 +1,6 @@
 /flaskEnv
 
+instance/database.db
 
 app/__pycache__/
 
