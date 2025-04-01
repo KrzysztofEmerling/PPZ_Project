@@ -14,6 +14,14 @@ db.init_app(app)
 def home():
     return f.render_template('index.html')
 
+@app.route('/my_profile')
+def user():
+    return f.render_template('user.html')
+
+@app.route('/edit')
+def edit_user():
+    return f.render_template('edit_user.html')
+
 @app.route('/login')
 def login():
     return f.render_template('login.html')
@@ -30,22 +38,19 @@ def handle_login():
     print(email_input_login, password_input_login)
 
     user_exists = User.query.filter_by(email=email_input_login, password=password_input_login).first()
-    if user_exists:
-        #has to be handled better
-        return "User exists in database"
-    else:
+    if not user_exists:
         #has to be handled better
         return "User doesn't exist in database"
+    else:
+        f.session["email"] = email_input_login
+        f.session["password"] = password_input_login
+        #has to be handled better
+        return "User exists in database"
 
 
     # user = db.session.query(User).filter_by(email=email_input_login).first()
     # print(type(user))
 
-
-    # if user:
-    #     return f"Przesłane dane:<br>Użytkownik: {email_input_login}<br>Hasło: {password_input_login}"
-    # else:
-    #     return "Nie ma takiego użytkownika"
     
 @app.route('/handle_register', methods=['POST'])
 def handle_register():
@@ -79,6 +84,30 @@ def handle_register():
     return f.render_template('login.html')
 
     # return "Stuff" #stuff shown on site handle_register. Should it put user to login page?
+
+@app.route('/edit', methods=['POST'])
+def edit():
+    # get all the data
+    username_edit = f.request.form.get('username_edit')
+    email_edit = f.request.form.get('email_edit')
+    oldpassword_edit = f.request.form.get('oldpassword_edit')
+    newpassword_edit = f.request.form.get('newpassword_edit')
+    confirmpassword_edit = f.request.form.get('confirmpassword_edit')
+
+    print(username_edit, email_edit, oldpassword_edit, newpassword_edit, confirmpassword_edit)
+
+
+    username_exists = db.session.query(User).filter_by(username=username_edit).first()
+
+
+    return f.render_template('edit_user.html')
+
+@app.route('/handle_logout', methods=['POST'])
+#needs work but works
+def handle_logout():
+    # f.session.clear()
+    print("I'm written in python!!!!!!!!!!!!!!!!")
+    return f.render_template('login.html')
 
 @app.route('/debug')
 def show_tables():

@@ -11,7 +11,7 @@ utworzenie flaskEnv z pliku requirements.txt:
 ~~~
 python3 -m venv flaskEnv
 ./flaskEnv/bin/activate           (Unix)
-/flaskEnv/Scripts/activate        (Windows)
+flaskEnv\Scripts\activate         (Windows)
 source /flaskEnv/bin/activate     (MacOS)
 pip install -r requirements.txt
 ~~~
@@ -23,7 +23,8 @@ git clone https://github.com/grantm/sudoku-exchange-puzzle-bank.git
 
 Uruchomienie aplikacji:
 ~~~
-python3 ./app/app.py
+python3 ./app/app.py	(Unix)
+python app\app.py		(Windows)
 ~~~
 
 ## Opis Projektu
@@ -66,7 +67,9 @@ Baza Danych: SQLAlchemy
 │   │   ├── register.html
 │   │   ├── game.html
 │   │   ├── history.html
-│   │   └── admin.html
+│   │   ├── admin.html
+│	│	├── user.html
+│	│	└── edit_user.html
 │   ├── /vendor
 │   │   └── /sudoku-exchange-puzzle-bank
 │   ├── models.py

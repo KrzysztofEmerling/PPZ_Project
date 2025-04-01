@@ -45,7 +45,7 @@
             <form action="{{ url_for('handle_login') }}" method="POST">
               <h1 class="h3 mb-3 fw-normal">Please log in</h1>
           
-              <!-- name variable in inputs is responsible for passing data!! -->
+              <!-- zmienna name w inputs odpowiada za przekawyzwanie danych -->
               <div class="form-floating">
                 <input type="email" class="form-control bg-dark text-white border-secondary" id="floatingInput" name="email_input_login" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>
@@ -65,7 +65,7 @@
               <p class="mt-5 mb-3 text-white text-center border-bottom border-secondary pb-2">Don't have an account?</p>
               <a class="btn btn-success w-100 py-2" type="submit" href="{{ url_for('register') }} ">Sign up</a>
             </form>
-        </div>    
+        </div>
     </div>
 
 </div>
