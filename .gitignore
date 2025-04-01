@@ -1,1 +1,6 @@
 /flaskEnv
+
+
+app/__pycache__/
+
+tests/autentification_logic/__pycache__/
