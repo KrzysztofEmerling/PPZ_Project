@@ -42,26 +42,27 @@
 <div class="container pb-3 text-white">
     <div class="d-grid justify-content-center align-items-center" style="grid-template-columns:  0.25fr;">
         <div class="form-signin w-100 m-auto mt-3">
-            <form>
+            <form action="{{ url_for('handle_register') }}" method="POST">
                 <h1 class="h3 mb-3 fw-normal">Create an account</h1>
             
+                <!-- name variable in inputs is responsible for passing data!! -->
                 <div class="form-floating">
-                    <input type="email" class="form-control bg-dark text-white border-secondary" id="floatingInput" placeholder="name@example.com">
+                    <input type="email" class="form-control bg-dark text-white border-secondary" id="floatingInput" name="email_input_reg" placeholder="name@example.com">
                     <label for="floatingInput">Email address</label>
                 </div>
 
                 <div class="form-floating">
-                    <input type="text" class="form-control bg-dark text-white border-secondary mt-1" id="floatingPassword" placeholder="Username">
+                    <input type="text" class="form-control bg-dark text-white border-secondary mt-1" id="floatingPassword" name="username_input_reg" placeholder="Username">
                     <label for="floatingPassword">Username</label>
                 </div>
 
                 <div class="form-floating">
-                    <input type="password" class="form-control bg-dark text-white border-secondary mt-1" id="floatingInput" placeholder="Password">
+                    <input type="password" class="form-control bg-dark text-white border-secondary mt-1" id="floatingInput" name="password_input_reg" placeholder="Password">
                     <label for="floatingInput">Password</label>
                 </div>
 
                 <div class="form-floating">
-                    <input type="password" class="form-control bg-dark text-white border-secondary mt-1" id="floatingInput" placeholder="Confirm Password">
+                    <input type="password" class="form-control bg-dark text-white border-secondary mt-1" id="floatingInput" name="confirm_password_input_reg" placeholder="Confirm Password">
                     <label for="floatingInput">Confirm Password</label>
                 </div>
 
