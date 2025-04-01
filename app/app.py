@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect, text
 # import os
 from models import User, Admin, GameResult, db
-
+from datetime import datetime, timezone #do testowego uzytkownika
 app = f.Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -114,11 +114,40 @@ def show_tables():
     users = User.query.all()
     result = "<h2>Lista użytkowników</h2><ul>"
     for user in users:
-        result += f"<li>ID: {user.id}, Username: {user.username}, Email: {user.email}</li>"
+        result += f"<li>ID: {user.user_id}, Username: {user.username}, Email: {user.email}</li>"
     result += "</ul>"
     return result
+
+@app.route('/delete_user', methods=['POST'])
+def delete_user():
+    user_id = f.session.get("user_id")
+    if not user_id:
+        return "Nie jesteś zalogowany"
+
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        f.session.clear()
+        return f.redirect(f.url_for('home'))  
+    return "Użytkownik nie istnieje"
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all() 
+        #testowy uzytkownik
+        existing_user = User.query.filter_by(username='testuser').first()
+        if not existing_user:
+            test_user = User(
+                username='testuser',
+                password='test123', 
+                email='test@gmail.com',
+                registration_date=datetime.now(timezone.utc)
+            )
+            db.session.add(test_user)
+            db.session.commit()
+            print("Testowy użytkownik został dodany.")
+        else:
+            print("Testowy użytkownik już istnieje.")
+
     app.run(debug=True)
