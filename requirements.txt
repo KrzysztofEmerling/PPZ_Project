@@ -1,3 +1,6 @@
 flask
 flask_sqlalchemy
 sqlalchemy
+
+selenium
+webdriver-manager
