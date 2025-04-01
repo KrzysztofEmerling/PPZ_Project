@@ -55,9 +55,11 @@
             <div class="d-grid gap-3 mt-3 mb-3 ms-3 me-3" style="grid-template-columns: 0.5fr 2.5fr;">
                 <div class="bg-dark border-end border-secondary p-3">
                     <ul class="nav flex-column text-center">
-						<li class="nav-item">
-							<a class="nav-link active custom-link" href="{{ url_for('user') }}"><i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile</a>
-						</li>
+                        <form action="{{ url_for('myprof_from_index') }}" method="POST">
+                            <a class="nav-link active custom-link" href="#" onclick="this.closest('form').submit();">
+                                <i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile
+                            </a>
+                        </form>
 						<li class="nav-item">
 							<a class="nav-link custom-link" href="#"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
 						</li>

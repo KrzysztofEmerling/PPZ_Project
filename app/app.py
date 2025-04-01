@@ -5,6 +5,8 @@ from sqlalchemy import inspect, text
 from models import User, Admin, GameResult, db
 from datetime import datetime, timezone #do testowego uzytkownika
 
+#name app routes accordingly, not random bs
+
 app = f.Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -30,6 +32,14 @@ def login():
 @app.route('/register')
 def register():
     return f.render_template('register.html')
+
+@app.route('/user_panel', methods=['POST'])
+def myprof_from_index():
+    if f.session["email"] and f.session["password"]:
+        return f.render_template('user.html')
+    else:
+        #has to be handled better
+        return "You are not logged in"
 
 @app.route('/handle_login', methods=['POST'])
 def handle_login():
