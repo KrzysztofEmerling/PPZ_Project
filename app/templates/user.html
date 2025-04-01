@@ -24,11 +24,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('login') }}" role="button">
-                        Log out
-                    </a>
-                </li>
+				<form action="{{ url_for('handle_logout') }}" method="POST">
+					<li class="nav-item">
+						<button class="btn btn-outline-light me-2 d-inline-flex align-items-center" type="submit">
+							Log out
+						</button>
+					</li>
+				</form>
                 <li class="nav-item dropdown">
                     <a class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Language
