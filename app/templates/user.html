@@ -81,9 +81,12 @@
 									<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary mb-5">
 										<strong>Member since:</strong> <span>2021</span>
 									</div>
-									<button class="btn btn-outline-danger">Delete My Account</button>
-									<a href="{{ url_for('edit_user') }}" class="btn btn-primary float-end">Edit Profile</a>
-
+									<div class="d-flex justify-content-between">
+										<form action="{{ url_for('delete_user') }}" method="post">
+											<button type="submit" class="btn btn-outline-danger">Delete My Account</button>
+										</form>
+										<a href="#" class="btn btn-primary">Edit Profile</a>
+									</div>									
 								</div>
 							</div>
 						</div>
