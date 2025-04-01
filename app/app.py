@@ -14,6 +14,14 @@ db.init_app(app)
 def home():
     return f.render_template('index.html')
 
+@app.route('/my_profile')
+def user():
+    return f.render_template('user.html')
+
+@app.route('/edit')
+def edit_user():
+    return f.render_template('edit_user.html')
+
 @app.route('/login')
 def login():
     return f.render_template('login.html')
