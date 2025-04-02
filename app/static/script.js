@@ -11,6 +11,7 @@ function selection(){
         }
     }
 }
+
 function create(){
     for (let row = 1; row <= 9; row++) {
         document.write('<tr>');
@@ -22,3 +23,12 @@ function create(){
     }
 }
 
+function closeAlert() {
+    setTimeout(function() {
+        const alertElement = document.getElementById('alert');
+        if (alertElement) {
+            alertElement.classList.remove('show');
+            alertElement.classList.add('fade');
+        }
+    }, 5000);
+}
