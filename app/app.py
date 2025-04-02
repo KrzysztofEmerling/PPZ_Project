@@ -19,7 +19,7 @@ def home():
 
 @app.route('/my_profile')
 def user():
-    return f.render_template('user.html')
+    return f.render_template('user.html', logged_user_data = f.session)
 
 @app.route('/edit')
 def edit_user():
@@ -46,8 +46,8 @@ def register():
 
 @app.route('/user_panel', methods=['POST'])
 def myprof_from_index():
-    if "email" in f.session and "password" in f.session["password"]:
-        return f.render_template('user.html')
+    if "email" in f.session and "password" in f.session:
+        return f.render_template('user.html', logged_user_data = f.session)
     else:
         #has to be handled better
         return "You are not logged in"
@@ -57,17 +57,26 @@ def handle_login():
     email_input_login = f.request.form.get('email_input_login')
     password_input_login = f.request.form.get('password_input_login')
 
-    # print(email_input_login, password_input_login)
-
+    email_exists = User.query.filter_by(email=email_input_login).first()
     user_exists = User.query.filter_by(email=email_input_login, password=password_input_login).first()
-    if not user_exists:
+    if not email_exists:
         #has to be handled better
-        return "User doesn't exist in database"
+        return "Email doesn't exist in database"
+    elif not user_exists:
+        #has to be handled better
+        return "Wrong password"
     else:
+        user = db.session.query(User).filter_by(email=email_input_login, password = password_input_login).first()
         f.session["email"] = email_input_login
         f.session["password"] = password_input_login
-        #maybe is handled alright
-        return f.render_template('user.html')
+        f.session["username"] = user.username
+        f.session["user_id"] = user.user_id
+        f.session["registration_date"] = user.registration_date
+        # for key in f.session.keys():
+        #     print(key)
+        
+        #maybe this is handled alright(?)
+        return f.render_template('user.html', logged_user_data = f.session)
 
 
 @app.route('/handle_register', methods=['POST'])
@@ -77,8 +86,6 @@ def handle_register():
     password_input_reg = f.request.form.get('password_input_reg')
     confirm_password_input_reg = f.request.form.get('confirm_password_input_reg')
     terms_conditions_input_reg = f.request.form.get('terms_conditions_input_reg')
-    # print("terms: ", terms_conditions_input_reg)
-    # print(email_input_reg, username_input_reg, password_input_reg, confirm_password_input_reg)
 
     if not terms_conditions_input_reg:
         #has to be handled better
@@ -98,14 +105,12 @@ def handle_register():
         #has to be handled better
         return "Username already exists"
     
-    #if user can be added
+    #if user can be added - add user
     user = User(email=email_input_reg, username=username_input_reg, password=password_input_reg)
     db.session.add(user)
     db.session.commit()
     
     return f.render_template('login.html')
-
-    # return "Stuff" #stuff shown on site handle_register. Should it put user to login page?
 
 @app.route('/edit', methods=['POST'])
 def edit():
@@ -116,11 +121,6 @@ def edit():
     newpassword_edit = f.request.form.get('newpassword_edit')
     confirmpassword_edit = f.request.form.get('confirmpassword_edit')
 
-    # print(username_edit, email_edit, oldpassword_edit, newpassword_edit, confirmpassword_edit)
-    # print("Session email: ", f.session["email"])
-
-
-    # username_exists = db.session.query(User).filter_by(username=username_edit).first()
     user = db.session.query(User).filter_by(email=f.session["email"]).first()
     if user:
         current_email = user.email
@@ -158,15 +158,11 @@ def edit():
         #this is a shadow realm. If user is here, something got fucked up
         print("No user")
 
-    return f.render_template('user.html')
+    return f.render_template('user.html', logged_user_data = f.session)
 
 @app.route('/handle_logout', methods=['POST'])
-#needs work but works
 def handle_logout():
-    f.session["email"]
-    f.session["password"]
     f.session.clear()
-    # print("I'm written in python!!!!!!!!!!!!!!!!")
     return f.render_template('login.html')
 
 @app.route('/debug')
@@ -180,7 +176,7 @@ def show_tables():
 
 @app.route('/delete_user', methods=['POST'])
 def delete_user():
-    user_id = f.session.get("user_id")
+    user_id = f.session["email"]
     if not user_id:
         return "Nie jesteś zalogowany"
 
