@@ -227,7 +227,6 @@ def TestUserWalidation():
         pass_all_registration = False
         print("✖ Test 8:")
         print(f"Sprawdzenie poprawności hasła (białe hasło):\n{e}")
-
     print("\n")
 
     #Niezgodne hasła
