@@ -8,6 +8,7 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.firefox import GeckoDriverManager
 
+from utils.Assersions import Assersion
 
 # Konfiguracja Selenium
 options = Options()
@@ -15,49 +16,6 @@ options.headless = True
 gecko_driver_path = GeckoDriverManager().install()
 service = Service(gecko_driver_path)
 driver = webdriver.Firefox(service=service, options=options)
-
-class Assersion:
-    def __init__(self, driver, assersion_type, expected_message):
-        self.driver = driver
-        self.assersion_type = assersion_type
-        self.expected_message = expected_message
-
-    def assert_result(self):
-        if self.assersion_type == "popup":
-            return self._assert_alert()
-        elif self.assersion_type == "body":
-            return self._assert_text_in_body()
-        elif self.assersion_type == "url":
-            return self._assert_url()
-        else:
-            raise ValueError(f"Nieznany typ asercji: {self.assersion_type}")
-
-    def _assert_alert(self):
-
-        alerts = self.driver.find_elements(By.CLASS_NAME, "alert")
-        if not alerts:
-            raise AssertionError("❌ Nie znaleziono elementu z klasą 'alert' (flash).")
-
-        print("uzyskane:")
-        for alert in alerts:
-            print(f"\t{alert.text}")
-            if self.expected_message in alert.text:
-                print("✅ Flash zawiera oczekiwany tekst.")
-                return True
-        raise AssertionError(f"❌ Flash nie zawiera oczekiwanego tekstu: {self.expected_message}")
-
-
-    def _assert_text_in_body(self):
-        body_text = self.driver.find_element(By.TAG_NAME, "body").text
-        assert self.expected_message in body_text, f"❌ Tekst '{self.expected_message}' nie został znaleziony w treści strony."
-        print("✅ Tekst został znaleziony w treści strony.")
-        return True
-
-    def _assert_url(self):
-        current_url = self.driver.current_url
-        assert self.expected_message in current_url, f"❌ Adres URL '{current_url}' nie jest zgodny z oczekiwanym '{self.expected_message}'."
-        print("✅ Adres URL jest zgodny z oczekiwanym.")
-        return True
 
 def test_registration(email, username, password, comfirm_password, accept_terms, Asseresions):
     driver.get("http://127.0.0.1:5000/register") 
@@ -68,7 +26,7 @@ def test_registration(email, username, password, comfirm_password, accept_terms,
     username_input = driver.find_element(By.NAME, "username_input_reg")
     password_input = driver.find_element(By.NAME, "password_input_reg")
     password_confirm_input = driver.find_element(By.NAME, "confirm_password_input_reg")
-    checkbox =  driver.find_element(By.NAME, "terms_conditions_input_reg")
+    checkbox =  driver.find_element(By.ID, "flexCheckDefault")
 
     registration_button = driver.find_element(By.XPATH, "//button[text()='Sign up']")
     
@@ -127,7 +85,7 @@ def TestUserWalidation():
     
     try:
         test_registration("testuser@example.co", "TestUser", "TestPassword123", "TestPassword123", True, 
-        [Assersion(driver, "popup", " Registration successed! "),
+        [Assersion(driver, "popup", "Register successed. You can log in."),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
 
