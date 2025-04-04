@@ -12,7 +12,7 @@ utworzenie flaskEnv z pliku requirements.txt:
 python3 -m venv flaskEnv
 ./flaskEnv/bin/activate           (Unix)
 flaskEnv\Scripts\activate         (Windows)
-source /flaskEnv/bin/activate     (MacOS)
+source flaskEnv/bin/activate     (MacOS)
 pip install -r requirements.txt
 ~~~
 

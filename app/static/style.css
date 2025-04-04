@@ -54,3 +54,12 @@ body {
 .sudoku-table td:nth-child(3n) {
     border-right: 3px solid blue;
 }
+
+.fixed-alert{
+    position: fixed;
+    top: 75%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+}
+    

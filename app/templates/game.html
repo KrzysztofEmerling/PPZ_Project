@@ -26,12 +26,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('login') }} " role="button">
+                    <a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('routes.login') }} " role="button">
                         Log in
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-success me-2 d-inline-flex align-items-center" href="{{ url_for('register') }} " role="button">
+                    <a class="btn btn-success me-2 d-inline-flex align-items-center" href="{{ url_for('routes.register') }} " role="button">
                         Sign up
                     </a>
                 </li>
@@ -57,7 +57,7 @@
                 <div class="bg-dark border-end border-secondary p-3">
                     <ul class="nav flex-column text-center">
 						<li class="nav-item">
-							<a class="nav-link active custom-link" href="{{ url_for('user') }}"><i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile</a>
+							<a class="nav-link active custom-link" href="{{ url_for('routes.user') }}"><i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link custom-link" href="#"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
