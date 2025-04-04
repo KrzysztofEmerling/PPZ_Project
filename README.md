@@ -23,8 +23,8 @@ git clone https://github.com/grantm/sudoku-exchange-puzzle-bank.git
 
 Uruchomienie aplikacji:
 ~~~
-python3 ./app/app.py	(Unix)
-python app\app.py		(Windows)
+python3 ./app/app.py    (Unix)
+python app\app.py       (Windows)
 ~~~
 
 ## Opis Projektu
