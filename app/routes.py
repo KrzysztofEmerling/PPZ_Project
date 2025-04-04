@@ -23,6 +23,22 @@ def login():
 @routes.route('/register')
 def register():
     return f.render_template('register.html')
+    
+@routes.route('/admin_panel')
+def admin_panel():
+    return f.render_template('admin.html')
+
+@routes.route('/statistics')
+def stats():
+    return f.render_template('stats.html')
+    
+@routes.route('/my_games')
+def history():
+    return f.render_template('history.html')
+    
+@routes.route('/ranking')
+def ranking():
+    return f.render_template('ranking.html')
 
 # NOT YET IMPLEMENTED - printing correct data in user panel
 # @app.route('/user_data')
@@ -182,7 +198,3 @@ def delete_user():
         return f.redirect(f.url_for('home'))  
     
     return "Użytkownik nie istnieje"
-
-@routes.route('/admin_panel')
-def admin_panel():
-    return f.render_template('admin.html')
