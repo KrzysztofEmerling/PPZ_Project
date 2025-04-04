@@ -82,22 +82,22 @@ def handle_register():
     terms_conditions_input_reg = f.request.form.get('terms_conditions_input_reg')
 
     if not terms_conditions_input_reg:
-        #has to be handled better
-        return "You have to accept the terms and conditions"
+        f.flash("You have to accept the terms and conditions", "warning")
+        return f.render_template('register.html')
 
     if password_input_reg != confirm_password_input_reg:
-        #has to be handled better
-        return "Passwords don't match"
+        f.flash("Passwords don't match", "warning")
+        return f.render_template('register.html')
     
     email_exists = db.session.query(User).filter_by(email=email_input_reg).first()
     if email_exists:
-        #has to be handled better
-        return "Email already exists"
+        f.flash("Email already exists", "warning")
+        return f.render_template('register.html')
     
     username_exists = db.session.query(User).filter_by(username=username_input_reg).first()
     if username_exists:
-        #has to be handled better
-        return "Username already exists"
+        f.flash("Username already exists", "warning")
+        return f.render_template('register.html')
     
     #if user can be added - add user
     user = User(email=email_input_reg, username=username_input_reg, password=password_input_reg)
