@@ -17,3 +17,49 @@
 .custom-link:hover{
 	color: #c2c2c2;
 }
+
+body {
+    background-color: #222;
+}
+
+.sudoku-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sudoku-table {
+    border-collapse: collapse;
+}
+
+.sudoku-table td {
+    border: 1px solid #aaa;
+    padding: 0;
+}
+
+.sudoku-cell {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: none;
+    outline: none;
+    background-color: white;
+}
+
+/* Grube niebieskie linie co 3x3 */
+.sudoku-table tr:nth-child(3n) td {
+    border-bottom: 3px solid blue;
+}
+.sudoku-table td:nth-child(3n) {
+    border-right: 3px solid blue;
+}
+
+.fixed-alert{
+    position: fixed;
+    top: 75%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+}
+    

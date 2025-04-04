@@ -103,6 +103,7 @@ def handle_register():
     user = User(email=email_input_reg, username=username_input_reg, password=password_input_reg)
     db.session.add(user)
     db.session.commit()
+    
     f.flash("Register successed. You can log in.", "success")
     return f.render_template('login.html')
 
