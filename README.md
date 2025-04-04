@@ -12,7 +12,7 @@ utworzenie flaskEnv z pliku requirements.txt:
 python3 -m venv flaskEnv
 ./flaskEnv/bin/activate           (Unix)
 flaskEnv\Scripts\activate         (Windows)
-source /flaskEnv/bin/activate     (MacOS)
+source flaskEnv/bin/activate      (MacOS)
 pip install -r requirements.txt
 ~~~
 
@@ -68,8 +68,8 @@ Baza Danych: SQLAlchemy
 │   │   ├── game.html
 │   │   ├── history.html
 │   │   ├── admin.html
-│	│	├── user.html
-│	│	└── edit_user.html
+│   │   ├── user.html
+│   │   └── edit_user.html
 │   ├── /vendor
 │   │   └── /sudoku-exchange-puzzle-bank
 │   ├── models.py
