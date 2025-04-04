@@ -25,6 +25,7 @@ class GameResult(db.Model):
     difficulty = db.Column(db.String(10), nullable = False)
     user = db.relationship("User", backref=db.backref("games", lazy=True))
 
+
 def init_db(app):
     with app.app_context():
        db.create_all()

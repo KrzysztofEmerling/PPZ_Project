@@ -1,7 +1,11 @@
 /flaskEnv
 
-instance/database.db
+app/__pycache__/models.cpython-312.pyc
 
 app/__pycache__/
 
+instance/
+
 tests/autentification_logic/__pycache__/
+
+tests/utils/__pycache__/
