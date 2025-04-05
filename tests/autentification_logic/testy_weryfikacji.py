@@ -8,74 +8,9 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.firefox import GeckoDriverManager
 
-from utils.Assersions import Assersion
+from utils.Utils import *
 
-# Konfiguracja Selenium
-options = Options()
-options.headless = True
-gecko_driver_path = GeckoDriverManager().install()
-service = Service(gecko_driver_path)
-driver = webdriver.Firefox(service=service, options=options)
-
-def test_registration(email, username, password, comfirm_password, accept_terms, Asseresions):
-    driver.get("http://127.0.0.1:5000/register") 
-
-    email_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "email_input_reg"))
-    )
-    username_input = driver.find_element(By.NAME, "username_input_reg")
-    password_input = driver.find_element(By.NAME, "password_input_reg")
-    password_confirm_input = driver.find_element(By.NAME, "confirm_password_input_reg")
-    checkbox =  driver.find_element(By.ID, "flexCheckDefault")
-
-    registration_button = driver.find_element(By.XPATH, "//button[text()='Sign up']")
-    
-    # Wpisanie danych
-    email_input.clear()
-    username_input.clear()
-    password_input.clear()
-    password_confirm_input.clear()
-
-    email_input.send_keys(email)
-    username_input.send_keys(username)
-    password_input.send_keys(password)
-    password_confirm_input.send_keys(comfirm_password)
-    if(accept_terms):
-        checkbox.click()
-
-    registration_button.click()
-
-    
-    # Oczekiwanie na nową stronę
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
-    for Asseresion in Asseresions:
-        Asseresion.assert_result()
-
-def test_login(email, password, Asseresions):
-    driver.get("http://127.0.0.1:5000/login") 
-
-    email_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "email_input_login"))
-    )
-    password_input = driver.find_element(By.NAME, "password_input_login")
-
-    login_button = driver.find_element(By.XPATH, "//button[text()='Log in']")
-    
-    # Wpisanie danych
-    email_input.clear()
-    password_input.clear()
-
-    email_input.send_keys(email)
-    password_input.send_keys(password)
-    login_button.click()
-    
-
-    # Oczekiwanie na nową stronę
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
-    for Asseresion in Asseresions:
-        Asseresion.assert_result()
-
-def TestUserWalidation():
+def TestUserWalidation(driver):
     pass_all_registration = True
     created_test_user = False
 
@@ -84,7 +19,7 @@ def TestUserWalidation():
     #Prawidłowa rejestracja
     
     try:
-        test_registration("testuser@example.co", "TestUser", "TestPassword123", "TestPassword123", True, 
+        test_registration(driver, "testuser@example.co", "TestUser", "TestPassword123", "TestPassword123", True, 
         [Assersion(driver, "popup", "Register successed. You can log in."),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -99,7 +34,7 @@ def TestUserWalidation():
 
     #Podwójna rejestracja tego samego użytkownika
     try:
-        test_registration("testuser@example.co", "TestUser", "TestPassword123", "TestPassword123", True, 
+        test_registration(driver, "testuser@example.co", "TestUser", "TestPassword123", "TestPassword123", True, 
         [Assersion(driver, "popup", "Email already exists"),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -112,7 +47,7 @@ def TestUserWalidation():
 
     #Sprawdzenie niezaakceptowanego regulaminu
     try:
-        test_registration("testuser1@example.co", "TestUser1", "TestPassword123", "TestPassword123", False, 
+        test_registration(driver, "testuser1@example.co", "TestUser1", "TestPassword123", "TestPassword123", False, 
         [Assersion(driver, "popup", "You have to accept the terms and conditions"),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -125,8 +60,8 @@ def TestUserWalidation():
 
     #Pusty adres e-mail
     try:
-        test_registration("", "TestUser2", "TestPassword123", "TestPassword123", True, 
-        [Assersion(driver, "popup", " Wrong e-mail! "),
+        test_registration(driver, "", "TestUser2", "TestPassword123", "TestPassword123", True, 
+        [Assersion(driver, "popup", "Please enter Your email."),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
         print("✔ Test 4:")
@@ -138,7 +73,7 @@ def TestUserWalidation():
 
     # Bledny e-mail
     try:
-        test_registration("alan", "TestUser3", "TestPassword123", "TestPassword123", True, 
+        test_registration(driver, "alan", "TestUser3", "TestPassword123", "TestPassword123", True, 
         [Assersion(driver, "popup", " Wrong e-mail! "),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -151,8 +86,8 @@ def TestUserWalidation():
 
     #Pusta nazwa użytkownika
     try:
-        test_registration("testuser4@example.co", "", "TestPassword123", "TestPassword123", True, 
-        [Assersion(driver, "popup", " Wrong username "),
+        test_registration(driver, "testuser4@example.co", "", "TestPassword123", "TestPassword123", True, 
+        [Assersion(driver, "popup", "Please enter a username."),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
         print("✔ Test 6:")
@@ -164,8 +99,8 @@ def TestUserWalidation():
 
     #Puste hasło
     try:
-        test_registration("testuser5@example.co", "TestUser5", "", "", True, 
-        [Assersion(driver, "popup", " Wrong passwoard! "),
+        test_registration(driver, "testuser5@example.co", "TestUser5", "", "", True, 
+        [Assersion(driver, "popup", "Please enter a password."),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
         print("✔ Test 7:")
@@ -176,8 +111,8 @@ def TestUserWalidation():
     print("\n")
 
     try:
-        test_registration("testuser6@example.co", "TestUser6", "               ", "               ", True, 
-        [Assersion(driver, "popup", " Wrong passwoard! "),
+        test_registration(driver, "testuser6@example.co", "TestUser6", "               ", "               ", True, 
+        [Assersion(driver, "popup", "Password must not contain spaces."),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
         print("✔ Test 8:")
@@ -189,7 +124,7 @@ def TestUserWalidation():
 
     #Niezgodne hasła
     try:
-        test_registration("testuser7@example.co", "TestUser7", "TestPassword123", "InneHaslo", True, 
+        test_registration(driver, "testuser7@example.co", "TestUser7", "TestPassword123", "InneHaslo", True, 
         [Assersion(driver, "popup", "Passwords don't match"),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -209,7 +144,7 @@ def TestUserWalidation():
     print("-------------------Testy logowania-------------------")
     pass_all_login = True
     try:
-        test_login("testuserrrrrrr@example.co", "TestPassword123", 
+        test_login(driver, "testuserrrrrrr@example.co", "TestPassword123", 
         [Assersion(driver, "popup", "Email doesn't exist in database!"),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")]) 
@@ -221,7 +156,7 @@ def TestUserWalidation():
     print("\n")
 
     try:
-        test_login("testuser@example.co", "TestPassword123456", 
+        test_login(driver, "testuser@example.co", "TestPassword123456", 
         [Assersion(driver, "popup", "Wrong password!"),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")]) 
@@ -233,8 +168,8 @@ def TestUserWalidation():
     print("\n")
 
     try:
-        test_login("", "TestPassword123456", 
-        [Assersion(driver, "popup", "Wrong password!"),
+        test_login(driver, "", "TestPassword123456", 
+        [Assersion(driver, "popup", "Email doesn't exist in database!"),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")])   
         print("✔ Test 3:")
@@ -245,7 +180,7 @@ def TestUserWalidation():
     print("\n")
 
     try:
-        test_login("testuser@example.co", "", 
+        test_login(driver, "testuser@example.co", "", 
         [Assersion(driver, "popup", "Wrong password!"),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")]) 
@@ -257,7 +192,7 @@ def TestUserWalidation():
     print("\n")
 
     try:
-        test_login("testuser@example.co", "TestPassword123", 
+        test_login(driver, "testuser@example.co", "TestPassword123", 
         [Assersion(driver, "popup", "Login successed!"),
          Assersion(driver, "body", "Hello, TestUser!"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")])            
@@ -270,4 +205,3 @@ def TestUserWalidation():
 
     if(pass_all_login):
         print("Wszystkie testy logowania przeszły pomyślnie!")
-    driver.quit()
