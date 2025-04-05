@@ -1,11 +1,15 @@
 import flask as f
-from models import User, db
+from models import User, db, Admin
 from datetime import datetime, timezone
 
 routes = f.Blueprint('routes', __name__)
 
 @routes.route('/')
 def home():
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    print("Zalogowany user_id:", user_id)
+    print("Czy admin:", is_admin)
     return f.render_template('index.html', logged_user_data = f.session)
 
 @routes.route('/my_profile')
@@ -26,7 +30,11 @@ def register():
     
 @routes.route('/admin_panel')
 def admin_panel():
-    return f.render_template('admin.html')
+    uid = f.session.get("user_id")
+    if not uid or not Admin.query.filter_by(user_id=uid).first():
+        return "403 Forbidden", 403
+    users = User.query.all()
+    return f.render_template('admin.html', users=users)
 
 @routes.route('/statistics')
 def stats():
@@ -77,7 +85,7 @@ def handle_login():
         #     print(key)
         
         f.flash("Login successed!", "success")
-        return f.render_template('index.html', logged_user_data = f.session)
+        return f.redirect(f.url_for('routes.home'))
 
 @routes.route('/handle_register', methods=['POST'])
 def handle_register():

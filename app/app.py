@@ -18,7 +18,7 @@ app.register_blueprint(routes)
 if __name__ == '__main__':
     with app.app_context():
         db.create_all() 
-        existing_user = User.query.filter_by(username='testuser').first() #testowy uzytkownik
+        existing_user = User.query.filter_by(username='testuser').first()
 
         if not existing_user:
             test_user = User(
