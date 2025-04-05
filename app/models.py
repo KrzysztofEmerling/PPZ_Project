@@ -23,6 +23,8 @@ class GameResult(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"))
     completion_time = db.Column(db.Integer, nullable = False)
     difficulty = db.Column(db.String(10), nullable = False)
+    date_played = db.Column(db.Date, default=datetime.utcnow().date)
+    time_finished = db.Column(db.Time, default=datetime.utcnow().time)
     user = db.relationship("User", backref=db.backref("games", lazy=True))
 
 
