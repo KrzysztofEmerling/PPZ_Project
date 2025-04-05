@@ -19,14 +19,12 @@ class Admin(db.Model):
 
 class GameResult(db.Model):
     __tablename__ = "game_results"
-    result_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"))
-    completion_time = db.Column(db.Integer, nullable = False)
-    difficulty = db.Column(db.String(10), nullable = False)
-    date_played = db.Column(db.Date, default=datetime.utcnow().date)
-    time_finished = db.Column(db.Time, default=datetime.utcnow().time)
+    result_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE")) 
+    difficulty = db.Column(db.String(10), nullable=False)
+    date_played = db.Column(db.Date, default=datetime.utcnow().date) 
+    time_finished = db.Column(db.Integer, nullable=False) 
     user = db.relationship("User", backref=db.backref("games", lazy=True))
-
 
 def init_db(app):
     with app.app_context():

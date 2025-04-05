@@ -15,24 +15,32 @@ db.init_app(app)
 
 app.register_blueprint(routes)
 
+
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all() 
-        existing_user = User.query.filter_by(username='testuser').first()
+        db.create_all()
+        Admin.query.delete()
+        User.query.delete()
+        db.session.commit()
 
-        if not existing_user:
-            test_user = User(
-                username='testuser',
-                password='test123', 
-                email='test@gmail.com',
-                registration_date=datetime.now(timezone.utc)
-            )
+        test_user = User(
+            username="testuser",
+            email="testuser@gmail.com",
+            password="user123",
+            registration_date=datetime.now(timezone.utc)
+        )
+        db.session.add(test_user)
 
-            db.session.add(test_user)
-            db.session.commit()
-            print("Testowy użytkownik został dodany.")
+        test_admin = User(
+            username="testadmin",
+            email="testadmin@gmail.com",
+            password="admin123",
+            registration_date=datetime.now(timezone.utc)
+        )
+        db.session.add(test_admin)
+        db.session.flush()
+        db.session.add(Admin(user_id=test_admin.user_id))
 
-        else:
-            print("Testowy użytkownik już istnieje.")
+        db.session.commit()
 
     app.run(debug=True)
