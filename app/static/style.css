@@ -33,7 +33,7 @@ body {
 }
 
 .sudoku-table td {
-    border: 1px solid #aaa;
+    border: 1px solid #4f4f4f;
     padding: 0;
 }
 
@@ -44,15 +44,15 @@ body {
     text-align: center;
     border: none;
     outline: none;
-    background-color: white;
+    background-color: #767676;
 }
 
 /* Grube niebieskie linie co 3x3 */
 .sudoku-table tr:nth-child(3n) td {
-    border-bottom: 3px solid blue;
+    border-bottom: 3px solid rgb(49, 49, 49);
 }
 .sudoku-table td:nth-child(3n) {
-    border-right: 3px solid blue;
+    border-right: 3px solid rgb(49, 49, 49);
 }
 
 .fixed-alert{
@@ -62,4 +62,124 @@ body {
     transform: translate(-50%, -50%);
     z-index: 1050;
 }
-    
+/* Główna siatka Sudoku */
+.sudoku-grid {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Stylizacja tabeli */
+.sudoku-table {
+    border-collapse: collapse;
+}
+
+/* Komórki w tabeli */
+.sudoku-table td {
+    padding: 0;
+    border: 1px solid #444;
+}
+
+/* Grubsze linie co 3 wiersze i kolumny */
+.sudoku-table tr:nth-child(3n) td {
+    border-bottom: 2px solid #888;
+}
+
+.sudoku-table td:nth-child(3n) {
+    border-right: 2px solid #888;
+}
+
+.sudoku-table tr:nth-child(1) td {
+    border-top: 2px solid #888;
+}
+
+.sudoku-table td:nth-child(1) {
+    border-left: 2px solid #888;
+}
+
+/* Styl pojedynczej komórki sudoku */
+.sudoku-cell {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    background-color: #1e1e1e;
+    color: white;
+}
+
+/* Styl komórki po kliknięciu */
+.sudoku-cell:focus {
+    outline: 2px solid #666;
+}
+
+/* Podświetlenie komórki */
+.highlighted {
+    background-color: #333 !important;
+}
+
+/* Komórki z tą samą liczbą */
+.same-number {
+    background-color: #555 !important;
+}
+
+/* Stylowanie podsekcji 3x3 (opcjonalne) */
+.section-3x3 {
+    background-color: #181818;
+}
+
+/* Usunięcie strzałek z inputów typu number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Styl przycisków z cyframi */
+.number-button {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+    background-color: #333;
+    color: white; /* Dodajemy jasny kolor tekstu dla kontrastu */
+}
+
+
+/* Panel z kontrolkami */
+.controls {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Przycisk z ikoną */
+.icon-button {
+    background-color: #333;
+    font-size: 1.2rem;
+    width: 48px;
+    height: 48px;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+/* Efekt hover dla przycisku z ikoną */
+.icon-button:hover {
+    background-color: #444;
+}
+
+/* Styl dla przycisków, które zostały "zużyte" */
+button.used-up {
+    background-color: #ccc;
+    color: #666;
+    pointer-events: none;
+}
