@@ -10,15 +10,19 @@ def home():
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
     print("Zalogowany user_id:", user_id)
     print("Czy admin:", is_admin)
-    return f.render_template('index.html', logged_user_data = f.session)
+    return f.render_template('index.html', logged_user_data = f.session, admin = is_admin)
 
 @routes.route('/my_profile')
 def user():
-    return f.render_template('user.html', logged_user_data = f.session)
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
 
 @routes.route('/edit')
 def edit_user():
-    return f.render_template('edit_user.html')
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    return f.render_template('edit_user.html', logged_user_data = f.session, admin = is_admin)
 
 @routes.route('/login')
 def login():
@@ -34,25 +38,32 @@ def admin_panel():
     if not uid or not Admin.query.filter_by(user_id=uid).first():
         return "403 Forbidden", 403
     users = User.query.all()
-    return f.render_template('admin.html', users=users)
+    return f.render_template('admin.html', users=users, logged_user_data = f.session)
 
 @routes.route('/statistics')
 def stats():
-    return f.render_template('stats.html')
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    return f.render_template('stats.html', logged_user_data = f.session, admin = is_admin)
     
 @routes.route('/my_games')
 def history():
-    return f.render_template('history.html')
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    return f.render_template('history.html', logged_user_data = f.session, admin = is_admin)
     
 @routes.route('/ranking')
 def ranking():
-    return f.render_template('ranking.html')
-
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    return f.render_template('ranking.html', logged_user_data = f.session, admin = is_admin)
 
 @routes.route('/user_panel', methods=['POST'])
 def myprof_from_index():
     if "email" in f.session and "password" in f.session:
-        return f.render_template('user.html', logged_user_data = f.session)
+        user_id = f.session.get("user_id")
+        is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+        return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
     
     else:
         f.flash("You are not logged in", "danger")
