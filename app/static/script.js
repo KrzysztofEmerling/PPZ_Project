@@ -149,6 +149,77 @@ function highlightRelatedCells(cellId) {
         });
     }
 }
+// Funkcja pobierająca losowy numer planszy dla danego poziomu
+function getRandomIndex(max) {
+    return Math.floor(Math.random() * max) + 1; // od 1 do max
+}
+
+// Funkcja pobierająca i przetwarzająca planszę z pliku txt
+async function getPuzzle(name) {
+    const numberOfPuzzles = 3; // zmień jeśli masz więcej plansz
+    const randomIndex = getRandomIndex(numberOfPuzzles);
+    const fileName = `${name}-${randomIndex}.txt`;
+
+    try {
+        const response = await fetch(`Pulpit/${easy50.txt}`);
+        if (!response.ok) throw new Error("Nie udało się pobrać planszy.");
+
+        const text = await response.text();
+        const rows = text.trim().split("\n");
+        const puzzle = rows.map(row => row.split(",").map(Number));
+
+        // Walidacja planszy (czy to 9x9)
+        if (
+            puzzle.length !== 9 ||
+            puzzle.some(row => row.length !== 9 || row.some(n => isNaN(n)))
+        ) {
+            throw new Error("Nieprawidłowy format planszy.");
+        }
+
+        return puzzle;
+
+    } catch (err) {
+        console.error("Błąd ładowania planszy:", err);
+        return null;
+    }
+}
+
+// Główna funkcja po kliknięciu guzika trudności
+async function startGame(difficulty) {
+    const container = document.getElementById("game-container");
+    container.classList.remove("d-none");
+
+    // Wyświetl info o ładowaniu
+    const boardArea = document.getElementById("sudoku-table");
+    boardArea.innerHTML = `<tr><td colspan="9" class="text-white text-center">Wczytywanie planszy...</td></tr>`;
+
+    const puzzle = await getPuzzle(difficulty);
+    if (puzzle) {
+        createBoard(puzzle);
+    } else {
+        boardArea.innerHTML = `<tr><td colspan="9" class="text-danger text-center">Błąd wczytywania planszy.</td></tr>`;
+    }
+}
+
+// Przykładowa funkcja generowania planszy 9x9
+function createBoard(board) {
+    const table = document.getElementById("sudoku-table");
+    table.innerHTML = ""; // wyczyść poprzednią planszę
+
+    board.forEach((row, rowIndex) => {
+        const tr = document.createElement("tr");
+        row.forEach((cell, colIndex) => {
+            const td = document.createElement("td");
+            td.textContent = cell === 0 ? "" : cell;
+            td.classList.add("sudoku-cell");
+            td.dataset.row = rowIndex;
+            td.dataset.col = colIndex;
+            tr.appendChild(td);
+        });
+        table.appendChild(tr);
+    });
+}
+
 
 
 

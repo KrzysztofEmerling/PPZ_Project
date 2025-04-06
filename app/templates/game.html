@@ -74,23 +74,30 @@
                 
                 <div class="bg-dark">
                     <h2 class="border-bottom border-secondary p-2 text-center">Start new game</h2>
-					<div class="d-flex gap-2 m-3 mt-4">
-						<button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button">
-								<i class="bi bi-emoji-smile-fill"></i> Easy
-						</button>
-						<button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button">
-								<i class="bi bi-emoji-neutral-fill"></i> Intermediate
-						</button>
-						<button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button">
-								<i class="bi bi-emoji-angry-fill"></i> Hard
-						</button>
-						<button class="btn btn-lg btn-outline-secondary flex-fill" type="button">
-								<i class="bi bi-emoji-dizzy-fill"></i> Expert
-						</button>
-					</div>
-                    <!--pole gry-->
+                    <div class="d-flex gap-2 m-3 mt-4">
+                        <button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button" onclick="startGame('easy')">
+                            <i class="bi bi-emoji-smile-fill"></i> Easy
+                        </button>
+                        <button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button" onclick="startGame('medium')">
+                            <i class="bi bi-emoji-neutral-fill"></i> Intermediate
+                        </button>
+                        <button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button" onclick="startGame('hard')">
+                            <i class="bi bi-emoji-angry-fill"></i> Hard
+                        </button>
+                        <button class="btn btn-lg btn-outline-secondary flex-fill" type="button" onclick="startGame('expert')">
+                            <i class="bi bi-emoji-dizzy-fill"></i> Expert
+                        </button>
+                    </div>
+                    <script>
+                        getRandomIndex();
+                        getPuzzle();
+                        startGame();createBoard();
+                        
+                    </script>
+                    
                     <!-- pole gry -->
-                    <div class="container d-flex flex-column align-items-center pb-5">
+                    <div id="game-container" class="container d-flex flex-column align-items-center pb-5 d-none">
+
                         <h2 class="text-white mb-3">Sudoku</h2>
 
                         <!-- Przyciski wyboru liczb -->
