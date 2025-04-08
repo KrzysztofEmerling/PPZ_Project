@@ -37,8 +37,9 @@ def admin_panel():
     uid = f.session.get("user_id")
     if not uid or not Admin.query.filter_by(user_id=uid).first():
         return "403 Forbidden", 403
-    users = User.query.all()
-    return f.render_template('admin.html', users=users, logged_user_data = f.session)
+    admin_user_ids = db.session.query(Admin.user_id)
+    non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
+    return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
 
 @routes.route('/statistics')
 def stats():
@@ -284,15 +285,37 @@ def show_tables():
 
 @routes.route('/delete_user', methods=['POST'])
 def delete_user():
+    reroute = f.request.form.get("reroute")
+
     user_id = f.session["email"]
     if not user_id:
-        return "Nie jesteś zalogowany"
+        #shadow realm in end program
+        f.flash("You are not logged in.", "warning")
+        if reroute == "admin":
+            admin_user_ids = db.session.query(Admin.user_id)
+            non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
+            return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
+        elif reroute == "user":
+            return f.render_template('user.html', logged_user_data = f.session)
+        else:
+            print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
+            return f.redirect(f.url_for('home'))
 
     user = User.query.get(user_id)
     if user:
         db.session.delete(user)
         db.session.commit()
         f.session.clear()
-        return f.redirect(f.url_for('home'))  
-    
-    return "Użytkownik nie istnieje"
+        return f.redirect(f.url_for('home'))
+
+    f.flash("User does not exist.", "warning")
+
+    if reroute == "admin":
+        admin_user_ids = db.session.query(Admin.user_id)
+        non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
+        return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
+    elif reroute == "user":
+        return f.render_template('user.html', logged_user_data = f.session)
+    else:
+        print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
+        return f.redirect(f.url_for('home'))

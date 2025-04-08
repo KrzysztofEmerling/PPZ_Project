@@ -177,6 +177,7 @@
 
 							<div class="d-flex justify-content-between">
 								<form action="{{ url_for('routes.delete_user') }}" method="POST">
+									<input type="hidden" name="reroute" value="user">
 									<button type="submit" class="btn btn-outline-danger">Delete My Account</button>
 								</form>
 

@@ -1,6 +1,6 @@
 import flask as f
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import inspect, text
+# from sqlalchemy import inspect, text
 
 from datetime import datetime, timezone
 from models import User, Admin, GameResult, db

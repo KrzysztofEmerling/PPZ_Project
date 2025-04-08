@@ -106,10 +106,10 @@
 <div class="container pb-3 text-white">
 	<div class="d-grid gap-3" style="grid-template-columns: 1fr;">
 		<div class="bg-dark border border-secondary rounded-3">
-			<div class="d-grid gap-3 mt-3 mb-3 ms-3 me-3" style="grid-template-columns: 0.5fr 2.5fr;">
+            <div class="d-grid gap-3 mt-3 mb-3 ms-3 me-3" style="grid-template-columns: 0.5fr 2.5fr;">
 
 				<!-- Lewa kolumna -->
-				<div class="bg-dark border-end border-secondary p-3">
+                <div class="bg-dark border-end border-secondary p-3">
                     <ul class="nav flex-column text-center">
 
                         <form action="{{ url_for('routes.myprof_from_index') }}" method="POST">
@@ -154,37 +154,40 @@
 
 					<div class="card-body d-flex flex-column justify-content-center align-items-center">
 						<div class="w-100 m-5 overflow-auto" style="max-height:400px">
-                            
-                            <!--poniższy kod musi być wywołany w pętli by w Admin Panel pojawiali się kolejni (nowi) użytkownicy-->
-							<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary">
-                                <div class="d-flex flex-column justify-content-between w-100 p-3">
-                                    <strong>Username:</strong> 
-                                    <!--<span>{#{{ logged_user_data.username }}#}</span>-->
-                                    <span>testuser</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
-                                </div>
+                            {% for user in non_admin_users %}
+                                <!--poniższy kod musi być wywołany w pętli by w Admin Panel pojawiali się kolejni (nowi) użytkownicy-->
+                                <div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary">
+                                    <div class="d-flex flex-column justify-content-between w-100 p-3">
+                                        <strong>Username:</strong> 
+                                        <span>{{ user.username }}</span>
+                                        <!-- <span>testuser</span>  -->
+                                        <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    </div>
 
-                                <div class="d-flex flex-column justify-content-between w-100 p-3">
-                                    <strong>Email:</strong> 
-                                    <!--<span>{#{{ logged_user_data.email }}#}</span>-->
-                                    <span>test@gmail.com</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
-                                </div>
+                                    <div class="d-flex flex-column justify-content-between w-100 p-3">
+                                        <strong>Email:</strong> 
+                                        <span>{{ user.email }}</span>
+                                        <!-- <span>test@gmail.com</span>  -->
+                                        <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    </div>
 
-                                <div class="d-flex flex-column justify-content-between w-100 p-3">
-                                    <strong>Member since:</strong> 
-                                    <!--<span>{#{{ logged_user_data.registration_date }}#}</span>-->
-                                    <span>Fri, 04 Apr 2025 00:00:00 GMT</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
-                                </div>
+                                    <div class="d-flex flex-column justify-content-between w-100 p-3">
+                                        <strong>Member since:</strong> 
+                                        <span>{{ user.registration_date }}</span>
+                                        <!-- <span>Fri, 04 Apr 2025 00:00:00 GMT</span>  -->
+                                        <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    </div>
 
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <a href="{{ url_for('routes.edit_user') }}" class="btn btn-primary me-3">Edit&nbsp;User</a>
-                                    <form action="{{ url_for('routes.delete_user') }}" method="POST">
-                                        <button type="submit" class="btn btn-outline-danger">Delete&nbsp;User</button>
-                                    </form>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{{ url_for('routes.edit_user') }}" class="btn btn-primary me-3">Edit&nbsp;User</a>
+                                        <form action="{{ url_for('routes.delete_user') }}" method="POST">
+                                            <input type="hidden" name="reroute" value="admin">
+                                            <button type="submit" class="btn btn-outline-danger">Delete&nbsp;User</button>
+                                        </form>
+                                    </div>
                                 </div>
-                                
-							</div>
-                            <!--W pętli aż dotąd-->    
-
+                                <!--W pętli aż dotąd-->    
+                            {% endfor %}
 						</div>
 
 					</div>
