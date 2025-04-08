@@ -286,11 +286,49 @@ def show_tables():
 @routes.route('/delete_user', methods=['POST'])
 def delete_user():
     reroute = f.request.form.get("reroute")
+    del_user_id = f.request.form.get("del_user_id")
+    print(del_user_id)
 
-    user_id = f.session["email"]
-    if not user_id:
-        #shadow realm in end program
-        f.flash("You are not logged in.", "warning")
+
+
+    # user_id = f.session["email"]
+    # if not user_id:
+    #     #shadow realm in end program
+    #     f.flash("You are not logged in.", "warning")
+    #     if reroute == "admin":
+    #         admin_user_ids = db.session.query(Admin.user_id)
+    #         non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
+    #         return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
+    #     elif reroute == "user":
+    #         return f.render_template('user.html', logged_user_data = f.session)
+    #     else:
+    #         print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
+    #         return f.redirect(f.url_for('home'))
+
+    user = User.query.get(del_user_id)
+    #diff for admin, diff for useruser, diff for useradmin
+    if user:
+        print("deleting user with id: ", del_user_id)
+        print("user: ", user.username)
+
+        if reroute == "admin":
+            db.session.delete(user)
+            db.session.commit()
+            # f.session.clear()
+            admin_user_ids = db.session.query(Admin.user_id)
+            non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
+            return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
+        elif reroute == "user":
+            db.session.delete(user)
+            db.session.commit()
+            f.session.clear()
+            return f.redirect(f.url_for('routes.home'))
+    else:
+        #shadow realm, but handled with care and love. Quoting Donald Knuth:
+        #"A well-written program should fail gracefully."
+        print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - NO USER")
+        f.flash("User does not exist.", "warning")
+
         if reroute == "admin":
             admin_user_ids = db.session.query(Admin.user_id)
             non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
@@ -299,23 +337,4 @@ def delete_user():
             return f.render_template('user.html', logged_user_data = f.session)
         else:
             print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
-            return f.redirect(f.url_for('home'))
-
-    user = User.query.get(user_id)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-        f.session.clear()
-        return f.redirect(f.url_for('home'))
-
-    f.flash("User does not exist.", "warning")
-
-    if reroute == "admin":
-        admin_user_ids = db.session.query(Admin.user_id)
-        non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
-        return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
-    elif reroute == "user":
-        return f.render_template('user.html', logged_user_data = f.session)
-    else:
-        print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
-        return f.redirect(f.url_for('home'))
+            return f.redirect(f.url_for('routes.home'))
