@@ -166,6 +166,8 @@
 						<div class="card-body d-flex flex-column justify-content-center align-items-center">
 							<div class="w-50 ms-5 me-5 mb-5">
 								<form action="{{ url_for('routes.edit') }}" method="POST">
+									<input type="hidden" name="reroute" value="{{ reroute }}">
+									<input type="hidden" name="edit_user_id" value="{{ edit_user_id }}">
 
 									<!-- Username -->
 									<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary align-items-center">
@@ -178,12 +180,16 @@
 										<strong>Email:</strong>
 										<input type="email" class="form-control bg-dark text-white border-secondary w-50" name="email_edit" value="">
 									</div>
+
+									{% if reroute == "user" %}
 					
-									<!-- Stare haslo -->
-									<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary align-items-center">
-										<strong>Old password:</strong>
-										<input type="password" class="form-control bg-dark text-white border-secondary w-50" name="oldpassword_edit" value="">
-									</div>
+										<!-- Stare haslo -->
+										<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary align-items-center">
+											<strong>Old password:</strong>
+											<input type="password" class="form-control bg-dark text-white border-secondary w-50" name="oldpassword_edit" value="">
+										</div>
+
+									{% endif %}
 					
 									<!-- Nowe haslo -->
 									<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary align-items-center">
@@ -199,7 +205,6 @@
 					
 									<!-- Przycisk zapisu zmian -->
 									<button type="submit" class="btn btn-primary float-end">Save Changes</button>
-									
 								</form>
 							</div>
 						</div>

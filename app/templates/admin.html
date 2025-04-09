@@ -179,7 +179,13 @@
                                     </div>
 
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <a href="{{ url_for('routes.edit_user') }}" class="btn btn-primary me-3">Edit&nbsp;User</a>
+
+                                        <form action="{{ url_for('routes.edit_user') }}" method="POST">
+                                            <input type="hidden" name="reroute" value="admin">
+                                            <input type="hidden" name="edit_user_id" value="{{ user.user_id }}">
+                                            <button type="submit" class="btn btn-primary">Edit&nbsp;User</button>
+                                        </form>
+                                        <!-- <a href="{{ url_for('routes.edit_user') }}" class="btn btn-primary me-3">Edit&nbsp;User</a> -->
                                         <form action="{{ url_for('routes.delete_user') }}" method="POST">
                                             <input type="hidden" name="reroute" value="admin">
                                             <input type="hidden" name="del_user_id" value="{{ user.user_id }}">
