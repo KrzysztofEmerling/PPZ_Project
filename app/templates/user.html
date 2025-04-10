@@ -67,15 +67,30 @@
 		<!-- Przyciski nawigacji -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-				<form action="{{ url_for('routes.handle_logout') }}" method="POST">
 
-					<li class="nav-item">
-						<button class="btn btn-outline-light me-2 d-inline-flex align-items-center" type="submit">
-							Log out
-						</button>
-					</li>
+				<div class="d-flex justify-content-center align-items-center">
 
-				</form>
+					<span class="text-white me-2">Hello, {{logged_user_data.username}}!</span>
+
+					{% if admin %}
+
+						<a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('routes.admin_panel') }} " role="button">
+							Admin Panel
+						</a>
+
+					{% endif %}
+
+					<form action="{{ url_for('routes.handle_logout') }}" method="POST">
+
+						<li class="nav-item">
+							<button class="btn btn-primary me-2 d-inline-flex align-items-center" type="submit">
+								Log out
+							</button>
+						</li>
+
+					</form>
+
+				</div>
 
                 <li class="nav-item dropdown">
 
@@ -103,26 +118,43 @@
 
 				<!-- Lewa kolumna -->
 				<div class="bg-dark border-end border-secondary p-3">
-					<ul class="nav flex-column text-center">
+                    <ul class="nav flex-column text-center">
+
+                        <form action="{{ url_for('routes.myprof_from_index') }}" method="POST">
+                            <a class="nav-link active custom-link" href="#" onclick="this.closest('form').submit();">
+                                <i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile
+                            </a>
+                        </form>
+
+						<!--    to musi byc lepiej obsluzone z flashem, na razie jest to tak zrobione
+                                zeby obslugiwac logike poruszania sie stronie                           -->
+
+                        {% if logged_user_data %}
+
+                            <li class="nav-item">
+                                <a class="nav-link custom-link" href="{{ url_for('routes.history') }}"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
+                            </li>
+
+                        {% else %}
+
+                            <li class="nav-item">
+                                <a class="nav-link custom-link" href="{{ url_for('routes.login') }}"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
+                            </li>
+
+                        {% endif %}
 
 						<li class="nav-item">
-							<a class="nav-link active custom-link" href="#"><i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile</a>
+							<a class="nav-link custom-link" href="{{ url_for('routes.ranking') }}"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;Ranking</a>
 						</li>
 
 						<li class="nav-item">
-							<a class="nav-link custom-link" href="#"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
+							<a class="nav-link custom-link" href="{{ url_for('routes.stats') }}"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Statistics</a>
 						</li>
 
-						<li class="nav-item">
-							<a class="nav-link custom-link" href="#"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;Ranking</a>
-						</li>
-
-						<li class="nav-item">
-							<a class="nav-link custom-link" href="#"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Statistics</a>
-						</li>
+						<!-- az dotad -->
 
 					</ul>
-				</div>
+                </div>
 				
 				<!-- Prawa kolumna -->
 				<div class="bg-dark">
@@ -145,10 +177,17 @@
 
 							<div class="d-flex justify-content-between">
 								<form action="{{ url_for('routes.delete_user') }}" method="POST">
+									<input type="hidden" name="reroute" value="user">
+									<input type="hidden" name="del_user_id" value="{{ logged_user_data.user_id }}">
 									<button type="submit" class="btn btn-outline-danger">Delete My Account</button>
 								</form>
 
-								<a href="{{ url_for('routes.edit_user') }}" class="btn btn-primary">Edit Profile</a>
+								<form action="{{ url_for('routes.edit_user') }}" method="POST">
+									<input type="hidden" name="reroute" value="user">
+									<input type="hidden" name="edit_user_id" value="{{ logged_user_data.user_id }}">
+									<button type="submit" class="btn btn-primary">Edit&nbsp;User</button>
+								</form>
+								<!-- <a href="{{ url_for('routes.edit_user') }}" class="btn btn-primary">Edit Profile</a> -->
 							</div>
 
 						</div>

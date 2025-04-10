@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="../static/style.css">
     <script src="../static/script.js"></script>
+    
 </head>
 <body class="bg-dark">
 
@@ -73,24 +74,32 @@
                 
                 <div class="bg-dark">
                     <h2 class="border-bottom border-secondary p-2 text-center">Start new game</h2>
-					<div class="d-flex gap-2 m-3 mt-4">
-						<button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button">
-								<i class="bi bi-emoji-smile-fill"></i> Easy
-						</button>
-						<button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button">
-								<i class="bi bi-emoji-neutral-fill"></i> Intermediate
-						</button>
-						<button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button">
-								<i class="bi bi-emoji-angry-fill"></i> Hard
-						</button>
-						<button class="btn btn-lg btn-outline-secondary flex-fill" type="button">
-								<i class="bi bi-emoji-dizzy-fill"></i> Expert
-						</button>
-					</div>
-                    <!--pole gry-->
-                    <div class="container d-flex flex-column align-items-center vh-100">
-                        <h2 class="text-white mb-3">Sudoku</h2>
+                    <div class="d-flex gap-2 m-3 mt-4">
+                        <button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button" onclick="startGame('easy')">
+                            <i class="bi bi-emoji-smile-fill"></i> Easy
+                        </button>
+                        <button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button" onclick="startGame('medium')">
+                            <i class="bi bi-emoji-neutral-fill"></i> Intermediate
+                        </button>
+                        <button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button" onclick="startGame('hard')">
+                            <i class="bi bi-emoji-angry-fill"></i> Hard
+                        </button>
+                        <button class="btn btn-lg btn-outline-secondary flex-fill" type="button" onclick="startGame('expert')">
+                            <i class="bi bi-emoji-dizzy-fill"></i> Expert
+                        </button>
+                    </div>
+                    <script>
+                        getRandomIndex();
+                        getPuzzle();
+                        startGame();createBoard();
+                        
+                    </script>
                     
+                    <!-- pole gry -->
+                    <div id="game-container" class="container d-flex flex-column align-items-center pb-5 d-none">
+
+                        <h2 class="text-white mb-3">Sudoku</h2>
+
                         <!-- Przyciski wyboru liczb -->
                         <div class="d-flex gap-2 mb-3">
                             <button type="button" class="btn btn-light number-button" onclick="setNumber(1)">1</button>
@@ -103,21 +112,29 @@
                             <button type="button" class="btn btn-light number-button" onclick="setNumber(8)">8</button>
                             <button type="button" class="btn btn-light number-button" onclick="setNumber(9)">9</button>
                         </div>
-                    
-                        <!-- Pełna siatka Sudoku -->
+
+                        <!-- Siatka Sudoku -->
                         <div class="sudoku-grid">
-                            <table class="sudoku-table">
-                                <script>
-                                    create();
-                                    
-                                </script>
-                            </table>
+                            <table class="sudoku-table" id="sudoku-table"></table>
                         </div>
-                    </div>  
+
+                        <!-- Kontrolki -->
+                        <div class="controls justify-content-center mt-3">
+                            <button class="icon-button" onclick="resetBoard()" title="Reset">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                            <button class="icon-button" onclick="eraseSelection()" title="Erase">
+                                <i class="bi bi-eraser-fill"></i>
+                            </button>
+                            <button class="icon-button" onclick="showHint()" title="Hint">
+                                <i class="bi bi-lightbulb"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     <script>
-                        selection();
-                    </script>
-                    
+                        createBoard();
+                        </script>
 					<h2 class="border-bottom border-secondary p-2 mt-5 text-center">How to play?</h2>
 					<div class="m-5 mt-4">
 						Sudoku is a logic-based puzzle game where the goal is to fill a 9x9 grid with numbers from 1 to 9. <br>The grid is divided into 9 smaller 3x3 subgrids (regions). <br><br>The basic rules are:
