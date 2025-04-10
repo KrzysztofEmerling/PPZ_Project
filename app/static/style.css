@@ -22,21 +22,6 @@ body {
     background-color: #222;
 }
 
-.sudoku-grid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sudoku-table {
-    border-collapse: collapse;
-}
-
-.sudoku-table td {
-    border: 1px solid #4f4f4f;
-    padding: 0;
-}
-
 .sudoku-cell {
     width: 50px;
     height: 50px;
@@ -47,14 +32,6 @@ body {
     background-color: #767676;
 }
 
-/* Grube niebieskie linie co 3x3 */
-.sudoku-table tr:nth-child(3n) td {
-    border-bottom: 3px solid rgb(49, 49, 49);
-}
-.sudoku-table td:nth-child(3n) {
-    border-right: 3px solid rgb(49, 49, 49);
-}
-
 .fixed-alert{
     position: fixed;
     top: 75%; 
@@ -62,6 +39,13 @@ body {
     transform: translate(-50%, -50%);
     z-index: 1050;
 }
+
+.game-result{
+    top: 55%;
+    left: 56%;
+    background-color: rgba(33, 37, 41, 0.97);
+}
+
 /* Główna siatka Sudoku */
 .sudoku-grid {
     display: inline-block;
@@ -106,6 +90,7 @@ body {
     outline: none;
     background-color: #1e1e1e;
     color: white;
+    cursor: default;
 }
 
 /* Styl komórki po kliknięciu */
@@ -148,12 +133,16 @@ input[type=number] {
     color: white; /* Dodajemy jasny kolor tekstu dla kontrastu */
 }
 
+.number-button:hover {
+    background-color: #444;
+}
+
 
 /* Panel z kontrolkami */
 .controls {
     margin-top: 15px;
     display: flex;
-    gap: 10px;
+    gap: 1vw;
 }
 
 /* Przycisk z ikoną */
@@ -162,9 +151,7 @@ input[type=number] {
     font-size: 1.2rem;
     width: 48px;
     height: 48px;
-    border: none;
     padding: 10px;
-    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;

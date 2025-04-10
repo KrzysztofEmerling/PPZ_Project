@@ -1,182 +1,71 @@
-function selection(){
-    let selectedNumber = null;                   
-    function setNumber(number) {
-        selectedNumber = number;
-    }
-                        
-    function fillCell(cellId) {
-        const cell = document.getElementById(cellId);
-        if (selectedNumber !== null && cell.value === "") {
-            cell.value = selectedNumber;
-        }
-    }
+let currentDifficulty;
+let currentBoard;
+let boardMask;
+let history = [];
+let timerInterval;
+let seconds = 0;
+
+const winMessages = [
+    "Congratulations! 🎉",
+    "Well done! 🎉",
+    "Great job! 👍",
+    "You did it! 👏",
+    "Puzzle solved! 🧩",
+    "Victory! 🏆",
+    "Success! ✅",
+    "Nicely done! 🙌",
+    "Impressive! 😲",
+    "Huge W! 💪",
+    "You cracked the code! 🔓",
+    "Winner winner, Sudoku dinner! 🍽️",
+    "Sherlock would be proud. 🕵️‍♂️",
+    "Brains of steel! 🤯",
+    "Your brain deserves a trophy. 🏅",
+    "Big brain energy! 🧠",
+    "GG, nice solve bro. 👏",
+    "And they said it couldn’t be done. 🤷‍♂️"
+];
+
+// czysci historie
+function clearHistory(){
+    history = [];
 }
-let selectedNumber = null;
-let selectedCellId = null;
-let isEraserMode = false;
-let sudokuSolution = null; // <- Uzupełnij to rozwiązaniem lub załaduj z backendu
 
-function createBoard() {
-    const table = document.getElementById('sudoku-table');
-    table.innerHTML = '';
-
-    for (let row = 0; row < 9; row++) {
-        const tr = document.createElement('tr');
-        for (let col = 0; col < 9; col++) {
-            const td = document.createElement('td');
-            const id = `R${row}C${col}`;
-            const input = document.createElement('input');
-
-            input.type = 'text';
-            input.maxLength = 1;
-            input.pattern = '[1-9]';
-
-            input.classList.add('sudoku-cell');
-            input.id = id;
-            input.value = '';
-            input.readOnly = false;
-            input.addEventListener('input', (e) => {
-                const val = e.target.value;
-                if (!/^[1-9]?$/.test(val)) {
-                    e.target.value = ''; // usuwa nieprawidłowe znaki
-                }
-            });
-            
-            input.addEventListener('keypress', (e) => {
-                if (!/[1-9]/.test(e.key)) {
-                    e.preventDefault(); // blokuje wpisanie innych znaków
-                }
-            });
-            
-
-            const inShadedBox = (Math.floor(row / 3) + Math.floor(col / 3)) % 2 === 0;
-            if (inShadedBox) input.classList.add('section-3x3');
-
-            input.addEventListener('click', () => selectCell(id));
-
-            td.appendChild(input);
-            tr.appendChild(td);
-        }
-        table.appendChild(tr);
+// funkcja glowna uruchamiajaca gre
+async function startGame(difficulty) {
+    const container = document.getElementById("game-container");
+    currentDifficulty = difficulty;
+    
+    const puzzle = await getPuzzle(difficulty);
+    if (puzzle) {
+        container.classList.remove("d-none");
+        createBoard(puzzle);
+        stopTimer();
+        startTimer();
+    } else {
+        container.classList.add("d-none");
+        document.getElementById("alert").classList.remove("d-none");
+        closeErrorAlert();
     }
 }
 
-function selectCell(cellId) {
-    if (selectedCellId) {
-        document.getElementById(selectedCellId).classList.remove('selected-cell');
-    }
-
-    selectedCellId = cellId;
-    const cell = document.getElementById(cellId);
-
-    if (!cell.readOnly) {
-        cell.classList.add('selected-cell');
-
-        if (isEraserMode) {
-            cell.value = '';
-            isEraserMode = false;
-            document.body.style.cursor = 'default';
-            return;
-        }
-
-        if (selectedNumber !== null && cell.value === '') {
-            cell.value = selectedNumber;
-        }
-
-        highlightRelatedCells(cellId);
-    }
-}
-
-function setNumber(number) {
-    selectedNumber = number;
-    isEraserMode = false;
-    document.body.style.cursor = 'default';
-}
-
-function eraseSelection() {
-    isEraserMode = true;
-    selectedNumber = null;
-    document.body.style.cursor = 'cell'; // opcjonalny efekt kursora
-}
-
-function resetBoard() {
-    for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-            const cell = document.getElementById(`R${row}C${col}`);
-            if (cell && !cell.readOnly) {
-                cell.value = '';
-            }
-        }
-    }
-}
-
-function showHint() {
-    if (!selectedCellId || !sudokuSolution) {
-        alert('Podpowiedź niedostępna – brak rozwiązania.');
-        return;
-    }
-
-    const row = parseInt(selectedCellId.substring(1, 2));
-    const col = parseInt(selectedCellId.substring(3, 4));
-    const cell = document.getElementById(selectedCellId);
-
-    if (!cell.readOnly && cell.value === '') {
-        cell.value = sudokuSolution[row][col];
-    }
-}
-
-function highlightRelatedCells(cellId) {
-    const allCells = document.querySelectorAll('.sudoku-cell');
-    allCells.forEach(cell => {
-        cell.classList.remove('highlighted', 'same-number');
-    });
-
-    const row = parseInt(cellId.substring(1, 2));
-    const col = parseInt(cellId.substring(3, 4));
-    const selectedCell = document.getElementById(cellId);
-    const selectedValue = selectedCell.value;
-
-    for (let i = 0; i < 9; i++) {
-        document.getElementById(`R${row}C${i}`)?.classList.add('highlighted');
-        document.getElementById(`R${i}C${col}`)?.classList.add('highlighted');
-    }
-
-    if (selectedValue !== '') {
-        allCells.forEach(cell => {
-            if (cell.value === selectedValue) {
-                cell.classList.add('same-number');
-            }
-        });
-    }
-}
-// Funkcja pobierająca losowy numer planszy dla danego poziomu
-function getRandomIndex(max) {
-    return Math.floor(Math.random() * max) + 1; // od 1 do max
-}
-
-// Funkcja pobierająca i przetwarzająca planszę z pliku txt
+// funkcja wczytujaca plansze sudoku z pliku
 async function getPuzzle(name) {
-    const numberOfPuzzles = 3; // zmień jeśli masz więcej plansz
-    const randomIndex = getRandomIndex(numberOfPuzzles);
-    const fileName = `${name}-${randomIndex}.txt`;
-
+    const filename = `../vendor/sudoku-exchange-puzzle-bank/${name}.txt`;
     try {
-        const response = await fetch(`Pulpit/${easy50.txt}`);
+        const response = await fetch(filename);
         if (!response.ok) throw new Error("Nie udało się pobrać planszy.");
 
         const text = await response.text();
-        const rows = text.trim().split("\n");
-        const puzzle = rows.map(row => row.split(",").map(Number));
 
-        // Walidacja planszy (czy to 9x9)
-        if (
-            puzzle.length !== 9 ||
-            puzzle.some(row => row.length !== 9 || row.some(n => isNaN(n)))
-        ) {
-            throw new Error("Nieprawidłowy format planszy.");
-        }
+        const puzzleData = text.split('\n');
+        const count = puzzleData.length - 1;
 
-        return puzzle;
+        const randomIndex = Math.floor(Math.random() * count);
+
+        const puzzle = puzzleData[randomIndex].split(' ');
+
+        return puzzle[1];
 
     } catch (err) {
         console.error("Błąd ładowania planszy:", err);
@@ -184,45 +73,392 @@ async function getPuzzle(name) {
     }
 }
 
-// Główna funkcja po kliknięciu guzika trudności
-async function startGame(difficulty) {
-    const container = document.getElementById("game-container");
-    container.classList.remove("d-none");
-
-    // Wyświetl info o ładowaniu
-    const boardArea = document.getElementById("sudoku-table");
-    boardArea.innerHTML = `<tr><td colspan="9" class="text-white text-center">Wczytywanie planszy...</td></tr>`;
-
-    const puzzle = await getPuzzle(difficulty);
-    if (puzzle) {
-        createBoard(puzzle);
-    } else {
-        boardArea.innerHTML = `<tr><td colspan="9" class="text-danger text-center">Błąd wczytywania planszy.</td></tr>`;
-    }
+// funkcja tworzaca maske bezpieczenstwa
+function createBoardMask(board){
+    return board
+        .split('')
+        .map(char => char === '0' ? '0' : '1')
+        .join('');
 }
 
-// Przykładowa funkcja generowania planszy 9x9
+// funkcja tworzaca maske '1' zeby zablokowac edycje komorek
+function generateFullBoardMask() {
+    return '1'.repeat(81);
+}
+
+// funkcja tworzaca plansze
 function createBoard(board) {
     const table = document.getElementById("sudoku-table");
-    table.innerHTML = ""; // wyczyść poprzednią planszę
+    table.innerHTML = ""; // czysci poprzednia plansze
+    let cellIndex = 0;
 
-    board.forEach((row, rowIndex) => {
+    currentBoard = board;
+    //console.log(board);
+    boardMask = createBoardMask(board);
+    //console.log(boardMask);
+    clearHistory();
+
+    // przeksztalcenie stringa w tablicę 9x9
+    const board2D = [];
+    for (let i = 0; i < 9; i++) {
+        const row = board.slice(i * 9, (i + 1) * 9).split('');
+        board2D.push(row);
+    }
+
+    board2D.forEach((row, rowIndex) => {
         const tr = document.createElement("tr");
         row.forEach((cell, colIndex) => {
             const td = document.createElement("td");
-            td.textContent = cell === 0 ? "" : cell;
+            td.id = `r${rowIndex}c${colIndex}`
+
+            if (cell === '0') {
+                td.textContent = "";
+                td.setAttribute("contenteditable", "true");
+            } else {
+                td.textContent = cell;
+                td.setAttribute("contenteditable", "false"); 
+            }
+
             td.classList.add("sudoku-cell");
+            td.dataset.index = cellIndex;
             td.dataset.row = rowIndex;
             td.dataset.col = colIndex;
+            td.addEventListener("click", () => {
+                highlightRelatedCells(rowIndex, colIndex);
+                inputValidation();
+            });
+            td.addEventListener("input", () => {
+                td.textContent = td.textContent.replace(/[^1-9]/g, '');
+                saveBoardState();
+                checkSolution();
+            });
             tr.appendChild(td);
+            cellIndex++;
         });
         table.appendChild(tr);
     });
+    saveBoardState();
 }
 
+// funkcja walidujaca wprowadzane dane
+function inputValidation(){
+    const activeCell = document.querySelector('.sudoku-cell.active');
 
+    if (activeCell) {
+        const i = parseInt(activeCell.dataset.index);
+        if (boardMask[i] === '0') { // tylko edytowalne pole może słuchać inputu
+            activeCell.addEventListener('keydown', (event) => {
+                const key = event.key;
 
+                // dozwolone tylko 1-9, backspace i delete
+                if (!/^[1-9]$/.test(key) && key !== 'Backspace' && key !== 'Delete') {
+                    event.preventDefault();
+                    return;
+                }
 
+                // blokada jeśli już jest cyfra i próbujemy wpisać nową
+                if (activeCell.textContent.length >= 1 && /^[1-9]$/.test(key)) {
+                    event.preventDefault();
+                    return;
+                }
+            });
+        } else {
+            // nieedytowalne pole — zawsze blokuj input
+            activeCell.addEventListener('keydown', (event) => {
+                event.preventDefault();
+                return;
+            });
+        }
+    }
+}
+
+// funkcja podswietlajaca wszystkie komorki w pionie i poziomie oraz takie same cyfry
+function highlightRelatedCells(row, col) {
+    const allCells = document.querySelectorAll('.sudoku-cell');
+    allCells.forEach(cell => {
+        cell.classList.remove('highlighted', 'same-number'),
+        cell.classList.remove('active');
+    });
+
+    const selectedCell = document.getElementById(`r${row}c${col}`);
+    const selectedValue = selectedCell.textContent || selectedCell.value;
+
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(`r${row}c${i}`)?.classList.add('highlighted');
+    }
+
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(`r${i}c${col}`)?.classList.add('highlighted');
+    }
+
+    document.getElementById(`r${row}c${col}`)?.classList.add('active');
+
+    if (selectedValue !== '') {
+        allCells.forEach(cell => {
+            if (cell.textContent === selectedValue) {
+                cell.classList.add('same-number');
+            }
+        });
+    }
+}
+
+// funkcja ustawiajaca w aktywnej komorce liczbe z przycisku
+function setNumber(number) {
+    if (isNaN(number) || number < 1 || number > 9) {
+        number = ''; // Niepoprawna wartość — wyczyść
+    }
+
+    const activeCell = document.querySelector('.sudoku-cell.active'); // Znajdź aktywną komórkę
+    if (activeCell) {
+        if(activeCell.contentEditable === 'true'){
+            activeCell.textContent = number; // Wstaw cyfrę do komórki
+            saveBoardState();
+        }
+    }
+}
+
+// funkcja zapisujaca aktualny stan planszy
+function saveBoardState() {
+    const boardState = [];
+    const allCells = document.querySelectorAll('.sudoku-cell');
+    allCells.forEach(cell => {
+        if (cell.hasAttribute('contenteditable')) {
+            boardState.push(cell.textContent || '');
+        }
+    });
+    history.push(boardState);
+    //console.log(history);
+}
+
+// funkcja cofajaca do poprzedniego stanu planszy w liscie
+function undo() {
+    if (history.length > 1) {
+        history.pop(); // Usuń ostatni stan (bo to aktualny stan)
+        const previousState = history[history.length - 1]; // Pobierz poprzedni stan
+
+        const allCells = document.querySelectorAll('.sudoku-cell');
+        let index = 0;
+        allCells.forEach(cell => {
+            if (cell.hasAttribute('contenteditable')) {
+                cell.textContent = previousState[index] || ''; // Przywróć poprzednią wartość
+                index++;
+            }
+        });
+    }
+}
+
+// funkcja resetujaca gre (wczytuje te sama plansze)
+function resetBoard() {
+    if (!(/^1{81}$/.test(boardMask))){
+        const table = document.getElementById("sudoku-table");
+        table.innerHTML = ""; // wyczyść poprzednią planszę
+
+        clearHistory();
+        startTimer();
+
+        const board2D = [];
+        for (let i = 0; i < 9; i++) {
+            const row = currentBoard.slice(i * 9, (i + 1) * 9).split('');
+            board2D.push(row);
+        }
+
+        board2D.forEach((row, rowIndex) => {
+            const tr = document.createElement("tr");
+            row.forEach((cell, colIndex) => {
+                const td = document.createElement("td");
+                td.id = `r${rowIndex}c${colIndex}`
+
+                if (cell === '0') {
+                    td.textContent = "";
+                    td.setAttribute("contenteditable", "true");
+                } else {
+                    td.textContent = cell;
+                    td.setAttribute("contenteditable", "false"); 
+                }
+
+                td.classList.add("sudoku-cell");
+                td.dataset.row = rowIndex;
+                td.dataset.col = colIndex;
+                td.addEventListener("click", () => {
+                    highlightRelatedCells(rowIndex, colIndex);
+                    inputValidation();
+                });
+                td.addEventListener("input", () => {
+                    saveBoardState();
+                    checkSolution();
+                });
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+        saveBoardState();
+    }
+}
+
+// funkcja sprawdzajaca czy wszystkie pola sa uzupelnione
+function checkSolution() {
+    const allCells = document.querySelectorAll('.sudoku-cell');
+    let solution = '';
+    
+    // Sprawdzamy, czy wszystkie komórki są wypełnione
+    const allFilled = Array.from(allCells).every(cell => {
+        return cell.textContent !== '' && cell.textContent !== '0'; // Zakładając, że 0 jest traktowane jako puste
+    });
+
+    if (allFilled) {
+        allCells.forEach(cell => {
+            const value = cell.textContent.trim();
+            solution += value === '' ? '0' : value;
+        });
+        if(solutionChecker(solution)){
+            stopTimer();
+            const randomMsg = winMessages[Math.floor(Math.random() * winMessages.length)]
+
+            document.getElementById("result-alert").classList.remove('d-none');
+            
+            document.getElementById("win-title").textContent=randomMsg;
+            
+            if (seconds >= 3600) {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const remainingSeconds = seconds % 60;
+                document.getElementById("win-message").textContent=`You've just solved ${currentDifficulty} sudoku puzzle in ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            } else {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                document.getElementById("win-message").textContent=`You've just solved ${currentDifficulty} sudoku puzzle in ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            }
+
+            document.querySelectorAll('.sudoku-cell').forEach(cell => {
+                cell.contentEditable = 'false';
+            });
+            
+            boardMask = generateFullBoardMask();
+            clearHistory();
+            saveBoardState();
+
+            if(userID){
+                const loggedUserId = userID;
+                const difficulty = currentDifficulty;
+                const gameCompletionDate = new Date().toISOString();
+                const gameTime = seconds;
+
+                const isUserIDValid = typeof loggedUserId === 'number';
+                const isDifficultyValid = typeof difficulty === 'string' && (difficulty === 'easy' || 
+                                                                             difficulty === 'medium' || 
+                                                                             difficulty === 'hard' || 
+                                                                             difficulty === 'diabolical');
+                const isDateValid = typeof gameCompletionDate === 'string' && !isNaN(Date.parse(gameCompletionDate));
+                const isTimeValid = typeof gameTime === 'number' && gameTime >= 0;
+
+                if(isUserIDValid && isDifficultyValid && isDateValid && isTimeValid){
+                    const data = {
+                        user_id: loggedUserId,
+                        difficulty: difficulty,
+                        date_played: gameCompletionDate,
+                        time_finished: gameTime
+                    };
+    
+                    fetch('/save_result', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(res => res.json())
+                    .then(response => {
+                        console.log("Serwer odpowiedział:", response);
+                    })
+                    .catch(error => {
+                        console.error("Błąd wysyłki do backendu:", error);
+                    });
+                }
+            }
+        }
+    }
+}
+
+// funkcja sprawdzajaca czy podane liczby sa rozwiazaniem tej planszy sudoku
+function solutionChecker(solution) {
+
+    const board2D = [];
+    for (let i = 0; i < 9; i++) {
+        const row = solution.slice(i * 9, (i + 1) * 9).split('');
+        board2D.push(row);
+    }
+
+    for (let row = 0; row < 9; row++) {
+        const seen = new Set();
+        for (let col = 0; col < 9; col++) {
+            const value = board2D[row][col];
+            //console.log(`Checking value ${value} at row ${row}, col ${col}`);
+            if (seen.has(value)) {
+                //console.log(`Duplicate found in row: ${row} value: ${value}`);
+                return false;
+            }
+            seen.add(value);
+        }
+        //console.log("Row " + row + " unique values: " + Array.from(seen));
+    }
+
+    for (let col = 0; col < 9; col++) {
+        const seen = new Set();
+        for (let row = 0; row < 9; row++) {
+            const value = board2D[row][col];
+            //console.log(`Checking value ${value} at col ${col}, row ${row}`);
+            if (seen.has(value)) {
+                //console.log(`Duplicate found in column: ${col} value: ${value}`);
+                return false;
+            }
+            seen.add(value);
+        }
+        //console.log("Column " + col + " unique values: " + Array.from(seen));
+    }
+
+    for (let startRow = 0; startRow < 9; startRow += 3) {
+        for (let startCol = 0; startCol < 9; startCol += 3) {
+            const seen = new Set();
+            //console.log(`Checking 3x3 box starting at (${startRow}, ${startCol})`);
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 3; col++) {
+                    const value = board2D[startRow + row][startCol + col];
+                    //console.log(`Checking value ${value} in 3x3 box`);
+                    if (seen.has(value)) {
+                        //console.log(`Duplicate found in 3x3 box: value ${value}`);
+                        return false;
+                    }
+                    seen.add(value);
+                }
+            }
+            //console.log("3x3 box " + (startRow / 3) + ", " + (startCol / 3) + " unique values: " + Array.from(seen));
+        }
+    }
+    return true; // Wszystkie warunki spełnione
+}
+
+// funkcja uruchamiajaca stoper
+function startTimer() {
+    if (timerInterval) { clearInterval(timerInterval); }
+
+    document.getElementById("timer").textContent = "00:00";
+    seconds = 0;
+
+    timerInterval = setInterval(() => {
+        seconds++; 
+        const minutes = Math.floor(seconds / 60);
+        const displaySeconds = seconds % 60;
+
+        document.getElementById("timer").textContent = `${String(minutes).padStart(2, '0')}:${String(displaySeconds).padStart(2, '0')}`;
+    }, 1000);
+}
+
+// funkcja zatrzymujaca stoper
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+// funkcje dotyczace alertow
 function closeAlert() {
     setTimeout(function() {
         const alertElement = document.getElementById('alert');
@@ -231,4 +467,23 @@ function closeAlert() {
             alertElement.classList.add('fade');
         }
     }, 5000);
+}
+
+function closeErrorAlert(){
+    setTimeout(function() {
+        const alertElement = document.getElementById('alert');
+        if (alertElement) {
+            alertElement.classList.add('d-none');
+            alertElement.classList.add('show');
+            alertElement.classList.remove('fade');
+        }
+    }, 6000);
+}
+
+function hideErrorDisplay(){
+    document.getElementById('alert').classList.add('d-none');
+}
+
+function hideResultDisplay(){
+    document.getElementById('result-alert').classList.add('d-none');
 }

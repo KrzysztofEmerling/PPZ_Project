@@ -157,40 +157,36 @@
                             {% for user in non_admin_users %}
                                 <!--poniższy kod musi być wywołany w pętli by w Admin Panel pojawiali się kolejni (nowi) użytkownicy-->
                                 <div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary">
+                                    
                                     <div class="d-flex flex-column justify-content-between w-100 p-3">
                                         <strong>Username:</strong> 
                                         <span>{{ user.username }}</span>
-                                        <!-- <span>testuser</span>  -->
-                                        <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
                                     </div>
 
                                     <div class="d-flex flex-column justify-content-between w-100 p-3">
                                         <strong>Email:</strong> 
                                         <span>{{ user.email }}</span>
-                                        <!-- <span>test@gmail.com</span>  -->
-                                        <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
                                     </div>
 
                                     <div class="d-flex flex-column justify-content-between w-100 p-3">
                                         <strong>Member since:</strong> 
                                         <span>{{ user.registration_date }}</span>
-                                        <!-- <span>Fri, 04 Apr 2025 00:00:00 GMT</span>  -->
-                                        <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
                                     </div>
 
-                                    <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center gap-2">
 
                                         <form action="{{ url_for('routes.edit_user') }}" method="POST">
                                             <input type="hidden" name="reroute" value="admin">
                                             <input type="hidden" name="edit_user_id" value="{{ user.user_id }}">
                                             <button type="submit" class="btn btn-primary">Edit&nbsp;User</button>
                                         </form>
-                                        <!-- <a href="{{ url_for('routes.edit_user') }}" class="btn btn-primary me-3">Edit&nbsp;User</a> -->
+
                                         <form action="{{ url_for('routes.delete_user') }}" method="POST">
                                             <input type="hidden" name="reroute" value="admin">
                                             <input type="hidden" name="del_user_id" value="{{ user.user_id }}">
                                             <button type="submit" class="btn btn-outline-danger">Delete&nbsp;User</button>
                                         </form>
+                                        
                                     </div>
                                 </div>
                                 <!--W pętli aż dotąd-->    

@@ -1,10 +1,46 @@
 import flask as f
-from models import User, db, Admin
+from models import db, User, Admin, GameResult
 from datetime import datetime, timezone
 #make site names, for example from @routes.route('/handle_login', methods=['POST'])
 #look consistent and pretty
 
 routes = f.Blueprint('routes', __name__)
+
+@routes.route('/vendor/<path:filename>')
+def serve_vendor(filename):
+    return f.send_from_directory('vendor', filename)
+
+@routes.route('/save_result', methods=['POST'])
+def save_result():
+    try:
+        data = f.request.get_json()
+        id = data.get("user_id")
+        diff = data.get("difficulty")
+        date = data.get("date_played")
+        time = data.get("time_finished")
+
+        if date.endswith('Z'):
+            date = date[:-1]
+
+        if diff == 'medium':
+            diff = 'intermediate'
+        
+        if diff == 'diabolical':
+            diff = 'expert'
+
+        datetime_object = datetime.fromisoformat(date)
+        finaldate = datetime_object.replace(microsecond=0)
+
+        print(f"id: {id}, difficulty: {diff}, date: {date}, time: {time}")
+
+        game_data = GameResult(user_id = id, difficulty = diff, date_played = finaldate, time_finished = time)
+        db.session.add(game_data)
+        db.session.commit()
+        
+        return f.jsonify({"status": "success", "message": "Dane zapisane pomyślnie"})
+    
+    except Exception as e:
+        return f.jsonify({"status": "error", "message": str(e)}), 500
 
 def is_password_alright(password):
     """
@@ -31,6 +67,10 @@ def is_password_alright(password):
         f.flash("Password has less than 8 characters.", "warning")
         return False
     
+    elif len(password) > 30:
+        f.flash("Password cannot have more than 30 characters.", "warning")
+        return False
+    
     #password does not contain a lowercase letter
     elif all([not char.islower() for char in password]):
         f.flash("Password has no lowercase letters.", "warning")
@@ -53,9 +93,6 @@ def is_password_alright(password):
 
     return True
 
-#I have more ideas of checking if email is valid, but who actually cares?
-#This code doesn't have to be perfect so let's not waste our time 
-#on this kind of bullshit
 def email_validator_corrector(email):
     """
     Corrects email and checks if it is valid.
@@ -72,11 +109,7 @@ def email_validator_corrector(email):
         return [False, "EmailError"]
 
     #deletes spaces from the beginning and the end of username
-    while email[0] == " ":
-        email = email[1:]
-
-    while email[-1] == " ":
-        email = email[:-1]
+    email.strip()
 
     #email has capital letters
     if True in [a.isupper() for a in email]:
@@ -92,6 +125,10 @@ def email_validator_corrector(email):
     if email[0] == "@":
         f.flash("Email must have characters before '@'.", "warning")
         return [False, "EmailError"]
+
+    if len(email) > 100:
+        f.flash("Email must be 100 characters or fewer.", "warning")
+        return [False, "UsernameError"]
 
     return [True, email]
 
@@ -111,16 +148,20 @@ def username_validator_corrector(username):
         return [False, "UsernameError"]
 
     #username is all spaces
-    if all([char == " " for char in username]):
+    if username.isspace():
         f.flash("All username characters are spaces.", "warning")
         return [False, "UsernameError"]
 
     #deletes spaces from the beginning and the end of username
-    while username[0] == " ":
-        username = username[1:]
+    username = username.strip()
 
-    while username[-1] == " ":
-        username = username[:-1]
+    if len(username) < 3:
+        f.flash("Username must be 3 characters or more.", "warning")
+        return [False, "UsernameError"]
+
+    if len(username) > 32:
+        f.flash("Username must be 32 characters or fewer.", "warning")
+        return [False, "UsernameError"]
 
     return [True, username]
 
@@ -154,6 +195,10 @@ def edit_user():
 def login():
     return f.render_template('login.html')
 
+@routes.route('/game')
+def game():
+    return f.render_template('game.html')
+
 @routes.route('/register')
 def register():
     return f.render_template('register.html')
@@ -177,7 +222,8 @@ def stats():
 def history():
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
-    return f.render_template('history.html', logged_user_data = f.session, admin = is_admin)
+    games = GameResult.query.filter_by(user_id=user_id).all()
+    return f.render_template('history.html', logged_user_data = f.session, admin = is_admin, user_games = games)
     
 @routes.route('/ranking')
 def ranking():
@@ -233,7 +279,6 @@ def handle_register():
     confirm_password_input_reg = f.request.form.get('confirm_password_input_reg')
     terms_conditions_input_reg = f.request.form.get('terms_conditions_input_reg')
 
-
     #check data validity
     email_validator = email_validator_corrector(email_input_reg)
     if not email_validator[0]:
@@ -249,7 +294,6 @@ def handle_register():
 
     if not is_password_alright(password_input_reg):
         return f.render_template('register.html')
-
 
     #check if stuff exists in database
     email_exists_db = db.session.query(User).filter_by(email=email_input_reg).first()
