@@ -253,6 +253,7 @@ function resetBoard() {
     if (!(/^1{81}$/.test(boardMask))){
         const table = document.getElementById("sudoku-table");
         table.innerHTML = ""; // wyczyść poprzednią planszę
+        let cellIndex = 0;
 
         clearHistory();
         startTimer();
@@ -268,16 +269,18 @@ function resetBoard() {
             row.forEach((cell, colIndex) => {
                 const td = document.createElement("td");
                 td.id = `r${rowIndex}c${colIndex}`
+                td.classList.add("sudoku-cell");
 
                 if (cell === '0') {
                     td.textContent = "";
                     td.setAttribute("contenteditable", "true");
                 } else {
                     td.textContent = cell;
-                    td.setAttribute("contenteditable", "false"); 
+                    td.setAttribute("contenteditable", "false");
+                    td.classList.add("static");
                 }
 
-                td.classList.add("sudoku-cell");
+                td.dataset.index = cellIndex;
                 td.dataset.row = rowIndex;
                 td.dataset.col = colIndex;
                 td.addEventListener("click", () => {
@@ -289,6 +292,7 @@ function resetBoard() {
                     checkSolution();
                 });
                 tr.appendChild(td);
+                cellIndex++;
             });
             table.appendChild(tr);
         });
