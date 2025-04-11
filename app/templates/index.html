@@ -164,21 +164,11 @@
                             </a>
                         </form>
 
-                        <!--    to musi byc lepiej obsluzone z flashem, na razie jest to tak zrobione
-                                zeby obslugiwac logike poruszania sie stronie                           -->
-
-
                         <form action="{{ url_for('routes.mygames_from_index') }}" method="POST">
                             <a class="nav-link active custom-link" onclick="this.closest('form').submit();">
                                 <i class="bi bi-joystick"></i>&nbsp;&nbsp;My games
                             </a>
                         </form>    
-                        
-
-                            <li class="nav-item">
-                                
-                            </li>
-
 
 						<li class="nav-item">
 							<a class="nav-link custom-link" href="{{ url_for('routes.ranking') }}"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;Ranking</a>
@@ -187,8 +177,6 @@
 						<li class="nav-item">
 							<a class="nav-link custom-link" href="{{ url_for('routes.stats') }}"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Statistics</a>
 						</li>
-
-                        <!-- az dotad -->
 
 					</ul>
                 </div>
