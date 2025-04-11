@@ -64,7 +64,7 @@ body {
 }
 
 .static{
-	text-decoration: underline;
+	font-weight: 1000;
 }
 
 /* Grubsze linie co 3 wiersze i kolumny */
