@@ -63,6 +63,10 @@ body {
     border: 1px solid #444;
 }
 
+.static{
+	text-decoration: underline;
+}
+
 /* Grubsze linie co 3 wiersze i kolumny */
 .sudoku-table tr:nth-child(3n) td {
     border-bottom: 2px solid #888;

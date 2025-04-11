@@ -110,16 +110,17 @@ function createBoard(board) {
         row.forEach((cell, colIndex) => {
             const td = document.createElement("td");
             td.id = `r${rowIndex}c${colIndex}`
+			td.classList.add("sudoku-cell");
 
             if (cell === '0') {
                 td.textContent = "";
                 td.setAttribute("contenteditable", "true");
             } else {
                 td.textContent = cell;
-                td.setAttribute("contenteditable", "false"); 
+                td.setAttribute("contenteditable", "false");
+				td.classList.add("static");
             }
 
-            td.classList.add("sudoku-cell");
             td.dataset.index = cellIndex;
             td.dataset.row = rowIndex;
             td.dataset.col = colIndex;
