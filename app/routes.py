@@ -179,7 +179,7 @@ def user():
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
     return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
 
-@routes.route('/edit', methods=['POST'])
+@routes.route('/edit_user', methods=['POST'])
 def edit_user():
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
@@ -237,6 +237,17 @@ def myprof_from_index():
         user_id = f.session.get("user_id")
         is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
         return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
+    
+    else:
+        f.flash("You are not logged in", "danger")
+        return f.redirect(f.url_for('routes.login'))
+
+@routes.route('/user_panel', methods=['POST'])
+def mygames_from_index():
+    if "email" in f.session and "password" in f.session:
+        user_id = f.session.get("user_id")
+        is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+        return f.render_template('history.html', logged_user_data = f.session, admin = is_admin)
     
     else:
         f.flash("You are not logged in", "danger")
@@ -327,7 +338,7 @@ def handle_register():
     
     return f.render_template('login.html')
 
-@routes.route('/edit_u', methods=['POST'])
+@routes.route('/edit', methods=['POST'])
 def edit():
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
