@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="../static/style.css">
+    <script>const userID = {{ logged_user_data.user_id if logged_user_data else 'NaN' }};</script>
     <script src="../static/script.js"></script>
 </head>
 <body class="bg-dark">
@@ -39,13 +40,32 @@
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            <script>closeAlert()</script>
         {% endfor %}
     {% endif %}
 {% endwith %}
 
 {% block content %}{% endblock %}
 
-<script>closeAlert()</script>
+<div id="alert" class="alert alert-danger alert-dismissible fade show w-25 fixed-alert d-none" role="alert">
+    <p>Error loading the board: File not found (404).</p>
+    <button type="button" class="btn-close" onclick="hideErrorDisplay()"></button>
+</div>
+
+<div id="result-alert" class="alert alert-dark text-white alert-dismissible fade show w-25 fixed-alert game-result d-none" role="alert">
+    <div class="container ms-2">
+        <div class="text-center mb-3">
+            <h4 id="win-title"></h4>
+            <h5 id="win-message"></h5>
+        </div>
+
+        <div class="text-center mt-3">
+            <span>If you want to start a new game, close this</span><br>
+            <span>window and choose difficulty for the next one!</span>
+        </div>
+    </div>
+    <button type="button" class="btn-close" onclick="hideResultDisplay()"></button>
+</div>
 
 <!-- Pasek nawigacji -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3 border-bottom border-secondary">
@@ -139,27 +159,16 @@
                     <ul class="nav flex-column text-center">
 
                         <form action="{{ url_for('routes.myprof_from_index') }}" method="POST">
-                            <a class="nav-link active custom-link" href="#" onclick="this.closest('form').submit();">
+                            <a class="nav-link active custom-link" onclick="this.closest('form').submit();">
                                 <i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile
                             </a>
                         </form>
 
-                        <!--    to musi byc lepiej obsluzone z flashem, na razie jest to tak zrobione
-                                zeby obslugiwac logike poruszania sie stronie                           -->
-
-                        {% if logged_user_data %}
-
-                            <li class="nav-item">
-                                <a class="nav-link custom-link" href="{{ url_for('routes.history') }}"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
-                            </li>
-
-                        {% else %}
-
-                            <li class="nav-item">
-                                <a class="nav-link custom-link" href="{{ url_for('routes.login') }}"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
-                            </li>
-
-                        {% endif %}
+                        <form action="{{ url_for('routes.mygames_from_index') }}" method="POST">
+                            <a class="nav-link active custom-link" onclick="this.closest('form').submit();">
+                                <i class="bi bi-joystick"></i>&nbsp;&nbsp;My games
+                            </a>
+                        </form>    
 
 						<li class="nav-item">
 							<a class="nav-link custom-link" href="{{ url_for('routes.ranking') }}"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;Ranking</a>
@@ -169,34 +178,71 @@
 							<a class="nav-link custom-link" href="{{ url_for('routes.stats') }}"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Statistics</a>
 						</li>
 
-                        <!-- az dotad -->
-
 					</ul>
                 </div>
                 
                 <!-- Prawa kolumna -->
                 <div class="bg-dark">
                     <h2 class="border-bottom border-secondary p-2 text-center">Start new game</h2>
+                    <div class="d-flex gap-2 m-3 mt-4">
+                        <button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button" onclick="startGame('easy')">
+                            <i class="bi bi-emoji-smile-fill"></i> Easy
+                        </button>
+                        <button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button" onclick="startGame('medium')">
+                            <i class="bi bi-emoji-neutral-fill"></i> Intermediate
+                        </button>
+                        <button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button" onclick="startGame('hard')">
+                            <i class="bi bi-emoji-angry-fill"></i> Hard
+                        </button>
+                        <button class="btn btn-lg btn-outline-secondary flex-fill" type="button" onclick="startGame('diabolical')">
+                            <i class="bi bi-emoji-dizzy-fill"></i> Expert
+                        </button>
+                    </div>
+                    
+                    <!-- pole gry -->
+                    <div id="game-container" class="container d-flex flex-column align-items-center mb-5 mt-4 d-none">
 
-					<div class="d-flex gap-2 m-3 mt-4">
+                        <!-- Przyciski wyboru liczb -->
+                        <div class="d-flex gap-2 mb-3">
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(1)">1</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(2)">2</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(3)">3</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(4)">4</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(5)">5</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(6)">6</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(7)">7</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(8)">8</button>
+                            <button type="button" class="btn btn-secondary number-button" onclick="setNumber(9)">9</button>
+                        </div>
 
-						<button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button">
-								<i class="bi bi-emoji-smile-fill"></i> Easy
-						</button>
+                        <!-- Siatka Sudoku -->
+                        <div class="sudoku-grid">
+                            <table class="sudoku-table" id="sudoku-table"></table>
+                        </div>
 
-						<button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button">
-								<i class="bi bi-emoji-neutral-fill"></i> Intermediate
-						</button>
+                        <!-- Kontrolki -->
+                        <div class="controls justify-content-center mt-4">
+                            <button class="btn btn-secondary icon-button" onclick="undo()" title="Reset">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                            <button class="btn btn-secondary icon-button" onclick="resetBoard()" title="Erase">
+                                <i class="bi bi-eraser-fill"></i>
+                            </button>
+                            <!--
+                            <button class="icon-button" onclick="showHint()" title="Hint">
+                                <i class="bi bi-lightbulb"></i>
+                            </button>
+                            -->
+                        </div>
 
-						<button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button">
-								<i class="bi bi-emoji-angry-fill"></i> Hard
-						</button>
-
-						<button class="btn btn-lg btn-outline-secondary flex-fill" type="button">
-								<i class="bi bi-emoji-dizzy-fill"></i> Expert
-						</button>
-
-					</div>
+                        <div class="container w-25 mt-3 border-bottom border-secondary p-3">
+                            <div class="d-flex justify-content-between fs-2">
+                                <span>Time:</span>
+                                <span id="timer">00:00</span>
+                            </div>
+                        </div>
+                        
+                    </div>
 					
 					<h2 class="border-bottom border-secondary p-2 mt-5 text-center">How to play?</h2>
 
@@ -219,7 +265,7 @@
     <p class="text-center text-white">© 2025 Sudoku-Sweeper</p>
 </footer>
     
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

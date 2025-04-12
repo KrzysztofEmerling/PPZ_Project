@@ -121,27 +121,16 @@
                     <ul class="nav flex-column text-center">
 
                         <form action="{{ url_for('routes.myprof_from_index') }}" method="POST">
-                            <a class="nav-link active custom-link" href="#" onclick="this.closest('form').submit();">
+                            <a class="nav-link active custom-link" onclick="this.closest('form').submit();">
                                 <i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile
                             </a>
                         </form>
 
-                        <!--    to musi byc lepiej obsluzone z flashem, na razie jest to tak zrobione
-                                zeby obslugiwac logike poruszania sie stronie                           -->
-
-                        {% if logged_user_data %}
-
-                            <li class="nav-item">
-                                <a class="nav-link custom-link" href="{{ url_for('routes.history') }}"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
-                            </li>
-
-                        {% else %}
-
-                            <li class="nav-item">
-                                <a class="nav-link custom-link" href="{{ url_for('routes.login') }}"><i class="bi bi-joystick"></i>&nbsp;&nbsp;My games</a>
-                            </li>
-
-                        {% endif %}
+                        <form action="{{ url_for('routes.mygames_from_index') }}" method="POST">
+                            <a class="nav-link active custom-link" onclick="this.closest('form').submit();">
+                                <i class="bi bi-joystick"></i>&nbsp;&nbsp;My games
+                            </a>
+                        </form>    
 
 						<li class="nav-item">
 							<a class="nav-link custom-link" href="{{ url_for('routes.ranking') }}"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;Ranking</a>
@@ -150,8 +139,6 @@
 						<li class="nav-item">
 							<a class="nav-link custom-link" href="{{ url_for('routes.stats') }}"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Statistics</a>
 						</li>
-
-                        <!-- az dotad -->
 
 					</ul>
                 </div>
@@ -162,40 +149,36 @@
 
 					<div class="card-body d-flex flex-column justify-content-center align-items-center">
 						<div class="w-100 m-5 overflow-auto" style="max-height:400px">
-                            
-                            <!--poniższy kod musi być wywołany w pętli by pojawily sie wszystkie gry-->
-							<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary">
-                                <div class="d-flex flex-column justify-content-between w-100 p-3">
-                                    <strong>Game ID:</strong> 
-                                    <!--<span>{#{{ logged_user_data.username }}#}</span>-->
-                                    <span>1</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
-                                </div>
 
-                                <div class="d-flex flex-column justify-content-between w-100 p-3">
-                                    <strong>Difficulty:</strong> 
-                                    <!--<span>{#{{ logged_user_data.registration_date }}#}</span>-->
-                                    <span>Hard</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
-                                </div>
+                            {% for game in user_games %}
 
-                                <div class="d-flex flex-column justify-content-between w-100 p-3">
-                                    <strong>Time:</strong> 
-                                    <!--<span>{#{{ logged_user_data.email }}#}</span>-->
-                                    <span>5:36</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
-                                </div>
+                                <div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary">
 
-                                <div class="d-flex flex-column justify-content-between w-100 p-3">
-                                    <strong>Date:</strong> 
-                                    <!--<span>{#{{ logged_user_data.registration_date }}#}</span>-->
-                                    <span>Fri, 04 Apr 2025 00:00:00 GMT</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
-                                </div>
-                                
-							</div>
-                            <!--W pętli aż dotąd-->    
+                                    <div class="d-flex flex-column justify-content-between w-100 p-3">
+                                        <strong>Game ID:</strong> 
+                                        <span>{{ game.result_id }}</span>
+                                    </div>
 
+                                    <div class="d-flex flex-column justify-content-between w-100 p-3">
+                                        <strong>Difficulty:</strong> 
+                                        <span>{{ game.difficulty }}</span>
+                                    </div>
+
+                                    <div class="d-flex flex-column justify-content-between w-100 p-3">
+                                        <strong>Time:</strong> 
+                                        <span>{{ game.time_finished }}</span>
+                                    </div>
+
+                                    <div class="d-flex flex-column justify-content-between w-100 p-3">
+                                        <strong>Date:</strong> 
+                                        <span>{{ game.date_played }}</span>
+                                    </div>
+                                    
+                                </div>  
+
+                            {% endfor %}
 						</div>
-
 					</div>
-
 				</div>
 			</div>
 		</div>
