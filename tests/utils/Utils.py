@@ -41,6 +41,7 @@ class Assersion:
 
     def _assert_text_in_body(self):
         body_text = self.driver.find_element(By.TAG_NAME, "body").text
+        #print(f"==============body_text=============\n{body_text}\n==============body_text=============")
         assert self.expected_message in body_text, f"❌ Tekst '{self.expected_message}' nie został znaleziony w treści strony."
         print("✅ Tekst został znaleziony w treści strony.")
         return True
@@ -56,8 +57,7 @@ def test_registration(driver, email, username, password, comfirm_password, accep
     driver.get("http://127.0.0.1:5000/register") 
 
     email_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "email_input_reg"))
-    )
+        EC.presence_of_element_located((By.NAME, "email_input_reg")))
     username_input = driver.find_element(By.NAME, "username_input_reg")
     password_input = driver.find_element(By.NAME, "password_input_reg")
     password_confirm_input = driver.find_element(By.NAME, "confirm_password_input_reg")
@@ -90,8 +90,7 @@ def test_login(driver, email, password, Asseresions):
     driver.get("http://127.0.0.1:5000/login") 
 
     email_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "email_input_login"))
-    )
+        EC.presence_of_element_located((By.NAME, "email_input_login")))
     password_input = driver.find_element(By.NAME, "password_input_login")
 
     login_button = driver.find_element(By.XPATH, "//button[text()='Log in']")

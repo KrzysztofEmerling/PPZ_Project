@@ -52,9 +52,9 @@ def IntegrationTests(driver):
     test_registration(driver, "alan.ma@kota.co", "Przemek", "Makota12#", "Makota12#", True, [])
     test_login(driver, "alan.ma@kota.co", "Makota12#", [])
 
-    addresses = ["http://127.0.0.1:5000/user_panel", "http://127.0.0.1:5000/history","http://127.0.0.1:5000/ranking", "http://127.0.0.1:5000/stats"]
+    addresses = ["http://127.0.0.1:5000/user_panel", "http://127.0.0.1:5000/my_games","http://127.0.0.1:5000/ranking", "http://127.0.0.1:5000/statistics"]
     text_on_subpages = [
-        "Przemek", 
+        "Username:",
         "My games",
         "Ranking",
         "Statistics"]
