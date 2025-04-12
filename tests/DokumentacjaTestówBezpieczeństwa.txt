@@ -1,18 +1,21 @@
 Test bezpośredniego skakania po url:
     nie udało się uzyskać dostępu do żadnego panelu z pominięciem logowania
-
+    127.0.0.1:5000/admin_panel
+    127.0.0.1:5000/user_panel
+    
     rezultat - Pozytywny
 
-Test wprowadzania XSS:
-    do nazwy urzytkowniak - brak rezultatu
+Test wprowadzania XSS przy rejestracji urzytkownika:
+    do nazwy urzytkowniak - brak rezultatu, po zalogowaniu i w panelu admina
     do loginu urzytkownika - brak przejścia walidacji email, brak rezultatu
+    "<script>alert('xss')</script>"
 
     rezultat - Pozytywny
 
-Test wprowadzenia SQL Injection:
+Test wprowadzenia SQL Injection w logowaniu:
     do emaila - brak przejścia walidacji email, brak rezultatu
     do chasła - brak rezultztu
-
+    "' OR '1'='1"
     rezultat Pozytywny
 
 Test wprowadzenia 2048 znakowej nazwy urzytkownika:

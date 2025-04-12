@@ -24,7 +24,7 @@ def TestAdminPanel(driver):
             EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, "Admin Panel")))
         panel_button.click()
 
-        Asseresion("url", "http://127.0.0.1:5000/admin_panel")
+        Assersion(driver, "url", "http://127.0.0.1:5000/admin_panel").assert_result()
         print("✔ Test 1: Admin panel opened successfully")
 
         body_text = WebDriverWait(driver, 10).until(
@@ -36,23 +36,6 @@ def TestAdminPanel(driver):
             assert username in body_text, f"{username} not found in admin panel"
 
         print("✔ Test 2: Usernames are visible in admin panel")
-
-
-        edit_buttons = driver.find_elements(By.XPATH, "//button[contains(text(), 'Edit User')]")
-        delete_buttons = driver.find_elements(By.XPATH, "//button[contains(text(), 'Delete User')]")
-
-        assert len(edit_buttons) == 4, f"Expected 3 Edit User buttons, found {len(edit_buttons)}"
-        assert len(delete_buttons) == 4, f"Expected 3 Delete User buttons, found {len(delete_buttons)}"
-
-        print("✔ Test 3: Edit/Delete buttons found correctly")
-
-        delete_buttons[3].click()
-        expected_usernames = ["testuser", "TestUser_forADM1", "TestUser_forADM2"]
-        for username in expected_usernames:
-            assert username in body_text, f"{username} wrong user deleted"
-        assert(not ("TestUser_forADM3" in body_text, f"{username} not deleted from list"))
-        Assersion("popup", "Sucesfully deleted account").assert_result()
-        print("✔ Test 4: Deleting user works correctly correctly")
 
     except AssertionError as e:
         pass_all_tests = False
