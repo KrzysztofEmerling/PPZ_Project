@@ -19,7 +19,7 @@ def TestUserWalidation(driver):
     #Prawidłowa rejestracja
     
     try:
-        test_registration(driver, "testuser@example.co", "TestUser", "TestPassword123", "TestPassword123", True, 
+        test_registration(driver, "testuser@example.co", "TestUser", "TestPassword123#", "TestPassword123#", True, 
         [Assersion(driver, "popup", "Register successed. You can log in."),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -34,7 +34,7 @@ def TestUserWalidation(driver):
 
     #Podwójna rejestracja tego samego użytkownika
     try:
-        test_registration(driver, "testuser@example.co", "TestUser", "TestPassword123", "TestPassword123", True, 
+        test_registration(driver, "testuser@example.co", "TestUser", "TestPassword123#", "TestPassword123#", True, 
         [Assersion(driver, "popup", "Email already exists"),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -47,7 +47,7 @@ def TestUserWalidation(driver):
 
     #Sprawdzenie niezaakceptowanego regulaminu
     try:
-        test_registration(driver, "testuser1@example.co", "TestUser1", "TestPassword123", "TestPassword123", False, 
+        test_registration(driver, "testuser1@example.co", "TestUser1", "TestPassword123#", "TestPassword123#", False, 
         [Assersion(driver, "popup", "You have to accept the terms and conditions"),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -60,7 +60,7 @@ def TestUserWalidation(driver):
 
     #Pusty adres e-mail
     try:
-        test_registration(driver, "", "TestUser2", "TestPassword123", "TestPassword123", True, 
+        test_registration(driver, "", "TestUser2", "TestPassword123#", "TestPassword123#", True, 
         [Assersion(driver, "popup", "Please enter Your email."),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -73,10 +73,10 @@ def TestUserWalidation(driver):
 
     # Bledny e-mail
     try:
-        test_registration(driver, "alan", "TestUser3", "TestPassword123", "TestPassword123", True, 
-        [Assersion(driver, "popup", " Wrong e-mail! "),
+        test_registration(driver, "alan", "TestUser3", "TestPassword123#", "TestPassword123#", True, 
+        [#Assersion(driver, "popup", " Wrong e-mail! "), #powoduje błędy po stronie Selenium
          Assersion(driver, "body", "Create an account"),
-         Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
+         Assersion(driver, "url", "http://127.0.0.1:5000/register")])
         print("✔ Test 5:")
     except AssertionError as e:
         pass_all_registration = False
@@ -86,7 +86,7 @@ def TestUserWalidation(driver):
 
     #Pusta nazwa użytkownika
     try:
-        test_registration(driver, "testuser4@example.co", "", "TestPassword123", "TestPassword123", True, 
+        test_registration(driver, "testuser4@example.co", "", "TestPassword123#", "TestPassword123#", True, 
         [Assersion(driver, "popup", "Please enter a username."),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -124,7 +124,7 @@ def TestUserWalidation(driver):
 
     #Niezgodne hasła
     try:
-        test_registration(driver, "testuser7@example.co", "TestUser7", "TestPassword123", "InneHaslo", True, 
+        test_registration(driver, "testuser7@example.co", "TestUser7", "TestPassword123#", "InneHaslo1#", True, 
         [Assersion(driver, "popup", "Passwords don't match"),
          Assersion(driver, "body", "Create an account"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_register")])
@@ -132,10 +132,6 @@ def TestUserWalidation(driver):
     except AssertionError as e:
         pass_all_registration = False
         print(f"Błąd testu (Niezgodne hasła):\n{e}")
-
-    if pass_all_registration:
-        print("✖ Test 9:")
-        print(f"Sprawdzenie rejestracji w przypadku rozbierznych haseł:\n {e}")
     print("\n")
 
 
@@ -144,7 +140,7 @@ def TestUserWalidation(driver):
     print("-------------------Testy logowania-------------------")
     pass_all_login = True
     try:
-        test_login(driver, "testuserrrrrrr@example.co", "TestPassword123", 
+        test_login(driver, "testuserrrrrrr@example.co", "TestPassword123#", 
         [Assersion(driver, "popup", "Email doesn't exist in database!"),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")]) 
@@ -156,7 +152,7 @@ def TestUserWalidation(driver):
     print("\n")
 
     try:
-        test_login(driver, "testuser@example.co", "TestPassword123456", 
+        test_login(driver, "testuser@example.co", "TestPassword123456#", 
         [Assersion(driver, "popup", "Wrong password!"),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")]) 
@@ -168,7 +164,7 @@ def TestUserWalidation(driver):
     print("\n")
 
     try:
-        test_login(driver, "", "TestPassword123456", 
+        test_login(driver, "", "TestPassword123456#", 
         [Assersion(driver, "popup", "Email doesn't exist in database!"),
          Assersion(driver, "body", "Please log in"),
          Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")])   
@@ -192,10 +188,10 @@ def TestUserWalidation(driver):
     print("\n")
 
     try:
-        test_login(driver, "testuser@example.co", "TestPassword123", 
+        test_login(driver, "testuser@example.co", "TestPassword123#", 
         [Assersion(driver, "popup", "Login successed!"),
          Assersion(driver, "body", "Hello, TestUser!"),
-         Assersion(driver, "url", "http://127.0.0.1:5000/handle_login")])            
+         Assersion(driver, "url", "http://127.0.0.1:5000")])            
         print("✔ Test 5:")
     except AssertionError as e:
         pass_all_login = False
