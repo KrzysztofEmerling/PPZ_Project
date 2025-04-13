@@ -1,6 +1,8 @@
 import flask as f
 from models import db, User, Admin, GameResult
 from datetime import datetime, timezone
+from sqlalchemy import func, inspect #func - potrzebna do napisania funkcji takich jak count(), distinct(), sum() itp.
+
 #make site names, for example from @routes.route('/handle_login', methods=['POST'])
 #look consistent and pretty
 
@@ -167,6 +169,25 @@ def username_validator_corrector(username):
 
 @routes.route('/')
 def home():
+    print(GameResult.__table__.columns.keys())
+
+    test = GameResult.query.all()
+    for game in test:
+        print(f"result_id: {game.result_id}, user_id: {game.user_id}, difficulty: {game.difficulty}, date_played: {game.date_played}, time_finished: {game.time_finished}")
+
+    # Pobierz inspektora bazy danych
+    inspector = inspect(db.engine)
+
+    # Lista wszystkich tabel w bazie
+    tables = inspector.get_table_names()
+
+    # Wyświetl nagłówki kolumn dla każdej tabeli
+    for table_name in tables:
+        print(f"Tabela: {table_name}")
+        columns = inspector.get_columns(table_name)
+        for column in columns:
+            print(f"  - {column['name']} ({column['type']})")
+
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
     print("Zalogowany user_id:", user_id)
@@ -183,7 +204,7 @@ def user():
 def edit_user():
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
-    # print("PUUUUUUUPCIAAAAAAAAAAAAA1")
+    # print("ok")
     # print(reroute)
     # print(edit_user_id)
 
@@ -212,11 +233,91 @@ def admin_panel():
     non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
     return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
 
+#Ranking
+@routes.route('/ranking')
+def rank():
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+
+    #poziomy trudności - domyślnie 'easy'
+    selected_difficulty = f.request.args.get("difficulty", "easy")
+    difficulties = ['easy', 'intermediate', 'hard', 'expert']
+    if selected_difficulty not in difficulties:
+        selected_difficulty = 'easy'
+
+    #pobranie najlepszych wyników (najmniejszy czas) dla wybranego poziomu trudności
+    results = (
+        db.session.query(GameResult, User.username)
+        .join(User, GameResult.user_id == User.user_id)
+        .filter(GameResult.difficulty == selected_difficulty)
+        .order_by(GameResult.time_finished.asc())
+        .limit(5)
+        .all()
+    )
+
+    #brak gier dla wybranego poziomu trudności
+    if not results:
+        f.flash(f'Ranking not available for this level yet!', 'warning')
+
+    #przygotowanie danych do wyświetlenia
+    ranking_data = []
+    for idx, (game, username) in enumerate(results, start=1):
+        ranking_data.append({
+            'place': idx,
+            'username': username,
+            'difficulty': game.difficulty,
+            'time': game.time_finished,
+            'date': game.date_played.strftime('%Y-%m-%d')
+        })
+
+    return f.render_template('ranking.html', ranking_data=ranking_data, selected_difficulty=selected_difficulty, logged_user_data=f.session, admin=is_admin)
+
+#format ilości godzin dla Statystyk
+@routes.app_template_filter('format_seconds')
+def format_seconds(seconds):
+    if not seconds:
+        return "0s"
+    seconds = int(seconds)
+    days, seconds = divmod(seconds, 86400)
+    hours, seconds = divmod(seconds, 3600)
+    minutes, seconds = divmod(seconds, 60)
+    parts = []
+    if days:
+        parts.append(f"{days}d")
+    if hours:
+        parts.append(f"{hours}h")
+    if minutes:
+        parts.append(f"{minutes}m")
+    if seconds or not parts:
+        parts.append(f"{seconds}s")
+    return " ".join(parts)
+
+#Statystyki
 @routes.route('/statistics')
 def stats():
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
-    return f.render_template('stats.html', logged_user_data = f.session, admin = is_admin)
+
+    #poziomy trudności ; domyślnie - "easy"
+    selected_difficulty = f.request.args.get("difficulty", "easy")
+    difficulties = ['easy', 'intermediate', 'hard', 'expert']
+    if selected_difficulty not in difficulties:
+        selected_difficulty = 'easy'
+
+    total_games = db.session.query(func.count(GameResult.result_id)).filter_by(difficulty=selected_difficulty).scalar() or 0
+
+    #brak gier dla wybranego poziomu trudności
+    if total_games == 0:
+        f.flash(f'Statistics not available for this level yet!', 'warning')
+
+    total_players = db.session.query(func.count(func.distinct(GameResult.user_id))).filter_by(difficulty=selected_difficulty).scalar() or 0
+
+    total_playtime = db.session.query(func.sum(GameResult.time_finished)).filter_by(difficulty=selected_difficulty).scalar() or 0
+
+    your_total_playtime = db.session.query(func.sum(GameResult.time_finished)).filter_by(difficulty=selected_difficulty, user_id=user_id).scalar() or 0
+
+    return f.render_template('stats.html', logged_user_data=f.session, admin=is_admin, selected_difficulty=selected_difficulty, total_games=total_games, total_players=total_players, total_playtime=total_playtime, your_total_playtime=your_total_playtime)
+
     
 @routes.route('/my_games')
 def history():
@@ -342,7 +443,7 @@ def handle_register():
 def edit():
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
-    # print("PUUUUUUUPCIAAAAAAAAAAAAA2")
+    # print("ok")
     # print(reroute)
     # print(edit_user_id)
 

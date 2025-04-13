@@ -68,29 +68,44 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
 
-				<div class="d-flex justify-content-center align-items-center">
+                {% if logged_user_data.username %}
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="text-white me-2">Hello, {{ logged_user_data.username }}!</span>
 
-					<span class="text-white me-2">Hello, {{logged_user_data.username}}!</span>
+                        {% if admin %}
 
-					{% if admin %}
+                            <a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('routes.admin_panel') }} " role="button">
+                                Admin Panel
+                            </a>
 
-						<a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('routes.admin_panel') }} " role="button">
-							Admin Panel
-						</a>
+                        {% endif %}
 
-					{% endif %}
+                        <form action="{{ url_for('routes.handle_logout') }}" method="POST">
 
-					<form action="{{ url_for('routes.handle_logout') }}" method="POST">
+                            <li class="nav-item">
+                                <button class="btn btn-primary me-2 d-inline-flex align-items-center" type="submit">
+                                    Log out
+                                </button>
+                            </li>
 
-						<li class="nav-item">
-							<button class="btn btn-primary me-2 d-inline-flex align-items-center" type="submit">
-								Log out
-							</button>
-						</li>
+                        </form>
 
-					</form>
+                    </div>
 
-				</div>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('routes.login') }} " role="button">
+                            Log in
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="btn btn-success me-2 d-inline-flex align-items-center" href="{{ url_for('routes.register') }} " role="button">
+                            Sign up
+                        </a>
+                    </li>
+
+                {% endif %}
 
                 <li class="nav-item dropdown">
 
@@ -102,9 +117,7 @@
                         <li><a class="dropdown-item" href="#">English</a></li>
                         <li><a class="dropdown-item" href="#">Polski</a></li>
                     </ul>
-					
                 </li>
-
             </ul>
         </div>
 	</div>
@@ -149,61 +162,56 @@
 					
 					<div class="d-flex gap-2 m-3 mt-4">
 
-						<button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button">
-								<i class="bi bi-emoji-smile-fill"></i> Easy
-						</button>
-
-						<button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button">
-								<i class="bi bi-emoji-neutral-fill"></i> Intermediate
-						</button>
-
-						<button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button">
-								<i class="bi bi-emoji-angry-fill"></i> Hard
-						</button>
-
-						<button class="btn btn-lg btn-outline-secondary flex-fill" type="button">
-								<i class="bi bi-emoji-dizzy-fill"></i> Expert
-						</button>
+						<a href="{{ url_for('routes.rank') }}?difficulty=easy" class="btn btn-lg btn-outline-success flex-fill {% if selected_difficulty == 'easy' %}active{% endif %}">
+                            <i class="bi bi-emoji-smile-fill"></i> Easy
+                        </a>
+                        
+                        <a href="{{ url_for('routes.rank') }}?difficulty=intermediate" class="btn btn-lg btn-outline-warning flex-fill {% if selected_difficulty == 'intermediate' %}active{% endif %}">
+                            <i class="bi bi-emoji-neutral-fill"></i> Intermediate
+                        </a>
+                        
+                        <a href="{{ url_for('routes.rank') }}?difficulty=hard" class="btn btn-lg btn-outline-danger flex-fill {% if selected_difficulty == 'hard' %}active{% endif %}">
+                            <i class="bi bi-emoji-angry-fill"></i> Hard
+                        </a>
+                        
+                        <a href="{{ url_for('routes.rank') }}?difficulty=expert" class="btn btn-lg btn-outline-secondary flex-fill {% if selected_difficulty == 'expert' %}active{% endif %}">
+                            <i class="bi bi-emoji-dizzy-fill"></i> Expert
+                        </a>  
 
 					</div>
 
 					<div class="card-body d-flex flex-column justify-content-center align-items-center">
 						<div class="w-100 m-5 overflow-auto" style="max-height:400px">
                             
-                            <!--poniższy kod musi być wywołany w pętli-->
+                            {% for entry in ranking_data %}
 							<div class="d-flex justify-content-between w-100 p-3 border-bottom border-secondary">
                                 <div class="d-flex flex-column justify-content-between w-100 p-3">
                                     <strong>Place:</strong> 
-                                    <!--<span>{#{{ logged_user_data.username }}#}</span>-->
-                                    <span>1</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    {{ entry.place }}
                                 </div>
 
                                 <div class="d-flex flex-column justify-content-between w-100 p-3">
                                     <strong>Username:</strong> 
-                                    <!--<span>{#{{ logged_user_data.registration_date }}#}</span>-->
-                                    <span>testuser</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    <span>{{ entry.username }}</span>
                                 </div>
 
                                 <div class="d-flex flex-column justify-content-between w-100 p-3">
                                     <strong>Difficulty:</strong> 
-                                    <!--<span>{#{{ logged_user_data.email }}#}</span>-->
-                                    <span>Expert</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    <span>{{ entry.difficulty }}</span>
                                 </div>
 
                                 <div class="d-flex flex-column justify-content-between w-100 p-3">
                                     <strong>Time:</strong> 
-                                    <!--<span>{#{{ logged_user_data.registration_date }}#}</span>-->
-                                    <span>5:46</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    <span>{{ entry.time }}</span>
                                 </div>
 								
 								<div class="d-flex flex-column justify-content-between w-100 p-3">
                                     <strong>Date:</strong> 
-                                    <!--<span>{#{{ logged_user_data.registration_date }}#}</span>-->
-                                    <span>Fri, 04 Apr 2025 00:00:00 GMT</span> <!--Trzeba użyć tego zakomentowanego spana powyżej (ten to tylko test), usunąć klamerkę i # na początku i końcu-->
+                                    <span>{{ entry.date }}</span>
                                 </div>
                                 
 							</div>
-                            <!--W pętli aż dotąd-->    
+                            {% endfor %}
 
 						</div>
 
