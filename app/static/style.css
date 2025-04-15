@@ -12,6 +12,7 @@
 
 .custom-link{
 	color: white;
+    cursor: pointer;
 }
 
 .custom-link:hover{

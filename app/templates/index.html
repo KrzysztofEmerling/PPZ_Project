@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="{{ get_locale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,7 +48,7 @@
 {% block content %}{% endblock %}
 
 <div id="alert" class="alert alert-danger alert-dismissible fade show w-25 fixed-alert d-none" role="alert">
-    <p>Error loading the board: File not found (404).</p>
+    <p>{{ _('Error loading the board: File not found (404).') }}</p>
     <button type="button" class="btn-close" onclick="hideErrorDisplay()"></button>
 </div>
 
@@ -60,8 +60,8 @@
         </div>
 
         <div class="text-center mt-3">
-            <span>If you want to start a new game, close this</span><br>
-            <span>window and choose difficulty for the next one!</span>
+            <span>{{ _("If you want to start a new game, close this") }}</span><br>
+            <span>{{ _("window and choose difficulty for the next one!") }}</span>
         </div>
     </div>
     <button type="button" class="btn-close" onclick="hideResultDisplay()"></button>
@@ -88,11 +88,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
 
-                {% if logged_user_data %}
+                {% if logged_user_data and logged_user_data.username %}
 
                     <div class="d-flex justify-content-center align-items-center">
 
-                        <span class="text-white me-2">Hello, {{logged_user_data.username}}!</span>
+                        <span class="text-white me-2">{{ _('Hello') }}, {{logged_user_data.username}}!</span>
 
                         {% if admin %}
 
@@ -106,7 +106,7 @@
 
                             <li class="nav-item">
                                 <button class="btn btn-primary me-2 d-inline-flex align-items-center" type="submit">
-                                    Log out
+                                    {{ _('Log out') }}
                                 </button>
                             </li>
 
@@ -118,13 +118,13 @@
 
                     <li class="nav-item">
                         <a class="btn btn-outline-light me-2 d-inline-flex align-items-center" href="{{ url_for('routes.login') }} " role="button">
-                            Log in
+                            {{ _('Log in') }}
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="btn btn-success me-2 d-inline-flex align-items-center" href="{{ url_for('routes.register') }} " role="button">
-                            Sign up
+                            {{ _('Sign up') }}
                         </a>
                     </li>
 
@@ -133,12 +133,12 @@
                 <li class="nav-item dropdown">
 
                     <a class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Language
+                        {{ _('Language') }}
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">English</a></li>
-                        <li><a class="dropdown-item" href="#">Polski</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('routes.home_set_lang', lang='en') }}">English</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('routes.home_set_lang', lang='pl') }}">Polski</a></li>
                     </ul>
 
                 </li>
@@ -160,22 +160,22 @@
 
                         <form action="{{ url_for('routes.myprof_from_index') }}" method="POST">
                             <a class="nav-link active custom-link" onclick="this.closest('form').submit();">
-                                <i class="bi bi-person-fill"></i>&nbsp;&nbsp;My profile
+                                <i class="bi bi-person-fill"></i>&nbsp;&nbsp;{{ _('My profile') }}
                             </a>
                         </form>
 
                         <form action="{{ url_for('routes.mygames_from_index') }}" method="POST">
                             <a class="nav-link active custom-link" onclick="this.closest('form').submit();">
-                                <i class="bi bi-joystick"></i>&nbsp;&nbsp;My games
+                                <i class="bi bi-joystick"></i>&nbsp;&nbsp;{{ _('My games') }}
                             </a>
                         </form>    
 
 						<li class="nav-item">
-							<a class="nav-link custom-link" href="{{ url_for('routes.ranking') }}"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;Ranking</a>
+							<a class="nav-link custom-link" href="{{ url_for('routes.ranking') }}"><i class="bi bi-people-fill"></i>&nbsp;&nbsp;{{ _('Ranking') }}</a>
 						</li>
 
 						<li class="nav-item">
-							<a class="nav-link custom-link" href="{{ url_for('routes.stats') }}"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Statistics</a>
+							<a class="nav-link custom-link" href="{{ url_for('routes.stats') }}"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;{{ _('Statistics') }}</a>
 						</li>
 
 					</ul>
@@ -183,19 +183,19 @@
                 
                 <!-- Prawa kolumna -->
                 <div class="bg-dark">
-                    <h2 class="border-bottom border-secondary p-2 text-center">Start new game</h2>
+                    <h2 class="border-bottom border-secondary p-2 text-center">{{ _('Start new game') }}</h2>
                     <div class="d-flex gap-2 m-3 mt-4">
                         <button class="btn btn-lg btn-easy btn-outline-success flex-fill" type="button" onclick="startGame('easy')">
-                            <i class="bi bi-emoji-smile-fill"></i> Easy
+                            <i class="bi bi-emoji-smile-fill"></i> {{ _('Easy') }}
                         </button>
                         <button class="btn btn-lg btn-medium btn-outline-warning flex-fill" type="button" onclick="startGame('medium')">
-                            <i class="bi bi-emoji-neutral-fill"></i> Intermediate
+                            <i class="bi bi-emoji-neutral-fill"></i> {{ _('Intermediate') }}
                         </button>
                         <button class="btn btn-lg btn-hard btn-outline-danger flex-fill" type="button" onclick="startGame('hard')">
-                            <i class="bi bi-emoji-angry-fill"></i> Hard
+                            <i class="bi bi-emoji-angry-fill"></i> {{ _('Hard') }}
                         </button>
                         <button class="btn btn-lg btn-outline-secondary flex-fill" type="button" onclick="startGame('diabolical')">
-                            <i class="bi bi-emoji-dizzy-fill"></i> Expert
+                            <i class="bi bi-emoji-dizzy-fill"></i> {{ _('Expert') }}
                         </button>
                     </div>
                     
@@ -237,23 +237,25 @@
 
                         <div class="container w-25 mt-3 border-bottom border-secondary p-3">
                             <div class="d-flex justify-content-between fs-2">
-                                <span>Time:</span>
+                                <span>{{ _('Time') }}:</span>
                                 <span id="timer">00:00</span>
                             </div>
                         </div>
                         
                     </div>
 					
-					<h2 class="border-bottom border-secondary p-2 mt-5 text-center">How to play?</h2>
+					<h2 class="border-bottom border-secondary p-2 mt-5 text-center">{{ _('How to play?') }}</h2>
 
 					<div class="m-5 mt-4">
-						Sudoku is a logic-based puzzle game where the goal is to fill a 9x9 grid with numbers from 1 to 9. <br>The grid is divided into 9 smaller 3x3 subgrids (regions). <br><br>The basic rules are:
+						{{ _('Sudoku is a logic-based puzzle game where the goal is to fill a 9x9 grid with numbers from 1 to 9.') }}<br>
+                        {{ _('The grid is divided into 9 smaller 3x3 subgrids (regions).') }}<br><br>
+                        {{ _('The basic rules are:') }}
 						<ul>
-							<li>Each row must contain every number from 1 to 9, with no repetition.</li>
-							<li>Each column must contain every number from 1 to 9, with no repetition.</li>
-							<li>Each 3x3 subgrid must contain every number from 1 to 9, with no repetition.</li>
+							<li>{{ _('Each row must contain every number from 1 to 9, with no repetition.') }}</li>
+							<li>{{ _('Each column must contain every number from 1 to 9, with no repetition.') }}</li>
+							<li>{{ _('Each 3x3 subgrid must contain every number from 1 to 9, with no repetition.') }}</li>
 						</ul>
-						Some cells are pre-filled with numbers, and the player must use logic to fill in the remaining cells according to these rules.
+						{{ _('Some cells are pre-filled with numbers, and the player must use logic to fill in the remaining cells according to these rules.') }}
 					</div>
                     				
                 </div>

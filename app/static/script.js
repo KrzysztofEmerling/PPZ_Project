@@ -4,8 +4,9 @@ let boardMask;
 let history = [];
 let timerInterval;
 let seconds = 0;
+let lang = document.documentElement.lang;
 
-const winMessages = [
+const winMessagesEN = [
     "Congratulations! 🎉",
     "Well done! 🎉",
     "Great job! 👍",
@@ -21,9 +22,30 @@ const winMessages = [
     "Sherlock would be proud. 🕵️‍♂️",
     "Brains of steel! 🤯",
     "Your brain deserves a trophy. 🏅",
-    "Big brain energy! 🧠",
+    "Big brain moment! 🧠",
     "GG, nice solve bro. 👏",
     "And they said it couldn’t be done. 🤷‍♂️"
+];
+
+const winMessagesPL = [
+    "Gratulacje! 🎉",
+    "Dobra robota! 🎉",
+    "Świetna robota! 👍",
+    "Udało się! 👏",
+    "Zagadkę rozwiązano! 🧩",
+    "Zwycięstwo! 🏆",
+    "Sukces! ✅",
+    "Świetnie Ci poszło! 🙌",
+    "Imponujące! 😲",
+    "Huge W! 💪",
+    "Złamałeś kod! 🔓",
+    "Winner winner, Sudoku dinner! 🍽️",
+    "Sherlock byłby dumny. 🕵️‍♂️",
+    "Mózg ze stali! 🤯",
+    "Twój mózg zasługuje na trofeum. 🏅",
+    "Big brain moment! 🧠",
+    "GG, dobra robota, byku. 👏",
+    "A mówili, że się nie da. 🤷‍♂️"
 ];
 
 // czysci historie
@@ -93,7 +115,7 @@ function createBoard(board) {
     let cellIndex = 0;
 
     currentBoard = board;
-    //console.log(board);
+    console.log(board);
     boardMask = createBoardMask(board);
     //console.log(boardMask);
     clearHistory();
@@ -317,21 +339,48 @@ function checkSolution() {
         });
         if(solutionChecker(solution)){
             stopTimer();
-            const randomMsg = winMessages[Math.floor(Math.random() * winMessages.length)]
 
-            document.getElementById("result-alert").classList.remove('d-none');
-            
-            document.getElementById("win-title").textContent=randomMsg;
-            
-            if (seconds >= 3600) {
-                const hours = Math.floor(seconds / 3600);
-                const minutes = Math.floor((seconds % 3600) / 60);
-                const remainingSeconds = seconds % 60;
-                document.getElementById("win-message").textContent=`You've just solved ${currentDifficulty} sudoku puzzle in ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-            } else {
-                const minutes = Math.floor(seconds / 60);
-                const remainingSeconds = seconds % 60;
-                document.getElementById("win-message").textContent=`You've just solved ${currentDifficulty} sudoku puzzle in ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            if(lang === "en"){
+                const randomMsg = winMessagesEN[Math.floor(Math.random() * winMessagesEN.length)]
+
+                document.getElementById("result-alert").classList.remove('d-none');
+                
+                document.getElementById("win-title").textContent=randomMsg;
+                
+                if (seconds >= 3600) {
+                    const hours = Math.floor(seconds / 3600);
+                    const minutes = Math.floor((seconds % 3600) / 60);
+                    const remainingSeconds = seconds % 60;
+                    document.getElementById("win-message").textContent=`You've just solved ${currentDifficulty} sudoku puzzle in ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+                } else {
+                    const minutes = Math.floor(seconds / 60);
+                    const remainingSeconds = seconds % 60;
+                    document.getElementById("win-message").textContent=`You've just solved ${currentDifficulty} sudoku puzzle in ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+                }
+            } else if(lang === "pl"){
+                const randomMsg = winMessagesPL[Math.floor(Math.random() * winMessagesPL.length)]
+
+                document.getElementById("result-alert").classList.remove('d-none');
+                
+                document.getElementById("win-title").textContent=randomMsg;
+
+                let translatedDifficulty;
+
+                if(currentDifficulty === "easy") translatedDifficulty = "łatwą";
+                else if(currentDifficulty === "medium") translatedDifficulty = "średniozaawansowaną";
+                else if(currentDifficulty === "hard") translatedDifficulty = "trudną";
+                else if(currentDifficulty === "diabolical") translatedDifficulty = "ekspercką";
+                
+                if (seconds >= 3600) {
+                    const hours = Math.floor(seconds / 3600);
+                    const minutes = Math.floor((seconds % 3600) / 60);
+                    const remainingSeconds = seconds % 60;
+                    document.getElementById("win-message").textContent=`Właśnie rozwiązałeś ${translatedDifficulty} krzyżówkę sudoku w ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+                } else {
+                    const minutes = Math.floor(seconds / 60);
+                    const remainingSeconds = seconds % 60;
+                    document.getElementById("win-message").textContent=`Właśnie rozwiązałeś ${translatedDifficulty} krzyżówkę sudoku w ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+                }
             }
 
             document.querySelectorAll('.sudoku-cell').forEach(cell => {
