@@ -17,13 +17,6 @@ app.config["SECRET_KEY"] = "your_secret_key"
 
 db.init_app(app)
 
-
-#migrate = Migrate(app, db)
-#flask db init to utworzy folder migrations potem juz nie trzeba tego pisac
-#flask db migrate -m "dowolna nazwa migracji"
-#flask db upgrade
-
-
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

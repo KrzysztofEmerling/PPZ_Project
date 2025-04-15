@@ -143,34 +143,34 @@ function createBoard(board) {
 
 // funkcja walidujaca wprowadzane dane
 function inputValidation(){
-    const activeCell = document.querySelector('.sudoku-cell.active');
+    document.addEventListener('keydown', (event) => {
+        const activeCell = document.querySelector('.sudoku-cell.active');
+        if (!activeCell) return;
 
-    if (activeCell) {
         const i = parseInt(activeCell.dataset.index);
-        if (boardMask[i] === '0') { // tylko edytowalne pole może słuchać inputu
-            activeCell.addEventListener('keydown', (event) => {
-                const key = event.key;
 
-                // dozwolone tylko 1-9, backspace i delete
-                if (!/^[1-9]$/.test(key) && key !== 'Backspace' && key !== 'Delete') {
-                    event.preventDefault();
-                    return;
-                }
+        // tylko jeśli pole jest edytowalne (czyli '0' w masce)
+        if (boardMask[i] === '0') {
+            const key = event.key;
 
-                // blokada jeśli już jest cyfra i próbujemy wpisać nową
-                if (activeCell.textContent.length >= 1 && /^[1-9]$/.test(key)) {
-                    event.preventDefault();
-                    return;
-                }
-            });
-        } else {
-            // nieedytowalne pole — zawsze blokuj input
-            activeCell.addEventListener('keydown', (event) => {
+            // tylko cyfry 1-9, backspace i delete
+            if (!/^[1-9]$/.test(key) && key !== 'Backspace' && key !== 'Delete') {
                 event.preventDefault();
                 return;
-            });
+            }
+
+            // jeśli już jest cyfra, nie pozwalamy wpisać kolejnej
+            if (activeCell.textContent.length >= 1 && /^[1-9]$/.test(key)) {
+                event.preventDefault();
+                return;
+            }
+
+        } else {
+            // nieedytowalne pole – blokuj
+            event.preventDefault();
+            return;
         }
-    }
+    });
 }
 
 // funkcja podswietlajaca wszystkie komorki w pionie i poziomie oraz takie same cyfry

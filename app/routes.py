@@ -169,45 +169,16 @@ def username_validator_corrector(username):
 
 @routes.route('/')
 def home():
-    print(GameResult.__table__.columns.keys())
-
-    test = GameResult.query.all()
-    for game in test:
-        print(f"result_id: {game.result_id}, user_id: {game.user_id}, difficulty: {game.difficulty}, date_played: {game.date_played}, time_finished: {game.time_finished}")
-
-    # Pobierz inspektora bazy danych
-    inspector = inspect(db.engine)
-
-    # Lista wszystkich tabel w bazie
-    tables = inspector.get_table_names()
-
-    # Wyświetl nagłówki kolumn dla każdej tabeli
-    for table_name in tables:
-        print(f"Tabela: {table_name}")
-        columns = inspector.get_columns(table_name)
-        for column in columns:
-            print(f"  - {column['name']} ({column['type']})")
-
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
     print("Zalogowany user_id:", user_id)
     print("Czy admin:", is_admin)
     return f.render_template('index.html', logged_user_data = f.session, admin = is_admin)
 
-@routes.route('/my_profile')
-def user():
-    user_id = f.session.get("user_id")
-    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
-    return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
-
 @routes.route('/edit_user', methods=['POST'])
 def edit_user():
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
-    # print("ok")
-    # print(reroute)
-    # print(edit_user_id)
-
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
     return f.render_template('edit_user.html', logged_user_data = f.session, admin = is_admin, reroute = reroute, edit_user_id = edit_user_id)
@@ -215,10 +186,6 @@ def edit_user():
 @routes.route('/login')
 def login():
     return f.render_template('login.html')
-
-@routes.route('/game')
-def game():
-    return f.render_template('game.html')
 
 @routes.route('/register')
 def register():
@@ -233,9 +200,8 @@ def admin_panel():
     non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
     return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
 
-#Ranking
 @routes.route('/ranking')
-def rank():
+def ranking():
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
 
@@ -292,7 +258,6 @@ def format_seconds(seconds):
         parts.append(f"{seconds}s")
     return " ".join(parts)
 
-#Statystyki
 @routes.route('/statistics')
 def stats():
     user_id = f.session.get("user_id")
@@ -317,21 +282,7 @@ def stats():
     your_total_playtime = db.session.query(func.sum(GameResult.time_finished)).filter_by(difficulty=selected_difficulty, user_id=user_id).scalar() or 0
 
     return f.render_template('stats.html', logged_user_data=f.session, admin=is_admin, selected_difficulty=selected_difficulty, total_games=total_games, total_players=total_players, total_playtime=total_playtime, your_total_playtime=your_total_playtime)
-
-    
-@routes.route('/my_games')
-def history():
-    user_id = f.session.get("user_id")
-    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
-    games = GameResult.query.filter_by(user_id=user_id).all()
-    return f.render_template('history.html', logged_user_data = f.session, admin = is_admin, user_games = games)
-    
-@routes.route('/ranking')
-def ranking():
-    user_id = f.session.get("user_id")
-    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
-    return f.render_template('ranking.html', logged_user_data = f.session, admin = is_admin)
-
+   
 @routes.route('/user_panel', methods=['POST'])
 def myprof_from_index():
     if "email" in f.session and "password" in f.session:
@@ -343,12 +294,13 @@ def myprof_from_index():
         f.flash("You are not logged in", "danger")
         return f.redirect(f.url_for('routes.login'))
 
-@routes.route('/user_panel', methods=['POST'])
+@routes.route('/my_games', methods=['POST'])
 def mygames_from_index():
     if "email" in f.session and "password" in f.session:
         user_id = f.session.get("user_id")
         is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
-        return f.render_template('history.html', logged_user_data = f.session, admin = is_admin)
+        games = GameResult.query.filter_by(user_id=user_id).all()
+        return f.render_template('history.html', logged_user_data = f.session, admin = is_admin, user_games = games)
     
     else:
         f.flash("You are not logged in", "danger")
@@ -443,9 +395,6 @@ def handle_register():
 def edit():
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
-    # print("ok")
-    # print(reroute)
-    # print(edit_user_id)
 
     username_edit = f.request.form.get('username_edit')
     email_edit = f.request.form.get('email_edit')
@@ -592,7 +541,7 @@ def edit():
             return "Shadow realm wrong reroute data"
 
     else:
-        #this is a shadow realm. If user is here, something got fucked up
+        #this is a shadow realm.
         #user shown in list MUST exist.
         return "Shadow realm no reroute"
      

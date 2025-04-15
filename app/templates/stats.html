@@ -199,10 +199,14 @@
                                     <span>{{ total_playtime | format_seconds }}</span>
                                 </div>
 								
+                                {% if logged_user_data %}
+
 								<div class="d-flex flex-column justify-content-between w-100 p-3">
                                     <strong>Your total playtime:</strong> 
                                     <span>{{ your_total_playtime | format_seconds }}</span>
                                 </div>
+                                
+                                {% endif %}
                                 
 							</div>   
 

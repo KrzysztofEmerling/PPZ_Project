@@ -162,19 +162,19 @@
 					
 					<div class="d-flex gap-2 m-3 mt-4">
 
-						<a href="{{ url_for('routes.rank') }}?difficulty=easy" class="btn btn-lg btn-outline-success flex-fill {% if selected_difficulty == 'easy' %}active{% endif %}">
+						<a href="{{ url_for('routes.ranking') }}?difficulty=easy" class="btn btn-lg btn-outline-success flex-fill {% if selected_difficulty == 'easy' %}active{% endif %}">
                             <i class="bi bi-emoji-smile-fill"></i> Easy
                         </a>
                         
-                        <a href="{{ url_for('routes.rank') }}?difficulty=intermediate" class="btn btn-lg btn-outline-warning flex-fill {% if selected_difficulty == 'intermediate' %}active{% endif %}">
+                        <a href="{{ url_for('routes.ranking') }}?difficulty=intermediate" class="btn btn-lg btn-outline-warning flex-fill {% if selected_difficulty == 'intermediate' %}active{% endif %}">
                             <i class="bi bi-emoji-neutral-fill"></i> Intermediate
                         </a>
                         
-                        <a href="{{ url_for('routes.rank') }}?difficulty=hard" class="btn btn-lg btn-outline-danger flex-fill {% if selected_difficulty == 'hard' %}active{% endif %}">
+                        <a href="{{ url_for('routes.ranking') }}?difficulty=hard" class="btn btn-lg btn-outline-danger flex-fill {% if selected_difficulty == 'hard' %}active{% endif %}">
                             <i class="bi bi-emoji-angry-fill"></i> Hard
                         </a>
                         
-                        <a href="{{ url_for('routes.rank') }}?difficulty=expert" class="btn btn-lg btn-outline-secondary flex-fill {% if selected_difficulty == 'expert' %}active{% endif %}">
+                        <a href="{{ url_for('routes.ranking') }}?difficulty=expert" class="btn btn-lg btn-outline-secondary flex-fill {% if selected_difficulty == 'expert' %}active{% endif %}">
                             <i class="bi bi-emoji-dizzy-fill"></i> Expert
                         </a>  
 
