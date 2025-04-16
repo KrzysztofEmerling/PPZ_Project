@@ -235,7 +235,7 @@ def myprof_from_index():
         return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
     
     else:
-        f.flash(_("You are not logged in"), "danger")
+        f.flash(_("You are not logged in."), "danger")
         return f.redirect(f.url_for('routes.login'))
     
 @routes.route('/my_games', methods=['POST'])
@@ -247,7 +247,7 @@ def mygames_from_index():
         return f.render_template('history.html', logged_user_data = f.session, admin = is_admin, user_games = games)
     
     else:
-        f.flash(_("You are not logged in"), "danger")
+        f.flash(_("You are not logged in."), "danger")
         return f.redirect(f.url_for('routes.login'))
 
 # ====================================================
@@ -514,14 +514,14 @@ def handle_register():
         f.flash(_("Register successed. You can log in."), "success")
     except:
         #shadow realm, user should never see this
-        f.flash(_("Register failed"), "warning")
+        f.flash(_("Register failed."), "warning")
     
     return f.render_template('login.html')
 
 @routes.route('/handle_logout', methods=['POST'])
 def handle_logout():
     f.session.clear()
-    f.flash(_("Logout successed"), "success")
+    f.flash(_("Logout successful."), "success")
     return f.render_template('login.html')
 
 @routes.route('/edit', methods=['POST'])
