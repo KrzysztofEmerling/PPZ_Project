@@ -3,8 +3,20 @@ from models import db, User, Admin, GameResult
 from datetime import datetime, timezone
 from sqlalchemy import func, inspect #func - potrzebna do napisania funkcji takich jak count(), distinct(), sum() itp.
 from flask_babel import gettext as _
+import bcrypt
 
 routes = f.Blueprint('routes', __name__)
+def hash_password(plain_password):
+    """Haszuje hasło z użyciem bcrypt i soli."""
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(plain_password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')
+
+def check_password(plain_password, hashed_password):
+    try:
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    except ValueError:
+        return False
 
 # ============== obsługa zmiany jezykow ==============
 
@@ -438,30 +450,29 @@ def handle_login():
     email_input_login = f.request.form.get('email_input_login')
     password_input_login = f.request.form.get('password_input_login')
 
-    email_exists_db = User.query.filter_by(email=email_input_login).first()
-    username_exists_db = User.query.filter_by(email=email_input_login, password=password_input_login).first()
-
-    if not email_exists_db:
+    email_entity = User.query.filter_by(email=email_input_login).first()
+    
+    if not email_entity:
         f.flash(_("Email doesn't exist in database!"), "danger")
         return f.render_template('login.html', logged_user_data = f.session)
-    
-    elif not username_exists_db:
-        f.flash(_("Wrong password!"), "danger")
-        return f.render_template('login.html', logged_user_data = f.session)
-    
-    else:
-        user = db.session.query(User).filter_by(email=email_input_login, password = password_input_login).first()
-        f.session["email"] = email_input_login
-        f.session["password"] = password_input_login
-        f.session["username"] = user.username
-        f.session["user_id"] = user.user_id
-        f.session["registration_date"] = user.registration_date
-        # for key in f.session.keys():
-        #     print(key)
-        
-        f.flash(_("Login successed!"), "success")
-        return f.redirect(f.url_for('routes.home'))
 
+    if not check_password(password_input_login, email_entity.password):
+        f.flash(_("Wrong password!"), "danger")
+        return f.render_template('login.html', logged_user_data=f.session) 
+
+    # email exists in database and password matches the hashed one
+    # - can proceed with login process
+    f.session["email"] = email_input_login
+    f.session["password"] = email_entity.password
+    f.session["username"] = email_entity.username
+    f.session["user_id"] = email_entity.user_id
+    f.session["registration_date"] = email_entity.registration_date
+    # for key in f.session.keys():
+    #     print(key)
+    
+    f.flash(_("Login successed!"), "success")
+    return f.redirect(f.url_for('routes.home'))
+    
 @routes.route('/handle_register', methods=['POST'])
 def handle_register():
     email_input_reg = f.request.form.get('email_input_reg')
@@ -507,8 +518,11 @@ def handle_register():
         return f.render_template('register.html')
 
     try:
-        #user can be now legally added - add user
-        user = User(email=email_input_reg, username=username_input_reg, password=password_input_reg)
+        #hashed password to be saved into database
+        hashed_password = hash_password(password_input_reg)
+
+        #user can be now legally added - add user with hashed password
+        user = User(email=email_input_reg, username=username_input_reg, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         f.flash(_("Register successed. You can log in."), "success")
@@ -608,14 +622,17 @@ def edit():
             #if old password was input...
             if oldpassword_edit != "":
                 #if old password matches
-                if oldpassword_edit == edit_user_password:
+                if check_password(oldpassword_edit, edit_user_password):
+                    print("Password is correct")
                     #if new password was input...
                     if newpassword_edit != "":
                         if is_password_alright(newpassword_edit):
                             #if confirm password was input and matches new password
                             if confirmpassword_edit and newpassword_edit == confirmpassword_edit:
-                                user.password = newpassword_edit
-                                f.session["password"] = newpassword_edit
+                                hashed_password = hash_password(newpassword_edit)
+                                print(f"Zahashowane nowe hasło: {hashed_password}")
+                                user.password = hashed_password
+                                f.session["password"] = hashed_password
                                 db.session.commit()
                             else:
                                 f.flash(_("New and confirm passwords do not match."), "warning")
