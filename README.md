@@ -65,17 +65,26 @@ Baza Danych: SQLAlchemy
 │   │   ├── index.html
 │   │   ├── login.html
 │   │   ├── register.html
-│   │   ├── game.html
+│   │   ├── ranking.html
+│   │   ├── stats.html
 │   │   ├── history.html
 │   │   ├── admin.html
 │   │   ├── user.html
 │   │   └── edit_user.html
 │   ├── /vendor
 │   │   └── /sudoku-exchange-puzzle-bank
+│   ├── /translations
+│   │   └── /pl
+│   │   	└── /LC_MESSAGES
+│   │   		├── messages.mo
+│   │   		└── messages.po
+│   ├── /instance
+│   │   └── database.db
 │   ├── models.py
 │   ├── routes.py
 │   ├── app.py
-│   └── database.db
+│   ├── babel.cfg
+│   ├── messages.pot
 └── requirements.txt
 ~~~
 

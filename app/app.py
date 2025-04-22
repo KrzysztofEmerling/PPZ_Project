@@ -1,19 +1,32 @@
 import flask as f
+from routes import routes
 from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy import inspect, text
-
 from datetime import datetime, timezone
 from models import User, Admin, GameResult, db
-from routes import routes
+from flask_babel import Babel
 
 app = f.Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 app.config["SECRET_KEY"] = "your_secret_key"
 
 db.init_app(app)
 
-app.register_blueprint(routes)
+babel = Babel(app)
+
+def get_locale():
+    return f.session.get('lang', 'en')
+
+babel.init_app(app, locale_selector=get_locale)
+
+@app.context_processor
+def inject_locale():
+    return dict(get_locale=get_locale)
+
+app.register_blueprint(routes) #dodaje zestaw tras (routes) do aplikacji
 
 if __name__ == '__main__':
     with app.app_context():

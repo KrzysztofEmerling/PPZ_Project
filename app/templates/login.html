@@ -72,12 +72,12 @@
                 <li class="nav-item dropdown">
 
                     <a class="btn btn-outline-light me-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Language
+                        {{ _('Language') }}
                     </a>
-                    
+
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">English</a></li>
-                        <li><a class="dropdown-item" href="#">Polski</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('routes.login_set_lang', lang='en') }}">English</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('routes.login_set_lang', lang='pl') }}">Polski</a></li>
                     </ul>
 
                 </li>
@@ -94,29 +94,29 @@
 
             <form action="{{ url_for('routes.handle_login') }}" method="POST">
 
-                <h1 class="h3 mb-3 fw-normal">Please log in</h1>
+                <h1 class="h3 mb-3 fw-normal">{{ _('Please log in') }}</h1>
           
                 <!-- zmienna name w inputs odpowiada za identyfikacje obiektu -->
                 <div class="form-floating">
                     <input type="email" class="form-control bg-dark text-white border-secondary" id="floatingInput" name="email_input_login" placeholder="name@example.com">
-                    <label for="floatingInput">Email address</label>
+                    <label for="floatingInput">{{ _('Email address') }}</label>
                 </div>
 
                 <div class="form-floating">
                     <input type="password" class="form-control bg-dark text-white border-secondary mt-1" id="floatingPassword" name="password_input_login" placeholder="Password">
-                    <label for="floatingPassword">Password</label>
+                    <label for="floatingPassword">{{ _('Password') }}</label>
                 </div>
             
                 <div class="form-check text-start my-3">
                     <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
                     <label class="form-check-label" for="flexCheckDefault">
-                    Remember me
+                        {{ _('Remember me') }}
                     </label>
                 </div>
 
-                <button class="btn btn-primary w-100 py-2" type="submit">Log in</button>
-                <p class="mt-5 mb-3 text-white text-center border-bottom border-secondary pb-2">Don't have an account?</p>
-                <a class="btn btn-success w-100 py-2" type="submit" href="{{ url_for('routes.register') }} ">Sign up</a>
+                <button class="btn btn-primary w-100 py-2" type="submit">{{ _('Log in') }}</button>
+                <p class="mt-5 mb-3 text-white text-center border-bottom border-secondary pb-2">{{ _("Don't have an account?") }}</p>
+                <a class="btn btn-success w-100 py-2" type="submit" href="{{ url_for('routes.register') }} ">{{ _('Sign up') }}</a>
 
             </form>
 

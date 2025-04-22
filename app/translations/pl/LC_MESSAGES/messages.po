@@ -1,0 +1,407 @@
+# Polish translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-04-15 20:17+0200\n"
+"PO-Revision-Date: 2025-04-15 18:45+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pl\n"
+"Language-Team: pl <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: routes.py:190
+msgid "Ranking not available for this level yet!"
+msgstr "Ranking dla tego poziomu nie jest jeszcze dostępny!"
+
+#: routes.py:220
+msgid "Statistics not available for this level yet!"
+msgstr "Statystyki dla tego poziomu nie są jeszcze dostępne!"
+
+#: routes.py:238 routes.py:250
+msgid "You are not logged in."
+msgstr "Nie jesteś zalogowany."
+
+#: routes.py:305
+msgid "Please enter a password."
+msgstr "Prosze wprowadzić hasło."
+
+#: routes.py:310
+msgid "Password must not contain spaces."
+msgstr "Hasło nie może zawierać spacji."
+
+#: routes.py:315
+msgid "Password has less than 8 characters."
+msgstr "Hasło nie może mieć mniej niż 8 znaków."
+
+#: routes.py:319
+msgid "Password cannot have more than 30 characters."
+msgstr "Hasło nie może mieć więcej niż 30 znaków."
+
+#: routes.py:324
+msgid "Password has no lowercase letters."
+msgstr "Hasło nie posiada małej litery."
+
+#: routes.py:329
+msgid "Password has no capital letters."
+msgstr "Hasło nie posiada wielkiej litery."
+
+#: routes.py:334
+msgid "Password has no digits."
+msgstr "Hasło nie posiada cyfry."
+
+#: routes.py:339
+msgid "Password has no special characters."
+msgstr "Hasło nie posiada znaków specjalnych."
+
+#: routes.py:356
+msgid "Please enter Your email."
+msgstr "Prosze wprowadzić swój email."
+
+#: routes.py:364
+msgid "Email cannot contain capital letters."
+msgstr "Email nie może zawierać dużych liter."
+
+#: routes.py:369
+msgid "Email must contain top-level domain."
+msgstr "Email musi zawierać końcówkę domeny, np. .pl lub .com."
+
+#: routes.py:374
+msgid "Email must have characters before '@'."
+msgstr "Email musi mieć znaki przed znakiem '@'."
+
+#: routes.py:378
+msgid "Email must be 100 characters or fewer."
+msgstr "Email musi mieć 100 znaków lub mniej."
+
+#: routes.py:445
+msgid "Email doesn't exist in database!"
+msgstr "Email nie isnieje w bazie danych!"
+
+#: routes.py:449
+msgid "Wrong password!"
+msgstr "Złe hasło!"
+
+#: routes.py:462
+msgid "Login successed!"
+msgstr "Zalogowano pomyślnie!"
+
+#: routes.py:492
+msgid "Email already exists."
+msgstr "Email już istnieje."
+
+#: routes.py:497
+msgid "Username already exists."
+msgstr "Nazwa użytkownika już istnieje."
+
+#: routes.py:501
+msgid "Passwords don't match."
+msgstr "Hasła różnią się od siebie."
+
+#: routes.py:506
+msgid "You have to accept the terms and conditions."
+msgstr "Musisz zaakceptować regulamin."
+
+#: routes.py:514
+msgid "Register successed. You can log in."
+msgstr "Zarejestrowano pomyślnie. Możesz się zalogować."
+
+#: routes.py:517
+msgid "Register failed."
+msgstr "Rejestracja nie powiodła się."
+
+#: routes.py:524
+msgid "Logout successful."
+msgstr "Pomyślnie wylogowano"
+
+#: routes.py:545
+msgid "Input data to edit."
+msgstr "Wprowadź dane do edycji."
+
+#: routes.py:621 routes.py:657
+msgid "New and confirm passwords do not match."
+msgstr "Nowe hasło i jego potwierdzenie nie są takie same."
+
+#: routes.py:631
+msgid "You have to enter new password."
+msgstr "Musisz wprowadź nowe hasło."
+
+#: routes.py:636
+msgid "Entered password doesn't match your current password."
+msgstr "Wpisane hasło nie pasuje do obecnego hasła."
+
+#: routes.py:642
+msgid "You have to enter your old password first."
+msgstr "Musisz wprowadzić najpierw stare hasło."
+
+#: routes.py:667
+msgid "Enter new password before confirming."
+msgstr "Wprowadź nowe hasło przed potwierdzeniem."
+
+#: routes.py:731
+msgid "User does not exist."
+msgstr "Użytkownik nie istnieje."
+
+#: templates/admin.html:73 templates/edit_user.html:73
+#: templates/history.html:73 templates/index.html:95 templates/ranking.html:74
+#: templates/stats.html:74 templates/user.html:73
+msgid "Hello"
+msgstr "Witaj"
+
+#: templates/admin.html:79 templates/edit_user.html:87
+#: templates/history.html:87 templates/index.html:109 templates/ranking.html:88
+#: templates/stats.html:88 templates/user.html:87
+msgid "Log out"
+msgstr "Wyloguj"
+
+#: templates/admin.html:90 templates/edit_user.html:98
+#: templates/history.html:98 templates/index.html:136 templates/login.html:75
+#: templates/ranking.html:114 templates/register.html:74
+#: templates/stats.html:114 templates/user.html:98
+msgid "Language"
+msgstr "Język"
+
+#: templates/admin.html:117 templates/edit_user.html:125
+#: templates/history.html:125 templates/index.html:163
+#: templates/ranking.html:140 templates/stats.html:140 templates/user.html:125
+msgid "My profile"
+msgstr "Mój profil"
+
+#: templates/admin.html:123 templates/edit_user.html:131
+#: templates/history.html:131 templates/history.html:148
+#: templates/index.html:169 templates/ranking.html:146 templates/stats.html:146
+#: templates/user.html:131
+msgid "My games"
+msgstr "Moje gry"
+
+#: templates/admin.html:128 templates/edit_user.html:136
+#: templates/history.html:136 templates/index.html:174
+#: templates/ranking.html:151 templates/ranking.html:163
+#: templates/stats.html:151 templates/user.html:136
+msgid "Ranking"
+msgstr "Ranking"
+
+#: templates/admin.html:132 templates/edit_user.html:140
+#: templates/history.html:140 templates/index.html:178
+#: templates/ranking.html:155 templates/stats.html:155 templates/stats.html:163
+#: templates/user.html:140
+msgid "Statistics"
+msgstr "Statystyki"
+
+#: templates/admin.html:149 templates/edit_user.html:161
+#: templates/ranking.html:196 templates/register.html:106
+#: templates/user.html:154
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: templates/admin.html:154 templates/edit_user.html:167
+#: templates/user.html:158
+msgid "Email"
+msgstr "Adres email"
+
+#: templates/admin.html:159 templates/user.html:162
+msgid "Member since"
+msgstr "Dołaczono"
+
+#: templates/admin.html:168 templates/user.html:176
+msgid "Edit user"
+msgstr "Edytuj użytkownika"
+
+#: templates/admin.html:174
+msgid "Delete user"
+msgstr "Usuń użytkownika"
+
+#: templates/edit_user.html:149 templates/user.html:148
+msgid "User Panel"
+msgstr "Panel Użytkownika"
+
+#: templates/edit_user.html:150
+msgid "If you don't want to change a field, leave it blank."
+msgstr "Jeśli nie chcesz zmieniać danego pola, pozostaw je puste."
+
+#: templates/edit_user.html:175
+msgid "Old password"
+msgstr "Stare hasło"
+
+#: templates/edit_user.html:183
+msgid "New password"
+msgstr "Nowe hasło"
+
+#: templates/edit_user.html:189
+msgid "Confirm new passsword"
+msgstr "Potwierdź nowe hasło"
+
+#: templates/edit_user.html:194
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
+#: templates/history.html:158
+msgid "Game ID"
+msgstr "ID gry"
+
+#: templates/history.html:163 templates/ranking.html:201
+msgid "Difficulty"
+msgstr "Poziom trudności"
+
+#: templates/history.html:168 templates/index.html:240
+#: templates/ranking.html:206
+msgid "Time"
+msgstr "Czas"
+
+#: templates/history.html:173 templates/ranking.html:211
+msgid "Date"
+msgstr "Data"
+
+#: templates/index.html:51
+msgid "Error loading the board: File not found (404)."
+msgstr "Błąd wczytywania planszy: Nie odnaleziono pliku (404)."
+
+#: templates/index.html:63
+msgid "If you want to start a new game, close this"
+msgstr "Jeśli chcesz zacząć nową grę zamknij to"
+
+#: templates/index.html:64
+msgid "window and choose difficulty for the next game!"
+msgstr "okienko i wybierz poziom trudności dla nowej gry!"
+
+#: templates/index.html:121 templates/login.html:117 templates/ranking.html:99
+#: templates/register.html:126 templates/stats.html:99
+msgid "Log in"
+msgstr "Zaloguj się"
+
+#: templates/index.html:127 templates/login.html:119 templates/ranking.html:105
+#: templates/register.html:124 templates/stats.html:105
+msgid "Sign up"
+msgstr "Zarejestruj się"
+
+#: templates/index.html:186
+msgid "Start new game"
+msgstr "Rozpocznij nową grę"
+
+#: templates/index.html:189 templates/ranking.html:168 templates/stats.html:168
+msgid "Easy"
+msgstr "Łatwy"
+
+#: templates/index.html:192 templates/ranking.html:172 templates/stats.html:172
+msgid "Intermediate"
+msgstr "Średni"
+
+#: templates/index.html:195 templates/ranking.html:176 templates/stats.html:176
+msgid "Hard"
+msgstr "Trudny"
+
+#: templates/index.html:198 templates/ranking.html:180 templates/stats.html:180
+msgid "Expert"
+msgstr "Ekspert"
+
+#: templates/index.html:247
+msgid "How to play?"
+msgstr "Jak grać?"
+
+#: templates/index.html:250
+msgid ""
+"Sudoku is a logic-based puzzle game where the goal is to fill a 9x9 grid "
+"with numbers from 1 to 9."
+msgstr ""
+"Sudoku to gra logiczna, której celem jest wypełnienie siatki 9x9 liczbami"
+" od 1 do 9."
+
+#: templates/index.html:251
+msgid "The grid is divided into 9 smaller 3x3 subgrids (regions)."
+msgstr "Siatka jest podzielona na 9 mniejszych subsiatek 3x3 (regionów)."
+
+#: templates/index.html:252
+msgid "The basic rules are:"
+msgstr "Podstawowe zasady są następujące:"
+
+#: templates/index.html:254
+msgid "Each row must contain every number from 1 to 9, with no repetition."
+msgstr "Każdy wiersz musi zawierać każdą liczbę od 1 do 9, bez powtórzeń."
+
+#: templates/index.html:255
+msgid "Each column must contain every number from 1 to 9, with no repetition."
+msgstr "Każda kolumna musi zawierać każdą liczbę od 1 do 9, bez powtórzeń."
+
+#: templates/index.html:256
+msgid ""
+"Each 3x3 subgrid must contain every number from 1 to 9, with no "
+"repetition."
+msgstr "Każda subsiatka 3x3 musi zawierać każdą liczbę od 1 do 9, bez powtórzeń."
+
+#: templates/index.html:258
+msgid ""
+"Some cells are pre-filled with numbers, and the player must use logic to "
+"fill in the remaining cells according to these rules."
+msgstr ""
+"Niektóre komórki są wstępnie wypełnione liczbami, a gracz musi używać "
+"logiki, aby wypełnić pozostałe komórki zgodnie z tymi zasadami."
+
+#: templates/login.html:97
+msgid "Please log in"
+msgstr "Zaloguj się"
+
+#: templates/login.html:102 templates/register.html:101
+msgid "Email address"
+msgstr "Adres email"
+
+#: templates/login.html:107 templates/register.html:111
+msgid "Password"
+msgstr "Hasło"
+
+#: templates/login.html:113
+msgid "Remember me"
+msgstr "Zapamiętaj mnie"
+
+#: templates/login.html:118
+msgid "Don't have an account?"
+msgstr "Nie masz konta?"
+
+#: templates/ranking.html:191
+msgid "Place"
+msgstr "Miejsce"
+
+#: templates/register.html:96
+msgid "Create an account"
+msgstr "Stwórz konto"
+
+#: templates/register.html:116
+msgid "Confirm password"
+msgstr "Potwierdź hasło"
+
+#: templates/register.html:121
+msgid "I accept the terms and conditions."
+msgstr "Akceptuję regulamin."
+
+#: templates/register.html:125
+msgid "Already have an account?"
+msgstr "Masz już konto?"
+
+#: templates/stats.html:190
+msgid "Total games"
+msgstr "Łączna ilość gier"
+
+#: templates/stats.html:195
+msgid "Total players"
+msgstr "Łączna ilość graczy"
+
+#: templates/stats.html:200
+msgid "Total playtime"
+msgstr "Łączny czas gry"
+
+#: templates/stats.html:207
+msgid "Your total playtime"
+msgstr "Twój łączny czas gry"
+
+#: templates/user.html:170
+msgid "Delete my account"
+msgstr "Usuń moje konto"
+
