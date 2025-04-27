@@ -11,3 +11,5 @@ tests/autentification_logic/__pycache__/
 tests/utils/__pycache__/
 
 tests/integrations/__pycache__/
+
+tests/admin/__pycache__/
