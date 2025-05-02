@@ -17,19 +17,41 @@ app.config["SECRET_KEY"] = "your_secret_key"
 db.init_app(app)
 
 babel = Babel(app)
+
 def hash_password(plain_password):
-    """Haszuje hasło z użyciem bcrypt i soli."""
+    """
+    Haszuje hasło za pomocą algorytmu bcrypt z użyciem losowej soli.
+
+    Args:
+        plain_password (str): Hasło w postaci zwykłego tekstu.
+
+    Returns:
+        str: Zahasłowane hasło jako ciąg zakodowany w UTF-8.
+    """
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(plain_password.encode('utf-8'), salt)
     return hashed_password.decode('utf-8')
 
 def get_locale():
+    """
+    Pobiera preferowany język użytkownika zapisany w sesji.
+
+    Returns:
+        str: Kod języka (np. 'en' dla angielskiego), domyślnie 'en'.
+    """
     return f.session.get('lang', 'en')
 
 babel.init_app(app, locale_selector=get_locale)
 
 @app.context_processor
 def inject_locale():
+    """
+    Dodaje funkcję get_locale do kontekstu szablonów,
+    umożliwiając dostęp do niej z poziomu szablonów HTML.
+    
+    Returns:
+        dict: Słownik z funkcją get_locale.
+    """
     return dict(get_locale=get_locale)
 
 app.register_blueprint(routes) #dodaje zestaw tras (routes) do aplikacji
