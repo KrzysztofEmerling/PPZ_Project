@@ -1046,5 +1046,3 @@ def delete_user():
         else:
             print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
             return f.redirect(f.url_for('routes.home'))
-        
-# ====================================================
