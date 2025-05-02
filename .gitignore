@@ -14,5 +14,7 @@ tests/integrations/__pycache__/
 
 tests/admin/__pycache__/
 
-docs/build/*
+docs/build/doctrees/*
 
+
+docs/build/html/.buildinfo
