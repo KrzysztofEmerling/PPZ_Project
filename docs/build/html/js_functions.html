@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>JavaScript Functions &#8212; Sudoku-sweeper v0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=34cd777e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="routes module" href="python/routes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="javascript-functions">
+<h1>JavaScript Functions<a class="headerlink" href="#javascript-functions" title="Link to this heading">¶</a></h1>
+<dl class="js function">
+<dt class="sig sig-object js" id="clearHistory">
+<span class="sig-name descname"><span class="n"><span class="pre">clearHistory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#clearHistory" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja służąca do czyszczenia historii.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="startGame">
+<span class="sig-name descname"><span class="n"><span class="pre">startGame</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">difficulty</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#startGame" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja asynchroniczna służąca do uruchomienia gry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>difficulty</strong> (<em>string</em>) – poziom trudności.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="getPuzzle">
+<span class="sig-name descname"><span class="n"><span class="pre">getPuzzle</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#getPuzzle" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja asynchroniczna slużąca do pobierania i losowania planszy sudoku.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>string</em>) – poziom trudności.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="createBoardMask">
+<span class="sig-name descname"><span class="n"><span class="pre">createBoardMask</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#createBoardMask" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja tworząca maskę dla podanej planszy.</p>
+<p>1 traktuje jako pole edytowalne, 0 jako pole statyczne (nieedytowalne)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>string</em>) – plansza sudoku.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>string</strong> – maska dla planszy.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="generateFullBoardMask">
+<span class="sig-name descname"><span class="n"><span class="pre">generateFullBoardMask</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#generateFullBoardMask" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja tworząca maskę używaną po wygranej grze aby uniemożliwić wprowadzanie danych.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>string</strong> – 81 jedynek.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="createBoard">
+<span class="sig-name descname"><span class="n"><span class="pre">createBoard</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#createBoard" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja tworząca i wypełniająca planszę sudoku</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>string</em>) – string zawierający planszę sudoku.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="inputValidation">
+<span class="sig-name descname"><span class="n"><span class="pre">inputValidation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inputValidation" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja walidująca wprowadzane dane do planszy sudoku.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="highlightRelatedCells">
+<span class="sig-name descname"><span class="n"><span class="pre">highlightRelatedCells</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#highlightRelatedCells" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja podświetlająca aktywne komórki lub te same liczby w trakcie gry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> (<em>int</em>) – wiersz klikniętej komórki.</p></li>
+<li><p><strong>col</strong> (<em>int</em>) – kolumna klikniętej komórki.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="setNumber">
+<span class="sig-name descname"><span class="n"><span class="pre">setNumber</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#setNumber" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja ustawiająca liczbę w aktywną komórke pola sudoku</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> (<em>int</em>) – liczba od 1 do 9</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="saveBoardState">
+<span class="sig-name descname"><span class="n"><span class="pre">saveBoardState</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#saveBoardState" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja zapisująca aktualny stan planszy.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="undo">
+<span class="sig-name descname"><span class="n"><span class="pre">undo</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#undo" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja cofajaca do poprzedniego stanu planszy w liscie.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="resetBoard">
+<span class="sig-name descname"><span class="n"><span class="pre">resetBoard</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resetBoard" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja resetująca grę (wczytuje te samą plansze).</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="checkSolution">
+<span class="sig-name descname"><span class="n"><span class="pre">checkSolution</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#checkSolution" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja sprawdzająca czy wszystkie pola są uzupełnione.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="solutionChecker">
+<span class="sig-name descname"><span class="n"><span class="pre">solutionChecker</span></span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solution</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solutionChecker" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja sprawdzająca czy podane liczby są rozwiązaniem aktualnej planszy sudoku.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>boolean</strong> – prawda/fałsz dla podanego rozwiązania.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="startTimer">
+<span class="sig-name descname"><span class="n"><span class="pre">startTimer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#startTimer" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja uruchamiająca stoper.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="stopTimer">
+<span class="sig-name descname"><span class="n"><span class="pre">stopTimer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stopTimer" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja zatrzymująca stoper.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="closeAlert">
+<span class="sig-name descname"><span class="n"><span class="pre">closeAlert</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#closeAlert" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja obsługująca automatyczne wyświetlanie i zanikanie alertów informacyjnych.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="closeErrorAlert">
+<span class="sig-name descname"><span class="n"><span class="pre">closeErrorAlert</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#closeErrorAlert" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja obsługująca automatyczne wyświetlanie i zanikanie alertów z błędami.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="hideErrorDisplay">
+<span class="sig-name descname"><span class="n"><span class="pre">hideErrorDisplay</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hideErrorDisplay" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja obsługująca manualne zamknięcie alert z błędami.</p>
+</dd></dl>
+
+<dl class="js function">
+<dt class="sig sig-object js" id="hideResultDisplay">
+<span class="sig-name descname"><span class="n"><span class="pre">hideResultDisplay</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hideResultDisplay" title="Link to this definition">¶</a></dt>
+<dd><p>Funkcja obsługująca manualne zamknięcie alertu z wynikiem.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Sudoku-sweeper</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="python/modules.html">app</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">JavaScript Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#clearHistory"><code class="docutils literal notranslate"><span class="pre">clearHistory()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#startGame"><code class="docutils literal notranslate"><span class="pre">startGame()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getPuzzle"><code class="docutils literal notranslate"><span class="pre">getPuzzle()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#createBoardMask"><code class="docutils literal notranslate"><span class="pre">createBoardMask()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generateFullBoardMask"><code class="docutils literal notranslate"><span class="pre">generateFullBoardMask()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#createBoard"><code class="docutils literal notranslate"><span class="pre">createBoard()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inputValidation"><code class="docutils literal notranslate"><span class="pre">inputValidation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#highlightRelatedCells"><code class="docutils literal notranslate"><span class="pre">highlightRelatedCells()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setNumber"><code class="docutils literal notranslate"><span class="pre">setNumber()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saveBoardState"><code class="docutils literal notranslate"><span class="pre">saveBoardState()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#undo"><code class="docutils literal notranslate"><span class="pre">undo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resetBoard"><code class="docutils literal notranslate"><span class="pre">resetBoard()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#checkSolution"><code class="docutils literal notranslate"><span class="pre">checkSolution()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solutionChecker"><code class="docutils literal notranslate"><span class="pre">solutionChecker()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#startTimer"><code class="docutils literal notranslate"><span class="pre">startTimer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stopTimer"><code class="docutils literal notranslate"><span class="pre">stopTimer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#closeAlert"><code class="docutils literal notranslate"><span class="pre">closeAlert()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#closeErrorAlert"><code class="docutils literal notranslate"><span class="pre">closeErrorAlert()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hideErrorDisplay"><code class="docutils literal notranslate"><span class="pre">hideErrorDisplay()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hideResultDisplay"><code class="docutils literal notranslate"><span class="pre">hideResultDisplay()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python/routes.html" title="previous chapter">routes module</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Agnieszka Głowacka, Martyna Trębacz, Oliwia Skucha, Jakub Rogoża, Krzysztof Emerling, Szymon Duda.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/js_functions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

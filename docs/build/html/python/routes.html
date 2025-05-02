@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>routes module &#8212; Sudoku-sweeper v0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=34cd777e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="JavaScript Functions" href="../js_functions.html" />
+    <link rel="prev" title="restart_bazy module" href="restart_bazy.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-routes">
+<span id="routes-module"></span><h1>routes module<a class="headerlink" href="#module-routes" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.admin_panel">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">admin_panel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.admin_panel" title="Link to this definition">¶</a></dt>
+<dd><p>Renderuje panel administratora, umożliwiając zarządzanie użytkownikami.</p>
+<p>Funkcja sprawdza, czy użytkownik jest administratorem. Jeśli nie, zwraca odpowiedź 403 (Forbidden).
+Jeżeli użytkownik jest administratorem, renderuje stronę panelu administracyjnego, 
+wyświetlając listę użytkowników, którzy nie są administratorami.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>str: Renderowany szablon strony panelu administratora (<cite>admin.html</cite>), </dt><dd><p>zawierający listę użytkowników, którzy nie są administratorami.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><p>403 Forbidden: Jeśli użytkownik nie jest administratorem.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.admin_panel_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">admin_panel_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.admin_panel_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę panelu administracyjnego.</p>
+<p>Funkcja sprawdza, czy użytkownik jest administratorem. Jeśli tak, renderuje stronę panelu
+administracyjnego z listą użytkowników, którzy nie są administratorami. Jeśli użytkownik nie
+jest administratorem, zwraca odpowiedź 403 (Forbidden).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona panelu administracyjnego z uwzględnieniem wybranego języka,
+danych sesji oraz listy użytkowników, którzy nie są administratorami. W przypadku braku
+uprawnień do panelu zwraca odpowiedź 403.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.check_password">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">check_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plain_password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashed_password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.check_password" title="Link to this definition">¶</a></dt>
+<dd><p>Sprawdza, czy podane hasło zgadza się z jego haszem.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>plain_password (str): Hasło w postaci zwykłego tekstu.
+hashed_password (str): Hasło w postaci zahashowanej.</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: True jeśli hasła się zgadzają, False w przeciwnym razie lub w przypadku błędu dekodowania.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.delete_user">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">delete_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.delete_user" title="Link to this definition">¶</a></dt>
+<dd><p>Usuwa użytkownika na podstawie przesłanego ID, z różnym zachowaniem w zależności od roli (admin/user).</p>
+<dl class="simple">
+<dt>Oczekiwane pola formularza:</dt><dd><ul class="simple">
+<li><p>reroute: ‘admin’ lub ‘user’ (określa widok, do którego wrócić po usunięciu).</p></li>
+<li><p>del_user_id: ID użytkownika do usunięcia.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Jeśli użytkownik nie istnieje lub wystąpi inny problem — wyświetlana jest informacja ostrzegawcza.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.edit">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.edit" title="Link to this definition">¶</a></dt>
+<dd><p>Obsługuje edycję danych użytkownika (zarówno przez użytkownika, jak i administratora).</p>
+<p>W zależności od źródła (panel użytkownika lub administratora), aktualizuje dane takie jak 
+nazwa użytkownika, e-mail i hasło. Przeprowadza walidację i odpowiednie zabezpieczenia 
+(np. konieczność podania starego hasła przez użytkownika). Obsługuje również sytuacje błędne.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Przekierowanie do odpowiedniego szablonu w zależności od źródła edycji oraz sukcesu/błędu.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.edit_user">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">edit_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.edit_user" title="Link to this definition">¶</a></dt>
+<dd><p>Przekierowuje użytkownika do formularza edycji danych użytkownika.</p>
+<p>Funkcja pobiera dane z formularza POST (w tym identyfikator użytkownika do edycji),
+sprawdza, czy użytkownik jest administratorem, a następnie renderuje stronę formularza edycji użytkownika.
+Zwracane są dane sesji użytkownika, status administracyjny oraz dane związane z edycją użytkownika.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>str: Renderowany szablon formularza edycji użytkownika (<cite>edit_user.html</cite>) z danymi sesji,</dt><dd><p>statusami administratora oraz przekazanymi danymi dotyczącymi edycji.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.edit_user_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">edit_user_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.edit_user_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę edycji danych użytkownika.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona edycji użytkownika z uwzględnieniem wybranego języka, danych sesji oraz informacji o edytowanym użytkowniku.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.email_validator_corrector">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">email_validator_corrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.email_validator_corrector" title="Link to this definition">¶</a></dt>
+<dd><p>Poprawia format adresu e-mail i sprawdza jego poprawność.</p>
+<p>Waliduje e-mail pod względem długości, wielkości liter, obecności znaków
+przed i po znaku ‘&#64;’, oraz obecności domeny najwyższego poziomu.
+W razie błędu wyświetla stosowny komunikat za pomocą Flask <cite>flash</cite>.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>email (str): Adres e-mail do sprawdzenia.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>list: [True, email] jeśli adres e-mail jest poprawny,</dt><dd><p>[False, “EmailError”] lub [False, “UsernameError”] w przeciwnym razie.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.format_seconds">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">format_seconds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.format_seconds" title="Link to this definition">¶</a></dt>
+<dd><p>Formatuje podaną liczbę sekund na bardziej czytelną formę (dni, godziny, minuty, sekundy).</p>
+<p>Funkcja przyjmuje liczbę sekund i konwertuje ją na format zawierający dni, godziny, minuty 
+oraz sekundy, w zależności od wartości wejściowej. Funkcja zwraca ciąg tekstowy reprezentujący
+czas w formacie “Xd Xh Xm Xs”, gdzie X to liczba dni, godzin, minut lub sekund.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>seconds (int): Liczba sekund do sformatowania.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>str: Sformatowany ciąg tekstowy przedstawiający czas w formie “Xd Xh Xm Xs”.</dt><dd><p>Przykład: “2d 3h 5m 30s” lub “5m 30s”.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: Jeśli <cite>seconds</cite> jest wartością, która nie może być przekonwertowana na liczbę.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.handle_login">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">handle_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.handle_login" title="Link to this definition">¶</a></dt>
+<dd><p>Obsługuje logowanie użytkownika na podstawie wprowadzonego e-maila i hasła.</p>
+<p>Funkcja sprawdza, czy podany e-mail istnieje w bazie danych oraz czy hasło jest poprawne. 
+W przypadku błędnych danych logowania wyświetla odpowiednie komunikaty o błędach. 
+Jeśli dane są poprawne, zapisuje dane użytkownika w sesji i przekierowuje na stronę główną.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Szablon strony logowania z komunikatem błędu lub przekierowanie do strony głównej po udanym logowaniu.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.handle_logout">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">handle_logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.handle_logout" title="Link to this definition">¶</a></dt>
+<dd><p>Obsługuje proces wylogowania użytkownika.</p>
+<p>Czyści dane sesji użytkownika i przekierowuje do strony logowania z komunikatem.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Szablon logowania z komunikatem o sukcesie.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.handle_register">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">handle_register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.handle_register" title="Link to this definition">¶</a></dt>
+<dd><p>Obsługuje proces rejestracji użytkownika.</p>
+<p>Pobiera dane z formularza, waliduje je, sprawdza ich unikalność w bazie danych 
+i zapisuje nowego użytkownika z hasłem zakodowanym przez bcrypt. Obsługuje również 
+komunikaty o błędach i powodzeniu operacji.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Przekierowanie do odpowiedniego szablonu HTML w zależności od wyniku rejestracji.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.hash_password">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">hash_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plain_password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.hash_password" title="Link to this definition">¶</a></dt>
+<dd><p>Haszuje hasło za pomocą algorytmu bcrypt z użyciem losowej soli.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>plain_password (str): Hasło w postaci zwykłego tekstu.</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: Zahasłowane hasło w postaci zakodowanego ciągu znaków.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.history">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.history" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetla historię gier zalogowanego użytkownika.</p>
+<p>Funkcja pobiera z bazy danych wszystkie gry przypisane do aktualnie zalogowanego 
+użytkownika i renderuje stronę zawierającą ich historię. Dodatkowo sprawdzane jest, 
+czy użytkownik posiada uprawnienia administratora, aby odpowiednio dostosować widok.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Szablon HTML strony historii gier z danymi użytkownika oraz listą rozegranych gier.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.home">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.home" title="Link to this definition">¶</a></dt>
+<dd><p>Renderuje stronę główną aplikacji.</p>
+<p>Pobiera dane o wynikach gier z bazy danych i wyświetla je w konsoli.
+Funkcja wykonuje również inspekcję struktury bazy danych, wyświetlając wszystkie tabele
+oraz ich kolumny w konsoli. Sprawdza, czy użytkownik jest zalogowany i czy posiada
+uprawnienia administratora, a następnie przekazuje te informacje do szablonu strony głównej.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>str: Renderowany szablon strony głównej (<cite>index.html</cite>), z danymi o zalogowanym użytkowniku</dt><dd><p>oraz jego uprawnieniach administracyjnych (jeśli są dostępne).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.home_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">home_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.home_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę główną.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘en’, ‘pl’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona główna z uwzględnieniem zaktualizowanych danych sesji i statusu administratora.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.is_password_alright">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">is_password_alright</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.is_password_alright" title="Link to this definition">¶</a></dt>
+<dd><p>Sprawdza, czy podane hasło spełnia wymagania dotyczące bezpieczeństwa.</p>
+<p>Hasło musi mieć długość od 8 do 30 znaków, zawierać co najmniej jedną
+małą literę, jedną wielką literę, jedną cyfrę i jeden znak specjalny.
+Nie może zawierać spacji.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>password (str): Hasło do sprawdzenia.</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: True jeśli hasło jest prawidłowe, w przeciwnym razie False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.login">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.login" title="Link to this definition">¶</a></dt>
+<dd><p>Renderuje stronę logowania.</p>
+<p>Funkcja renderuje szablon strony logowania (<cite>login.html</cite>), umożliwiając użytkownikowi
+wprowadzenie danych logowania (np. nazwa użytkownika i hasło) oraz przesłanie formularza.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Renderowany szablon strony logowania (<cite>login.html</cite>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.login_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">login_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.login_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę logowania.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona logowania z uwzględnieniem wybranego języka.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.mygames_from_index">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">mygames_from_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.mygames_from_index" title="Link to this definition">¶</a></dt>
+<dd><p>Przekierowuje użytkownika na stronę historii gier, jeśli jest zalogowany.</p>
+<p>Funkcja sprawdza, czy użytkownik posiada aktywną sesję (na podstawie e-maila i hasła). 
+Jeżeli użytkownik jest zalogowany, renderuje stronę historii gier z danymi sesji oraz informacją, czy jest administratorem. 
+W przeciwnym wypadku wyświetla komunikat o braku zalogowania i przekierowuje na stronę logowania.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Szablon HTML historii gier użytkownika lub przekierowanie do strony logowania.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.mygames_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">mygames_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.mygames_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę z historią gier użytkownika.</p>
+<p>Funkcja sprawdza, czy użytkownik jest zalogowany, a następnie wyświetla historię gier tego użytkownika. 
+Jeżeli użytkownik nie jest zalogowany, zostanie przekierowany do strony logowania. Ustawia także preferowany język.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka, który ma zostać ustawiony (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona z historią gier użytkownika, lub przekierowanie na stronę logowania, 
+jeśli użytkownik nie jest zalogowany.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.myprof_from_index">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">myprof_from_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.myprof_from_index" title="Link to this definition">¶</a></dt>
+<dd><p>Przekierowuje użytkownika na stronę profilu, jeśli jest zalogowany.</p>
+<p>Funkcja sprawdza, czy użytkownik posiada sesję (email i hasło). 
+Jeśli tak, renderuje stronę profilu z danymi sesji i informacją o uprawnieniach administratora. 
+W przeciwnym wypadku wyświetla komunikat o braku zalogowania i przekierowuje na stronę logowania.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Szablon HTML strony profilu użytkownika lub przekierowanie do strony logowania.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.ranking">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">ranking</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.ranking" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetla stronę rankingu graczy.</p>
+<p>Funkcja sprawdza, czy aktualnie zalogowany użytkownik posiada uprawnienia administratora 
+i renderuje szablon strony z rankingiem, przekazując dane o użytkowniku oraz jego uprawnieniach.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Szablon HTML strony rankingu z danymi użytkownika i informacją o uprawnieniach administratora.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.ranking_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">ranking_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.ranking_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę z rankingiem najlepszych wyników.</p>
+<p>Funkcja umożliwia wyświetlenie rankingu najlepszych wyników dla określonego poziomu trudności.
+Ustawia również preferowany język użytkownika i sprawdza, czy użytkownik jest administratorem.
+Ranking jest ograniczony do pięciu najlepszych wyników na podstawie czasu ukończenia gry.
+Jeśli nie ma wyników dla wybranego poziomu trudności, wyświetlane jest odpowiednie ostrzeżenie.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona rankingu z najlepszymi wynikami, wybranym poziomem trudności
+oraz danymi użytkownika i administratorem (jeśli użytkownik jest administratorem).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.register">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.register" title="Link to this definition">¶</a></dt>
+<dd><p>Renderuje stronę rejestracji.</p>
+<p>Funkcja renderuje szablon strony rejestracji (<cite>register.html</cite>), umożliwiając użytkownikowi
+wprowadzenie danych rejestracyjnych (np. nazwa użytkownika, hasło) i utworzenie nowego konta.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: Renderowany szablon strony rejestracji (<cite>register.html</cite>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.register_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">register_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.register_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę rejestracji.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona rejestracji z uwzględnieniem wybranego języka.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.save_result">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">save_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.save_result" title="Link to this definition">¶</a></dt>
+<dd><p>Zapisuje nowy wynik gry do bazy danych.</p>
+<p>Obsługuje żądanie POST z danymi JSON zawierającymi ID użytkownika, poziom trudności,
+datę rozegrania gry i czas ukończenia. Normalizuje wartości poziomu trudności, konwertuje
+datę na obiekt typu datetime i zapisuje dane jako nowy wpis GameResult w bazie danych.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Obiekt JSON z informacją o powodzeniu (“success”) lub błędzie (“error”).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.serve_vendor">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">serve_vendor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.serve_vendor" title="Link to this definition">¶</a></dt>
+<dd><p>Dodaje dostęp do folderu vendor z poziomu Flaska.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (str): Nazwa pliku w folderze vendor.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Obiekt odpowiedzi HTTP zawierający żądany plik.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.stats">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.stats" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetla statystyki gier na podstawie wybranego poziomu trudności.</p>
+<p>Funkcja pobiera dane dotyczące gier na wybranym poziomie trudności, takie jak liczba 
+gier, liczba graczy, łączny czas gry, oraz czas gry danego użytkownika. Statystyki są 
+wyświetlane na stronie z możliwością filtrowania po poziomie trudności.</p>
+<p>Domyślny poziom trudności to “easy”. Funkcja sprawdza, czy użytkownik jest administratorem, 
+a następnie wyświetla dane w odpowiednim szablonie HTML.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Response: Zwraca odpowiedź HTTP z renderowanym szablonem HTML zawierającym statystyki 
+dla wybranego poziomu trudności oraz dane użytkownika, w tym łączny czas gry.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.stats_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">stats_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.stats_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę z danymi statystyk dotyczącymi gier.</p>
+<p>Funkcja umożliwia wyświetlenie statystyk gier dla określonego poziomu trudności, w tym liczby gier, 
+liczby graczy, całkowitego czasu rozgrywek oraz czasu rozgrywek konkretnego użytkownika.
+Ustawia również preferowany język użytkownika i sprawdza, czy użytkownik jest administratorem.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona ze statystykami gier, z wybranym poziomem trudności oraz danymi
+użytkownika i administratorem (jeśli użytkownik jest administratorem).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.user">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#routes.user" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetla stronę profilu użytkownika.</p>
+<p>Funkcja pobiera dane użytkownika z sesji i sprawdza, czy użytkownik jest administratorem.
+Na podstawie tych danych renderuje stronę profilu użytkownika, przekazując informacje
+o zalogowanym użytkowniku oraz statusie administracyjnym do szablonu.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>str: Renderowany szablon strony profilu użytkownika (<cite>user.html</cite>), z danymi o </dt><dd><p>zalogowanym użytkowniku i jego uprawnieniach administracyjnych (jeśli dostępne).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.user_set_lang">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">user_set_lang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.user_set_lang" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawia preferowany język użytkownika i renderuje stronę profilu użytkownika.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>lang (str): Kod języka do ustawienia (np. ‘pl’, ‘en’).</p>
+</dd>
+<dt>Returns:</dt><dd><p>Response: Renderowana strona profilu użytkownika z uwzględnieniem wybranego języka i danych sesji.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="routes.username_validator_corrector">
+<span class="sig-prename descclassname"><span class="pre">routes.</span></span><span class="sig-name descname"><span class="pre">username_validator_corrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#routes.username_validator_corrector" title="Link to this definition">¶</a></dt>
+<dd><p>Usuwa nadmiarowe spacje i sprawdza poprawność nazwy użytkownika.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>username (str): Nazwa użytkownika do sprawdzenia i korekty.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>list: [True, username] jeśli nazwa użytkownika jest poprawna, </dt><dd><p>lub [False, “UsernameError”] w przeciwnym wypadku.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Sudoku-sweeper</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">app</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="app.html">app module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restart_bazy.html">restart_bazy module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">routes module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../js_functions.html">JavaScript Functions</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">app</a><ul>
+      <li>Previous: <a href="restart_bazy.html" title="previous chapter">restart_bazy module</a></li>
+      <li>Next: <a href="../js_functions.html" title="next chapter">JavaScript Functions</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Agnieszka Głowacka, Martyna Trębacz, Oliwia Skucha, Jakub Rogoża, Krzysztof Emerling, Szymon Duda.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/python/routes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
