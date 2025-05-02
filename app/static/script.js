@@ -1,11 +1,41 @@
+/**
+* Zmienna przechowywująca aktualny poziom trudności.
+*/
 let currentDifficulty;
+
+/**
+* Zmienna przechowywująca aktualnie wczytaną plansze sudoku.
+*/
 let currentBoard;
+
+/**
+* Zmienna przechowywująca maskę pól aktualnej planszy.
+*/
 let boardMask;
+
+/**
+* Tablica przechowywująca historię plansz.
+*/
 let history = [];
+
+/**
+* Zmienna odpowiadająca za stoper.
+*/
 let timerInterval;
+
+/**
+* Zmienna zawierająca ilość sekund,
+*/
 let seconds = 0;
+
+/**
+* Zmienna przechowywująca język aplikacji.
+*/
 let lang = document.documentElement.lang;
 
+/**
+* Zmienna przechowywująca wiadomości wyświetlające się po wygranej rozgrywce w języku angielskim.
+*/
 const winMessagesEN = [
     "Congratulations! 🎉",
     "Well done! 🎉",
@@ -27,6 +57,9 @@ const winMessagesEN = [
     "And they said it couldn’t be done. 🤷‍♂️"
 ];
 
+/**
+* Zmienna przechowywująca wiadomości wyświetlające się po wygranej rozgrywce w języku polskim.
+*/
 const winMessagesPL = [
     "Gratulacje! 🎉",
     "Dobra robota! 🎉",
@@ -48,12 +81,17 @@ const winMessagesPL = [
     "A mówili, że się nie da. 🤷‍♂️"
 ];
 
-// czysci historie
+/**
+* Funkcja służąca do czyszczenia historii.
+*/
 function clearHistory(){
     history = [];
 }
 
-// funkcja glowna uruchamiajaca gre
+/**
+* Funkcja asynchroniczna służąca do uruchomienia gry.
+* @param {string} difficulty - poziom trudności.
+*/
 async function startGame(difficulty) {
     const container = document.getElementById("game-container");
     currentDifficulty = difficulty;
@@ -71,7 +109,10 @@ async function startGame(difficulty) {
     }
 }
 
-// funkcja wczytujaca plansze sudoku z pliku
+/**
+* Funkcja asynchroniczna slużąca do pobierania i losowania planszy sudoku.
+* @param {string} name - poziom trudności.
+*/
 async function getPuzzle(name) {
     const filename = `../vendor/sudoku-exchange-puzzle-bank/${name}.txt`;
     try {
@@ -95,7 +136,14 @@ async function getPuzzle(name) {
     }
 }
 
-// funkcja tworzaca maske bezpieczenstwa
+/**
+* Funkcja tworząca maskę dla podanej planszy.
+*
+* 1 traktuje jako pole edytowalne, 0 jako pole statyczne (nieedytowalne)
+*
+* @param {string} board - plansza sudoku.
+* @returns {string} maska dla planszy.
+*/
 function createBoardMask(board){
     return board
         .split('')
@@ -103,12 +151,18 @@ function createBoardMask(board){
         .join('');
 }
 
-// funkcja tworzaca maske '1' zeby zablokowac edycje komorek
+/**
+* Funkcja tworząca maskę używaną po wygranej grze aby uniemożliwić wprowadzanie danych.
+* @returns {string} 81 jedynek.
+*/
 function generateFullBoardMask() {
     return '1'.repeat(81);
 }
 
-// funkcja tworzaca plansze
+/**
+* Funkcja tworząca i wypełniająca planszę sudoku
+* @param {string} board - string zawierający planszę sudoku.
+*/
 function createBoard(board) {
     const table = document.getElementById("sudoku-table");
     table.innerHTML = ""; // czysci poprzednia plansze
@@ -163,7 +217,9 @@ function createBoard(board) {
     saveBoardState();
 }
 
-// funkcja walidujaca wprowadzane dane
+/**
+* Funkcja walidująca wprowadzane dane do planszy sudoku.
+*/
 function inputValidation(){
     document.addEventListener('keydown', (event) => {
         const activeCell = document.querySelector('.sudoku-cell.active');
@@ -195,7 +251,11 @@ function inputValidation(){
     });
 }
 
-// funkcja podswietlajaca wszystkie komorki w pionie i poziomie oraz takie same cyfry
+/**
+* Funkcja podświetlająca aktywne komórki lub te same liczby w trakcie gry.
+* @param {int} row - wiersz klikniętej komórki.
+* @param {int} col - kolumna klikniętej komórki.
+*/
 function highlightRelatedCells(row, col) {
     const allCells = document.querySelectorAll('.sudoku-cell');
     allCells.forEach(cell => {
@@ -225,7 +285,10 @@ function highlightRelatedCells(row, col) {
     }
 }
 
-// funkcja ustawiajaca w aktywnej komorce liczbe z przycisku
+/**
+* Funkcja ustawiająca liczbę w aktywną komórke pola sudoku
+* @param {int} number - liczba od 1 do 9
+*/
 function setNumber(number) {
     if (isNaN(number) || number < 1 || number > 9) {
         number = ''; // Niepoprawna wartość — wyczyść
@@ -240,7 +303,9 @@ function setNumber(number) {
     }
 }
 
-// funkcja zapisujaca aktualny stan planszy
+/**
+* Funkcja zapisująca aktualny stan planszy.
+*/
 function saveBoardState() {
     const boardState = [];
     const allCells = document.querySelectorAll('.sudoku-cell');
@@ -253,7 +318,9 @@ function saveBoardState() {
     //console.log(history);
 }
 
-// funkcja cofajaca do poprzedniego stanu planszy w liscie
+/**
+* Funkcja cofajaca do poprzedniego stanu planszy w liscie.
+*/
 function undo() {
     if (history.length > 1) {
         history.pop(); // Usuń ostatni stan (bo to aktualny stan)
@@ -270,7 +337,9 @@ function undo() {
     }
 }
 
-// funkcja resetujaca gre (wczytuje te sama plansze)
+/**
+* Funkcja resetująca grę (wczytuje te samą plansze).
+*/
 function resetBoard() {
     if (!(/^1{81}$/.test(boardMask))){
         const table = document.getElementById("sudoku-table");
@@ -322,7 +391,9 @@ function resetBoard() {
     }
 }
 
-// funkcja sprawdzajaca czy wszystkie pola sa uzupelnione
+/**
+* Funkcja sprawdzająca czy wszystkie pola są uzupełnione.
+*/
 function checkSolution() {
     const allCells = document.querySelectorAll('.sudoku-cell');
     let solution = '';
@@ -433,7 +504,10 @@ function checkSolution() {
     }
 }
 
-// funkcja sprawdzajaca czy podane liczby sa rozwiazaniem tej planszy sudoku
+/**
+* Funkcja sprawdzająca czy podane liczby są rozwiązaniem aktualnej planszy sudoku.
+* @returns {boolean} prawda/fałsz dla podanego rozwiązania.
+*/
 function solutionChecker(solution) {
 
     const board2D = [];
@@ -446,52 +520,44 @@ function solutionChecker(solution) {
         const seen = new Set();
         for (let col = 0; col < 9; col++) {
             const value = board2D[row][col];
-            //console.log(`Checking value ${value} at row ${row}, col ${col}`);
             if (seen.has(value)) {
-                //console.log(`Duplicate found in row: ${row} value: ${value}`);
                 return false;
             }
             seen.add(value);
         }
-        //console.log("Row " + row + " unique values: " + Array.from(seen));
     }
 
     for (let col = 0; col < 9; col++) {
         const seen = new Set();
         for (let row = 0; row < 9; row++) {
             const value = board2D[row][col];
-            //console.log(`Checking value ${value} at col ${col}, row ${row}`);
             if (seen.has(value)) {
-                //console.log(`Duplicate found in column: ${col} value: ${value}`);
                 return false;
             }
             seen.add(value);
         }
-        //console.log("Column " + col + " unique values: " + Array.from(seen));
     }
 
     for (let startRow = 0; startRow < 9; startRow += 3) {
         for (let startCol = 0; startCol < 9; startCol += 3) {
             const seen = new Set();
-            //console.log(`Checking 3x3 box starting at (${startRow}, ${startCol})`);
             for (let row = 0; row < 3; row++) {
                 for (let col = 0; col < 3; col++) {
                     const value = board2D[startRow + row][startCol + col];
-                    //console.log(`Checking value ${value} in 3x3 box`);
                     if (seen.has(value)) {
-                        //console.log(`Duplicate found in 3x3 box: value ${value}`);
                         return false;
                     }
                     seen.add(value);
                 }
             }
-            //console.log("3x3 box " + (startRow / 3) + ", " + (startCol / 3) + " unique values: " + Array.from(seen));
         }
     }
-    return true; // Wszystkie warunki spełnione
+    return true;
 }
 
-// funkcja uruchamiajaca stoper
+/**
+* Funkcja uruchamiająca stoper.
+*/
 function startTimer() {
     if (timerInterval) { clearInterval(timerInterval); }
 
@@ -507,12 +573,16 @@ function startTimer() {
     }, 1000);
 }
 
-// funkcja zatrzymujaca stoper
+/**
+* Funkcja zatrzymująca stoper.
+*/
 function stopTimer() {
     clearInterval(timerInterval);
 }
 
-// funkcje dotyczace alertow
+/**
+* Funkcja obsługująca automatyczne wyświetlanie i zanikanie alertów informacyjnych.
+*/
 function closeAlert() {
     setTimeout(function() {
         const alertElement = document.getElementById('alert');
@@ -523,6 +593,9 @@ function closeAlert() {
     }, 5000);
 }
 
+/**
+* Funkcja obsługująca automatyczne wyświetlanie i zanikanie alertów z błędami.
+*/
 function closeErrorAlert(){
     setTimeout(function() {
         const alertElement = document.getElementById('alert');
@@ -534,10 +607,16 @@ function closeErrorAlert(){
     }, 6000);
 }
 
+/**
+* Funkcja obsługująca manualne zamknięcie alert z błędami.
+*/
 function hideErrorDisplay(){
     document.getElementById('alert').classList.add('d-none');
 }
 
+/**
+* Funkcja obsługująca manualne zamknięcie alertu z wynikiem.
+*/
 function hideResultDisplay(){
     document.getElementById('result-alert').classList.add('d-none');
 }
