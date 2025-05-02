@@ -7,12 +7,30 @@ import bcrypt
 
 routes = f.Blueprint('routes', __name__)
 def hash_password(plain_password):
-    """Haszuje hasło z użyciem bcrypt i soli."""
+    """
+    Haszuje hasło za pomocą algorytmu bcrypt z użyciem losowej soli.
+
+    Args:
+        plain_password (str): Hasło w postaci zwykłego tekstu.
+
+    Returns:
+        str: Zahasłowane hasło w postaci zakodowanego ciągu znaków.
+    """
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(plain_password.encode('utf-8'), salt)
     return hashed_password.decode('utf-8')
 
 def check_password(plain_password, hashed_password):
+    """
+    Sprawdza, czy podane hasło zgadza się z jego haszem.
+
+    Args:
+        plain_password (str): Hasło w postaci zwykłego tekstu.
+        hashed_password (str): Hasło w postaci zahashowanej.
+
+    Returns:
+        bool: True jeśli hasła się zgadzają, False w przeciwnym razie lub w przypadku błędu dekodowania.
+    """
     try:
         return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
     except ValueError:
@@ -22,6 +40,15 @@ def check_password(plain_password, hashed_password):
 
 @routes.route('/home/<lang>')
 def home_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę główną.
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'en', 'pl').
+
+    Returns:
+        Response: Renderowana strona główna z uwzględnieniem zaktualizowanych danych sesji i statusu administratora.
+    """
     f.session['lang'] = lang
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
@@ -29,16 +56,43 @@ def home_set_lang(lang):
 
 @routes.route('/login/<lang>')
 def login_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę logowania.
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona logowania z uwzględnieniem wybranego języka.
+    """
     f.session['lang'] = lang
     return f.render_template('login.html')
 
 @routes.route('/register/<lang>')
 def register_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę rejestracji.
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona rejestracji z uwzględnieniem wybranego języka.
+    """
     f.session['lang'] = lang
     return f.render_template('register.html')
 
 @routes.route('/user_panel/<lang>')
 def user_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę profilu użytkownika.
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona profilu użytkownika z uwzględnieniem wybranego języka i danych sesji.
+    """
     f.session['lang'] = lang
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
@@ -46,6 +100,15 @@ def user_set_lang(lang):
 
 @routes.route('/edit_user/<lang>')
 def edit_user_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę edycji danych użytkownika.
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona edycji użytkownika z uwzględnieniem wybranego języka, danych sesji oraz informacji o edytowanym użytkowniku.
+    """
     f.session['lang'] = lang
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
@@ -55,6 +118,21 @@ def edit_user_set_lang(lang):
 
 @routes.route('/admin_panel/<lang>')
 def admin_panel_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę panelu administracyjnego.
+
+    Funkcja sprawdza, czy użytkownik jest administratorem. Jeśli tak, renderuje stronę panelu
+    administracyjnego z listą użytkowników, którzy nie są administratorami. Jeśli użytkownik nie
+    jest administratorem, zwraca odpowiedź 403 (Forbidden).
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona panelu administracyjnego z uwzględnieniem wybranego języka,
+        danych sesji oraz listy użytkowników, którzy nie są administratorami. W przypadku braku
+        uprawnień do panelu zwraca odpowiedź 403.
+    """
     f.session['lang'] = lang
     uid = f.session.get("user_id")
     if not uid or not Admin.query.filter_by(user_id=uid).first():
@@ -65,6 +143,21 @@ def admin_panel_set_lang(lang):
 
 @routes.route('/ranking/<lang>')
 def ranking_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę z rankingiem najlepszych wyników.
+
+    Funkcja umożliwia wyświetlenie rankingu najlepszych wyników dla określonego poziomu trudności.
+    Ustawia również preferowany język użytkownika i sprawdza, czy użytkownik jest administratorem.
+    Ranking jest ograniczony do pięciu najlepszych wyników na podstawie czasu ukończenia gry.
+    Jeśli nie ma wyników dla wybranego poziomu trudności, wyświetlane jest odpowiednie ostrzeżenie.
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona rankingu z najlepszymi wynikami, wybranym poziomem trudności
+        oraz danymi użytkownika i administratorem (jeśli użytkownik jest administratorem).
+    """
     f.session['lang'] = lang
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
@@ -104,6 +197,20 @@ def ranking_set_lang(lang):
 
 @routes.route('/statistics/<lang>')
 def stats_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę z danymi statystyk dotyczącymi gier.
+
+    Funkcja umożliwia wyświetlenie statystyk gier dla określonego poziomu trudności, w tym liczby gier, 
+    liczby graczy, całkowitego czasu rozgrywek oraz czasu rozgrywek konkretnego użytkownika.
+    Ustawia również preferowany język użytkownika i sprawdza, czy użytkownik jest administratorem.
+
+    Args:
+        lang (str): Kod języka do ustawienia (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona ze statystykami gier, z wybranym poziomem trudności oraz danymi
+        użytkownika i administratorem (jeśli użytkownik jest administratorem).
+    """
     f.session['lang'] = lang
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
@@ -130,6 +237,19 @@ def stats_set_lang(lang):
 
 @routes.route('/my_games/<lang>')
 def mygames_set_lang(lang):
+    """
+    Ustawia preferowany język użytkownika i renderuje stronę z historią gier użytkownika.
+
+    Funkcja sprawdza, czy użytkownik jest zalogowany, a następnie wyświetla historię gier tego użytkownika. 
+    Jeżeli użytkownik nie jest zalogowany, zostanie przekierowany do strony logowania. Ustawia także preferowany język.
+
+    Args:
+        lang (str): Kod języka, który ma zostać ustawiony (np. 'pl', 'en').
+
+    Returns:
+        Response: Renderowana strona z historią gier użytkownika, lub przekierowanie na stronę logowania, 
+        jeśli użytkownik nie jest zalogowany.
+    """
     f.session['lang'] = lang
     if "email" in f.session and "password" in f.session:
         user_id = f.session.get("user_id")
@@ -147,12 +267,35 @@ def mygames_set_lang(lang):
 
 @routes.route('/')
 def home():
+    """
+    Renderuje stronę główną aplikacji.
+
+    Pobiera dane o wynikach gier z bazy danych i wyświetla je w konsoli.
+    Funkcja wykonuje również inspekcję struktury bazy danych, wyświetlając wszystkie tabele
+    oraz ich kolumny w konsoli. Sprawdza, czy użytkownik jest zalogowany i czy posiada
+    uprawnienia administratora, a następnie przekazuje te informacje do szablonu strony głównej.
+
+    Returns:
+        str: Renderowany szablon strony głównej (`index.html`), z danymi o zalogowanym użytkowniku
+            oraz jego uprawnieniach administracyjnych (jeśli są dostępne).        
+    """
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
     return f.render_template('index.html', logged_user_data = f.session, admin = is_admin)
 
 @routes.route('/edit_user', methods=['POST'])
 def edit_user():
+    """
+    Wyświetla stronę profilu użytkownika.
+
+    Funkcja pobiera dane użytkownika z sesji i sprawdza, czy użytkownik jest administratorem.
+    Na podstawie tych danych renderuje stronę profilu użytkownika, przekazując informacje
+    o zalogowanym użytkowniku oraz statusie administracyjnym do szablonu.
+
+    Returns:
+        str: Renderowany szablon strony profilu użytkownika (`user.html`), z danymi o 
+             zalogowanym użytkowniku i jego uprawnieniach administracyjnych (jeśli dostępne).
+    """
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
     user_id = f.session.get("user_id")
@@ -161,14 +304,46 @@ def edit_user():
 
 @routes.route('/login')
 def login():
+    """
+    Renderuje stronę logowania.
+
+    Funkcja renderuje szablon strony logowania (`login.html`), umożliwiając użytkownikowi
+    wprowadzenie danych logowania (np. nazwa użytkownika i hasło) oraz przesłanie formularza.
+
+    Returns:
+        str: Renderowany szablon strony logowania (`login.html`).
+    """
     return f.render_template('login.html')
 
 @routes.route('/register')
 def register():
+    """
+    Renderuje stronę rejestracji.
+
+    Funkcja renderuje szablon strony rejestracji (`register.html`), umożliwiając użytkownikowi
+    wprowadzenie danych rejestracyjnych (np. nazwa użytkownika, hasło) i utworzenie nowego konta.
+
+    Returns:
+        str: Renderowany szablon strony rejestracji (`register.html`).
+    """
     return f.render_template('register.html')
     
 @routes.route('/admin_panel')
 def admin_panel():
+    """
+    Renderuje panel administratora, umożliwiając zarządzanie użytkownikami.
+
+    Funkcja sprawdza, czy użytkownik jest administratorem. Jeśli nie, zwraca odpowiedź 403 (Forbidden).
+    Jeżeli użytkownik jest administratorem, renderuje stronę panelu administracyjnego, 
+    wyświetlając listę użytkowników, którzy nie są administratorami.
+
+    Returns:
+        str: Renderowany szablon strony panelu administratora (`admin.html`), 
+             zawierający listę użytkowników, którzy nie są administratorami.
+
+    Raises:
+        403 Forbidden: Jeśli użytkownik nie jest administratorem.
+    """
     uid = f.session.get("user_id")
     if not uid or not Admin.query.filter_by(user_id=uid).first():
         return "403 Forbidden", 403
@@ -178,6 +353,19 @@ def admin_panel():
 
 @routes.route('/ranking')
 def ranking():
+    """
+    Renderuje stronę z rankingiem najlepszych wyników w grze dla wybranego poziomu trudności.
+
+    Funkcja sprawdza, czy użytkownik jest administratorem, a następnie pobiera najlepsze wyniki 
+    (na podstawie najmniejszego czasu) dla danego poziomu trudności z bazy danych. Domyślnie 
+    wyświetlany jest ranking dla poziomu 'easy', ale użytkownik może wybrać inny poziom trudności.
+    Funkcja wyświetla ranking z najlepszymi wynikami (maksymalnie 5), a jeśli brak jest wyników 
+    dla wybranego poziomu, wyświetla komunikat o braku dostępnych danych.
+
+    Returns:
+        str: Renderowany szablon strony z rankingiem (`ranking.html`), 
+             zawierający dane o najlepszych wynikach dla wybranego poziomu trudności.
+    """
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
 
@@ -216,6 +404,20 @@ def ranking():
 
 @routes.route('/statistics')
 def stats():
+    """
+    Wyświetla statystyki gier na podstawie wybranego poziomu trudności.
+
+    Funkcja pobiera dane dotyczące gier na wybranym poziomie trudności, takie jak liczba 
+    gier, liczba graczy, łączny czas gry, oraz czas gry danego użytkownika. Statystyki są 
+    wyświetlane na stronie z możliwością filtrowania po poziomie trudności. 
+
+    Domyślny poziom trudności to "easy". Funkcja sprawdza, czy użytkownik jest administratorem, 
+    a następnie wyświetla dane w odpowiednim szablonie HTML.
+
+    Returns:
+        Response: Zwraca odpowiedź HTTP z renderowanym szablonem HTML zawierającym statystyki 
+        dla wybranego poziomu trudności oraz dane użytkownika, w tym łączny czas gry.
+    """
     user_id = f.session.get("user_id")
     is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
 
@@ -241,6 +443,16 @@ def stats():
 
 @routes.route('/user_panel', methods=['POST'])
 def myprof_from_index():
+    """
+    Przekierowuje użytkownika na stronę profilu, jeśli jest zalogowany.
+
+    Funkcja sprawdza, czy użytkownik posiada sesję (email i hasło). 
+    Jeśli tak, renderuje stronę profilu z danymi sesji i informacją o uprawnieniach administratora. 
+    W przeciwnym wypadku wyświetla komunikat o braku zalogowania i przekierowuje na stronę logowania.
+
+    Returns:
+        Response: Szablon HTML strony profilu użytkownika lub przekierowanie do strony logowania.
+    """
     if "email" in f.session and "password" in f.session:
         user_id = f.session.get("user_id")
         is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
@@ -252,6 +464,16 @@ def myprof_from_index():
     
 @routes.route('/my_games', methods=['POST'])
 def mygames_from_index():
+    """
+    Przekierowuje użytkownika na stronę historii gier, jeśli jest zalogowany.
+
+    Funkcja sprawdza, czy użytkownik posiada aktywną sesję (na podstawie e-maila i hasła). 
+    Jeżeli użytkownik jest zalogowany, renderuje stronę historii gier z danymi sesji oraz informacją, czy jest administratorem. 
+    W przeciwnym wypadku wyświetla komunikat o braku zalogowania i przekierowuje na stronę logowania.
+
+    Returns:
+        Response: Szablon HTML historii gier użytkownika lub przekierowanie do strony logowania.
+    """
     if "email" in f.session and "password" in f.session:
         user_id = f.session.get("user_id")
         is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
@@ -268,10 +490,29 @@ def mygames_from_index():
 
 @routes.route('/vendor/<path:filename>')
 def serve_vendor(filename):
+    """
+    Dodaje dostęp do folderu vendor z poziomu Flaska.
+
+    Args:
+        filename (str): Nazwa pliku w folderze vendor.
+
+    Returns:
+        Response: Obiekt odpowiedzi HTTP zawierający żądany plik.
+    """
     return f.send_from_directory('vendor', filename)
 
 @routes.route('/save_result', methods=['POST'])
 def save_result():
+    """
+    Zapisuje nowy wynik gry do bazy danych.
+
+    Obsługuje żądanie POST z danymi JSON zawierającymi ID użytkownika, poziom trudności,
+    datę rozegrania gry i czas ukończenia. Normalizuje wartości poziomu trudności, konwertuje
+    datę na obiekt typu datetime i zapisuje dane jako nowy wpis GameResult w bazie danych.
+
+    Returns:
+        Response: Obiekt JSON z informacją o powodzeniu ("success") lub błędzie ("error").
+    """
     try:
         data = f.request.get_json()
         id = data.get("user_id")
@@ -304,13 +545,17 @@ def save_result():
 
 def is_password_alright(password):
     """
-    Checks if password is valid.
+    Sprawdza, czy podane hasło spełnia wymagania dotyczące bezpieczeństwa.
+
+    Hasło musi mieć długość od 8 do 30 znaków, zawierać co najmniej jedną
+    małą literę, jedną wielką literę, jedną cyfrę i jeden znak specjalny.
+    Nie może zawierać spacji.
 
     Args:
-        password (str): Password to check.
+        password (str): Hasło do sprawdzenia.
 
     Returns:
-        bool: True if password is valid, False otherwise.
+        bool: True jeśli hasło jest prawidłowe, w przeciwnym razie False.
     """
     #password is empty
     if password == "":
@@ -355,13 +600,18 @@ def is_password_alright(password):
 
 def email_validator_corrector(email):
     """
-    Corrects email and checks if it is valid.
+    Poprawia format adresu e-mail i sprawdza jego poprawność.
+
+    Waliduje e-mail pod względem długości, wielkości liter, obecności znaków
+    przed i po znaku '@', oraz obecności domeny najwyższego poziomu.
+    W razie błędu wyświetla stosowny komunikat za pomocą Flask `flash`.
 
     Args:
-        email (str): Email to check.
+        email (str): Adres e-mail do sprawdzenia.
 
     Returns:
-        return [True, email] if email is valid, [False, "EmailError"] otherwise
+        list: [True, email] jeśli adres e-mail jest poprawny,
+              [False, "EmailError"] lub [False, "UsernameError"] w przeciwnym razie.
     """
     #email is empty
     if email == "":
@@ -369,7 +619,7 @@ def email_validator_corrector(email):
         return [False, "EmailError"]
 
     #deletes spaces from the beginning and the end of username
-    email.strip()
+    email = email.strip()
 
     #email has capital letters
     if True in [a.isupper() for a in email]:
@@ -394,13 +644,14 @@ def email_validator_corrector(email):
 
 def username_validator_corrector(username):
     """
-    Corrects username and checks if it is valid.
+    Usuwa nadmiarowe spacje i sprawdza poprawność nazwy użytkownika.
 
     Args:
-        username (str): Username to check.
+        username (str): Nazwa użytkownika do sprawdzenia i korekty.
 
     Returns:
-        return [True, username] if username is valid, [False, "UsernameError"] otherwise
+        list: [True, username] jeśli nazwa użytkownika jest poprawna, 
+              lub [False, "UsernameError"] w przeciwnym wypadku.
     """
     #username is empty
     if username == "":
@@ -425,9 +676,154 @@ def username_validator_corrector(username):
 
     return [True, username]
 
+@routes.route('/')
+def home():
+    """
+        Renderuje stronę główną aplikacji.
+
+        Pobiera dane o wynikach gier z bazy danych i wyświetla je w konsoli.
+        Funkcja wykonuje również inspekcję struktury bazy danych, wyświetlając wszystkie tabele
+        oraz ich kolumny w konsoli. Sprawdza, czy użytkownik jest zalogowany i czy posiada
+        uprawnienia administratora, a następnie przekazuje te informacje do szablonu strony głównej.
+
+        Returns:
+            str: Renderowany szablon strony głównej (`index.html`), z danymi o zalogowanym użytkowniku
+                oraz jego uprawnieniach administracyjnych (jeśli są dostępne).        
+    """
+    print(GameResult.__table__.columns.keys())
+
+    test = GameResult.query.all()
+    for game in test:
+        print(f"result_id: {game.result_id}, user_id: {game.user_id}, difficulty: {game.difficulty}, date_played: {game.date_played}, time_finished: {game.time_finished}")
+
+    # Pobierz inspektora bazy danych
+    inspector = inspect(db.engine)
+
+    # Lista wszystkich tabel w bazie
+    tables = inspector.get_table_names()
+
+    # Wyświetl nagłówki kolumn dla każdej tabeli
+    for table_name in tables:
+        print(f"Tabela: {table_name}")
+        columns = inspector.get_columns(table_name)
+        for column in columns:
+            print(f"  - {column['name']} ({column['type']})")
+
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    print("Zalogowany user_id:", user_id)
+    print("Czy admin:", is_admin)
+
+    return f.render_template('index.html', logged_user_data = f.session, admin = is_admin)
+
+@routes.route('/my_profile')
+def user():
+    """
+    Wyświetla stronę profilu użytkownika.
+
+    Funkcja pobiera dane użytkownika z sesji i sprawdza, czy użytkownik jest administratorem.
+    Na podstawie tych danych renderuje stronę profilu użytkownika, przekazując informacje
+    o zalogowanym użytkowniku oraz statusie administracyjnym do szablonu.
+
+    Returns:
+        str: Renderowany szablon strony profilu użytkownika (`user.html`), z danymi o 
+             zalogowanym użytkowniku i jego uprawnieniach administracyjnych (jeśli dostępne).
+    """    
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+
+    return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
+
+@routes.route('/edit_user', methods=['POST'])
+def edit_user():
+    """
+    Przekierowuje użytkownika do formularza edycji danych użytkownika.
+
+    Funkcja pobiera dane z formularza POST (w tym identyfikator użytkownika do edycji),
+    sprawdza, czy użytkownik jest administratorem, a następnie renderuje stronę formularza edycji użytkownika.
+    Zwracane są dane sesji użytkownika, status administracyjny oraz dane związane z edycją użytkownika.
+
+    Returns:
+        str: Renderowany szablon formularza edycji użytkownika (`edit_user.html`) z danymi sesji,
+             statusami administratora oraz przekazanymi danymi dotyczącymi edycji.
+    """
+    reroute = f.request.form.get("reroute")
+    edit_user_id = f.request.form.get("edit_user_id")
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+
+    return f.render_template('edit_user.html', logged_user_data = f.session, admin = is_admin, reroute = reroute, edit_user_id = edit_user_id)
+
+@routes.route('/login')
+def login():
+    """
+    Renderuje stronę logowania.
+
+    Funkcja renderuje szablon strony logowania (`login.html`), umożliwiając użytkownikowi
+    wprowadzenie danych logowania (np. nazwa użytkownika i hasło) oraz przesłanie formularza.
+
+    Returns:
+        str: Renderowany szablon strony logowania (`login.html`).
+    """
+    return f.render_template('login.html')
+
+@routes.route('/register')
+def register():
+    """
+    Renderuje stronę rejestracji.
+
+    Funkcja renderuje szablon strony rejestracji (`register.html`), umożliwiając użytkownikowi
+    wprowadzenie danych rejestracyjnych (np. nazwa użytkownika, hasło) i utworzenie nowego konta.
+
+    Returns:
+        str: Renderowany szablon strony rejestracji (`register.html`).
+    """
+    return f.render_template('register.html')
+    
+@routes.route('/admin_panel')
+def admin_panel():
+    """
+    Renderuje panel administratora, umożliwiając zarządzanie użytkownikami.
+
+    Funkcja sprawdza, czy użytkownik jest administratorem. Jeśli nie, zwraca odpowiedź 403 (Forbidden).
+    Jeżeli użytkownik jest administratorem, renderuje stronę panelu administracyjnego, 
+    wyświetlając listę użytkowników, którzy nie są administratorami.
+
+    Returns:
+        str: Renderowany szablon strony panelu administratora (`admin.html`), 
+             zawierający listę użytkowników, którzy nie są administratorami.
+
+    Raises:
+        403 Forbidden: Jeśli użytkownik nie jest administratorem.
+    """
+    uid = f.session.get("user_id")
+    if not uid or not Admin.query.filter_by(user_id=uid).first():
+        return "403 Forbidden", 403
+    admin_user_ids = db.session.query(Admin.user_id)
+    non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
+
+    return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
+
 #format ilości godzin dla Statystyk
 @routes.app_template_filter('format_seconds')
 def format_seconds(seconds):
+    """
+    Formatuje podaną liczbę sekund na bardziej czytelną formę (dni, godziny, minuty, sekundy).
+
+    Funkcja przyjmuje liczbę sekund i konwertuje ją na format zawierający dni, godziny, minuty 
+    oraz sekundy, w zależności od wartości wejściowej. Funkcja zwraca ciąg tekstowy reprezentujący
+    czas w formacie "Xd Xh Xm Xs", gdzie X to liczba dni, godzin, minut lub sekund.
+
+    Args:
+        seconds (int): Liczba sekund do sformatowania.
+
+    Returns:
+        str: Sformatowany ciąg tekstowy przedstawiający czas w formie "Xd Xh Xm Xs".
+             Przykład: "2d 3h 5m 30s" lub "5m 30s".
+
+    Raises:
+        ValueError: Jeśli `seconds` jest wartością, która nie może być przekonwertowana na liczbę.
+    """    
     if not seconds:
         return "0s"
     seconds = int(seconds)
@@ -445,8 +841,133 @@ def format_seconds(seconds):
         parts.append(f"{seconds}s")
     return " ".join(parts)
 
+#Statystyki
+@routes.route('/statistics')
+def stats():
+    """
+    Wyświetla statystyki gier na podstawie wybranego poziomu trudności.
+
+    Funkcja pobiera dane dotyczące gier na wybranym poziomie trudności, takie jak liczba 
+    gier, liczba graczy, łączny czas gry, oraz czas gry danego użytkownika. Statystyki są 
+    wyświetlane na stronie z możliwością filtrowania po poziomie trudności. 
+
+    Domyślny poziom trudności to "easy". Funkcja sprawdza, czy użytkownik jest administratorem, 
+    a następnie wyświetla dane w odpowiednim szablonie HTML.
+
+    Returns:
+        Response: Zwraca odpowiedź HTTP z renderowanym szablonem HTML zawierającym statystyki 
+        dla wybranego poziomu trudności oraz dane użytkownika, w tym łączny czas gry.
+    """
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+
+    #poziomy trudności ; domyślnie - "easy"
+    selected_difficulty = f.request.args.get("difficulty", "easy")
+    difficulties = ['easy', 'intermediate', 'hard', 'expert']
+    if selected_difficulty not in difficulties:
+        selected_difficulty = 'easy'
+
+    total_games = db.session.query(func.count(GameResult.result_id)).filter_by(difficulty=selected_difficulty).scalar() or 0
+
+    #brak gier dla wybranego poziomu trudności
+    if total_games == 0:
+        f.flash(f'Statistics not available for this level yet!', 'warning')
+
+    total_players = db.session.query(func.count(func.distinct(GameResult.user_id))).filter_by(difficulty=selected_difficulty).scalar() or 0
+
+    total_playtime = db.session.query(func.sum(GameResult.time_finished)).filter_by(difficulty=selected_difficulty).scalar() or 0
+
+    your_total_playtime = db.session.query(func.sum(GameResult.time_finished)).filter_by(difficulty=selected_difficulty, user_id=user_id).scalar() or 0
+
+    return f.render_template('stats.html', logged_user_data=f.session, admin=is_admin, selected_difficulty=selected_difficulty, total_games=total_games, total_players=total_players, total_playtime=total_playtime, your_total_playtime=your_total_playtime)
+
+    
+@routes.route('/my_games')
+def history():
+    """
+    Wyświetla historię gier zalogowanego użytkownika.
+
+    Funkcja pobiera z bazy danych wszystkie gry przypisane do aktualnie zalogowanego 
+    użytkownika i renderuje stronę zawierającą ich historię. Dodatkowo sprawdzane jest, 
+    czy użytkownik posiada uprawnienia administratora, aby odpowiednio dostosować widok.
+
+    Returns:
+        Response: Szablon HTML strony historii gier z danymi użytkownika oraz listą rozegranych gier.
+    """
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    games = GameResult.query.filter_by(user_id=user_id).all()
+    return f.render_template('history.html', logged_user_data = f.session, admin = is_admin, user_games = games)
+    
+@routes.route('/ranking')
+def ranking():
+    """
+    Wyświetla stronę rankingu graczy.
+
+    Funkcja sprawdza, czy aktualnie zalogowany użytkownik posiada uprawnienia administratora 
+    i renderuje szablon strony z rankingiem, przekazując dane o użytkowniku oraz jego uprawnieniach.
+
+    Returns:
+        Response: Szablon HTML strony rankingu z danymi użytkownika i informacją o uprawnieniach administratora.
+    """
+    user_id = f.session.get("user_id")
+    is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+    return f.render_template('ranking.html', logged_user_data = f.session, admin = is_admin)
+
+@routes.route('/user_panel', methods=['POST'])
+def myprof_from_index():
+    """
+    Przekierowuje użytkownika na stronę profilu, jeśli jest zalogowany.
+
+    Funkcja sprawdza, czy użytkownik posiada sesję (email i hasło). 
+    Jeśli tak, renderuje stronę profilu z danymi sesji i informacją o uprawnieniach administratora. 
+    W przeciwnym wypadku wyświetla komunikat o braku zalogowania i przekierowuje na stronę logowania.
+
+    Returns:
+        Response: Szablon HTML strony profilu użytkownika lub przekierowanie do strony logowania.
+    """
+    if "email" in f.session and "password" in f.session:
+        user_id = f.session.get("user_id")
+        is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+        return f.render_template('user.html', logged_user_data = f.session, admin = is_admin)
+    
+    else:
+        f.flash("You are not logged in", "danger")
+        return f.redirect(f.url_for('routes.login'))
+
+@routes.route('/user_panel', methods=['POST'])
+def mygames_from_index():
+    """
+    Przekierowuje użytkownika na stronę historii gier, jeśli jest zalogowany.
+
+    Funkcja sprawdza, czy użytkownik posiada aktywną sesję (na podstawie e-maila i hasła). 
+    Jeżeli użytkownik jest zalogowany, renderuje stronę historii gier z danymi sesji oraz informacją, czy jest administratorem. 
+    W przeciwnym wypadku wyświetla komunikat o braku zalogowania i przekierowuje na stronę logowania.
+
+    Returns:
+        Response: Szablon HTML historii gier użytkownika lub przekierowanie do strony logowania.
+    """
+    if "email" in f.session and "password" in f.session:
+        user_id = f.session.get("user_id")
+        is_admin = Admin.query.filter_by(user_id=user_id).first() is not None
+        return f.render_template('history.html', logged_user_data = f.session, admin = is_admin)
+    
+    else:
+        f.flash("You are not logged in", "danger")
+        return f.redirect(f.url_for('routes.login'))
+
 @routes.route('/handle_login', methods=['POST'])
 def handle_login():
+    """
+    Obsługuje logowanie użytkownika na podstawie wprowadzonego e-maila i hasła.
+
+    Funkcja sprawdza, czy podany e-mail istnieje w bazie danych oraz czy hasło jest poprawne. 
+    W przypadku błędnych danych logowania wyświetla odpowiednie komunikaty o błędach. 
+    Jeśli dane są poprawne, zapisuje dane użytkownika w sesji i przekierowuje na stronę główną.
+
+    Returns:
+        Response: Szablon strony logowania z komunikatem błędu lub przekierowanie do strony głównej po udanym logowaniu.
+    """
     email_input_login = f.request.form.get('email_input_login')
     password_input_login = f.request.form.get('password_input_login')
 
@@ -455,7 +976,7 @@ def handle_login():
     if not email_entity:
         f.flash(_("Email doesn't exist in database!"), "danger")
         return f.render_template('login.html', logged_user_data = f.session)
-
+    
     if not check_password(password_input_login, email_entity.password):
         f.flash(_("Wrong password!"), "danger")
         return f.render_template('login.html', logged_user_data=f.session) 
@@ -531,13 +1052,11 @@ def handle_register():
         #hashed password to be saved into database
         hashed_password = hash_password(password_input_reg)
 
-        #user can be now legally added - add user with hashed password
         user = User(email=email_input_reg, username=username_input_reg, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         f.flash(_("Register successed. You can log in."), "success")
     except:
-        #shadow realm, user should never see this
         f.flash(_("Register failed."), "warning")
     
     return f.render_template('login.html')
@@ -692,7 +1211,6 @@ def edit():
         elif reroute == "admin":
             #if new password was input...
             if newpassword_edit != "":
-                #improve password checking here!
                 if is_password_alright(newpassword_edit):
                     #if confirm password was input and matches new password
                     if confirmpassword_edit and newpassword_edit == confirmpassword_edit:
@@ -714,13 +1232,9 @@ def edit():
                 non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
                 return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
         else:
-            # shadow realm. App works incorrectly. 
-            # Data passed should not me anything different, ever
             return "Shadow realm wrong reroute data"
 
     else:
-        #this is a shadow realm.
-        #user shown in list MUST exist.
         return "Shadow realm no reroute"
      
     if reroute == "user":
@@ -746,22 +1260,8 @@ def delete_user():
     reroute = f.request.form.get("reroute")
     del_user_id = f.request.form.get("del_user_id")
     print(del_user_id)
-
-    # user_id = f.session["email"]
-    # if not user_id:
-    #     #shadow realm in end program
-    #     f.flash("You are not logged in.", "warning")
-    #     if reroute == "admin":
-    #         admin_user_ids = db.session.query(Admin.user_id)
-    #         non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
-    #         return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
-    #     elif reroute == "user":
-    #         return f.render_template('user.html', logged_user_data = f.session)
-    #     else:
-    #         print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
-    #         return f.redirect(f.url_for('home'))
-
     user = User.query.get(del_user_id)
+
     if user:
         print("deleting user with id: ", del_user_id)
         print("user: ", user.username)
@@ -769,7 +1269,6 @@ def delete_user():
         if reroute == "admin":
             db.session.delete(user)
             db.session.commit()
-            # f.session.clear()
             admin_user_ids = db.session.query(Admin.user_id)
             non_admin_users = User.query.filter(~User.user_id.in_(admin_user_ids)).all()
             return f.render_template('admin.html', non_admin_users=non_admin_users, logged_user_data = f.session)
@@ -779,8 +1278,6 @@ def delete_user():
             f.session.clear()
             return f.redirect(f.url_for('routes.home'))
     else:
-        #shadow realm, but handled with care and love. Quoting Donald Knuth:
-        #"A well-written program should fail gracefully."
         print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - NO USER")
         f.flash(_("User does not exist."), "warning")
 
@@ -797,20 +1294,4 @@ def delete_user():
             print("ERROR IS HAPPENING. YOU ARE IN SHADOW REALM - WRONG REROUTE")
             return f.redirect(f.url_for('routes.home'))
         
-# ====================================================
-
-# =============== funkcje debugujace =================
-
-@routes.route('/debug')
-def show_tables():
-    """
-    Debug: Wyświetla listę wszystkich użytkowników w postaci HTML.
-    """
-    users = User.query.all()
-    result = "<h2>Lista użytkowników</h2><ul>"
-    for user in users:
-        result += f"<li>ID: {user.user_id}, Username: {user.username}, Email: {user.email}</li>"
-    result += "</ul>"
-    return result
-
 # ====================================================
