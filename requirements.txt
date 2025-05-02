@@ -8,3 +8,6 @@ selenium
 webdriver-manager
 
 bcrypt
+
+sphinx
+sphinx-js

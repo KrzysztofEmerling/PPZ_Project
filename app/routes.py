@@ -475,6 +475,16 @@ def handle_login():
     
 @routes.route('/handle_register', methods=['POST'])
 def handle_register():
+    """
+    Obsługuje proces rejestracji użytkownika.
+
+    Pobiera dane z formularza, waliduje je, sprawdza ich unikalność w bazie danych 
+    i zapisuje nowego użytkownika z hasłem zakodowanym przez bcrypt. Obsługuje również 
+    komunikaty o błędach i powodzeniu operacji.
+
+    Returns:
+        Response: Przekierowanie do odpowiedniego szablonu HTML w zależności od wyniku rejestracji.
+    """
     email_input_reg = f.request.form.get('email_input_reg')
     username_input_reg = f.request.form.get('username_input_reg')
     password_input_reg = f.request.form.get('password_input_reg')
@@ -534,12 +544,30 @@ def handle_register():
 
 @routes.route('/handle_logout', methods=['POST'])
 def handle_logout():
+    """
+    Obsługuje proces wylogowania użytkownika.
+
+    Czyści dane sesji użytkownika i przekierowuje do strony logowania z komunikatem.
+
+    Returns:
+        Response: Szablon logowania z komunikatem o sukcesie.
+    """
     f.session.clear()
     f.flash(_("Logout successful."), "success")
     return f.render_template('login.html')
 
 @routes.route('/edit', methods=['POST'])
 def edit():
+    """
+    Obsługuje edycję danych użytkownika (zarówno przez użytkownika, jak i administratora).
+
+    W zależności od źródła (panel użytkownika lub administratora), aktualizuje dane takie jak 
+    nazwa użytkownika, e-mail i hasło. Przeprowadza walidację i odpowiednie zabezpieczenia 
+    (np. konieczność podania starego hasła przez użytkownika). Obsługuje również sytuacje błędne.
+
+    Returns:
+        Response: Przekierowanie do odpowiedniego szablonu w zależności od źródła edycji oraz sukcesu/błędu.
+    """
     reroute = f.request.form.get("reroute")
     edit_user_id = f.request.form.get("edit_user_id")
 
@@ -706,6 +734,15 @@ def edit():
 
 @routes.route('/delete_user', methods=['POST'])
 def delete_user():
+    """
+    Usuwa użytkownika na podstawie przesłanego ID, z różnym zachowaniem w zależności od roli (admin/user).
+    
+    Oczekiwane pola formularza:
+        - reroute: 'admin' lub 'user' (określa widok, do którego wrócić po usunięciu).
+        - del_user_id: ID użytkownika do usunięcia.
+
+    Jeśli użytkownik nie istnieje lub wystąpi inny problem — wyświetlana jest informacja ostrzegawcza.
+    """
     reroute = f.request.form.get("reroute")
     del_user_id = f.request.form.get("del_user_id")
     print(del_user_id)
@@ -766,6 +803,9 @@ def delete_user():
 
 @routes.route('/debug')
 def show_tables():
+    """
+    Debug: Wyświetla listę wszystkich użytkowników w postaci HTML.
+    """
     users = User.query.all()
     result = "<h2>Lista użytkowników</h2><ul>"
     for user in users:
